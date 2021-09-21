@@ -1,0 +1,45 @@
+pre {
+  display: block;
+  margin-top: 1em;
+  margin-bottom: 1em;
+  font-family: monospace;
+  white-space: pre-wrap;
+  overflow-x: auto ;
+  padding-bottom: 12px;
+  box-sizing: border-box;
+  color: white;
+}
+
+.card {
+  min-width: 100%;
+  height: auto;
+  margin-top: 0pt;
+  margin-bottom: 20pt;
+  padding-top: 0pt;
+}
+
+.card-container {
+  align-content: center;
+  display: flex;
+  flex-direction: column;
+  min-width: 90%;
+}
+
+.mat-table {
+  overflow: auto;
+}
+
+a {
+  cursor: pointer;
+}
+
+.img {
+  max-width: 20%;
+  max-height: 20%;
+  align-content: left;
+}
+
+.button-row button,
+.button-row a {
+  margin-right: 12px;
+}

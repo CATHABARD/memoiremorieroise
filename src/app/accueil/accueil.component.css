@@ -1,0 +1,47 @@
+.card {
+  vertical-align: 0px;
+  margin-top: 10pt;
+  margin-bottom: 10pt;
+}
+
+mat-card {
+  overflow: hidden;
+  vertical-align: top;
+  color: white;
+  margin-left: 5px;
+  margin-top: 5px;
+  max-width: 100%;
+}
+
+.img {
+  margin: 5px;
+}
+
+.header-image {
+  background-size: cover;
+}
+
+mat-grid-tile {
+  vertical-align: 0px;
+  align-content: center;
+}
+
+.mat-form-field {
+  margin-right: 12px;
+}
+
+button {
+  background-color: rgb(40,40,50);
+  font-size: large;
+  border: 0px;
+  margin: 20px;
+}
+
+.texte-entete {
+  vertical-align: top;
+  text-align: center;
+  font-size: 12px;
+  margin-left: 150px;
+}
+
+

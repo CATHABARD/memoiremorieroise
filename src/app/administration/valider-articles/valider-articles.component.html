@@ -1,0 +1,66 @@
+<h4>Validations</h4><br/>
+<div *ngIf="isEditArticle || isAdmin">
+  <h5>Liste des articles à valider. ({{globalService.ArticlesAValider.length}})</h5>  
+  <div *ngFor="let a of globalService.ArticlesAValider">
+    <mat-card>
+      <mat-card-title>{{a.titre}}</mat-card-title>
+      <mat-card-subtitle>{{a.legende}}</mat-card-subtitle>
+      <img class="img" src={{a.photo}} alt="Photo de Morières introuvable">
+      <mat-card-content class="card-container">
+        <div>
+          <pre>{{ a.texte }}</pre>
+        </div>
+        <mat-card-actions>
+          <div class="button-row">
+            <button  mat-raised-button color="accent" (click)="onValideArticle(a)">Valider l'article</button>
+            <button  mat-raised-button color="warn" (click)="onRejeteArticle(a)">Rejeter l'article</button>
+          </div>
+        </mat-card-actions>
+      </mat-card-content>
+    </mat-card>
+  </div>
+  <br/>
+</div>
+<div *ngIf="isEditPhotosDeClasse || isAdmin">
+  <h5>Liste des photos de classes à valider. ({{globalService.photosAValider.length}})</h5>  
+  <div *ngFor="let p of globalService.photosAValider">
+    <mat-card>
+      <mat-card-title>{{p.titre}}</mat-card-title>
+      <mat-card-subtitle *ngIf="p.photo">{{p.annee}}</mat-card-subtitle>
+      <img class="img" src={{p.photo}} alt="Photo de classe introuvable">
+      <mat-card-content class="card-container">
+        <div>
+          <pre>{{ p.listeEleves }}</pre>
+        </div>
+        <mat-card-actions>
+          <div class="button-row">
+            <button  mat-raised-button color="accent" (click)="onValidePhoto(p)">Valider la photo</button>
+            <button  mat-raised-button color="warn" (click)="onRejetePhoto(p)">Rejeter la photo</button>
+          </div>
+        </mat-card-actions>
+      </mat-card-content>
+    </mat-card>
+  </div>
+  <br/>
+</div>
+<div *ngIf="isModerateur || isAdmin">
+  <h5>Liste des documents à valider. ({{pdfService.pdfsAValider.length}})</h5>  
+<div *ngFor="let p of pdfService.pdfsAValider">
+  <mat-card>
+    <mat-card-title>{{p.titre}}</mat-card-title>
+    <iframe *ngIf="p.fichier" class="e2e-trusted-url" [src]="p.fichier | safe: 'resourceUrl'" width="100%" height="1100px"></iframe>
+    <mat-card-content class="card-container">
+      <div>
+        <pre>{{ p.description }}</pre>
+      </div>
+      <mat-card-actions>
+        <div class="button-row">
+          <button  mat-raised-button color="accent" (click)="onValidePdf(p)">Valider le document</button>
+          <button  mat-raised-button color="warn" (click)="onRejetePdf(p)">Rejeter le document</button>
+        </div>
+      </mat-card-actions>
+    </mat-card-content>
+  </mat-card>
+</div>
+
+ 

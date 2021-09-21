@@ -1,0 +1,23 @@
+
+    <mat-dialog-content [formGroup]="form">
+        <mat-checkbox class="margin" placeholder="Visiteur" formControlName="visiteur">
+            Visiteur
+        </mat-checkbox>
+        <mat-checkbox class="margin" placeholder="Modérateur" formControlName="moderateur">
+            Modérateur
+        </mat-checkbox>
+        <mat-checkbox class="margin" placeholder="editArticle" formControlName="editArticle">
+            Edition articles
+        </mat-checkbox>
+        <mat-checkbox class="margin" placeholder="editPhotosDeClasse" formControlName="editPhotosDeClasse">
+            Edition photos de classes
+        </mat-checkbox>
+        <mat-checkbox class="margin" placeholder="administrateur" formControlName="administrateur">
+            administrateur
+        </mat-checkbox>
+    </mat-dialog-content>
+    <mat-dialog-actions>
+        <button class="mat-raised-button mat-accent"(click)="onSave()">Valider</button>
+        <button class="mat-raised-button"(click)="onClose()">Annuler</button>
+    </mat-dialog-actions>
+  

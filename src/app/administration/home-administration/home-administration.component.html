@@ -1,0 +1,13 @@
+<h2>Administration</h2>
+<br/>
+<ul *ngIf="isAdmin">
+    <li *ngIf="isModerateur || isAdmin">
+        <a routerLink="/app-valider-articles">Valider articles, photos et documents ({{totalAValider}})</a>
+    </li>
+    <li *ngIf="isModerateur || isAdmin">
+        <a routerLink="/app-liste-messages">Messages</a>
+    </li>
+    <li *ngIf="isAdmin">
+        <a routerLink="/app-droits">Gérer les droits.</a>
+    </li>
+</ul>
