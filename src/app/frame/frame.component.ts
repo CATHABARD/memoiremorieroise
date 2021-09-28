@@ -14,7 +14,8 @@ import { Theme } from '../modeles/themes';
 import { ThemesService } from '../services/themes.service';
 import { MessagesComponent } from '../messages/messages.component';
 import { Message } from '../modeles/message';
-import { pipe } from 'rxjs'
+import { MessagesService } from '../services/messages.service';
+import { ArticlesService } from '../services/articles.service';
 
 @Component({
   selector: 'app-frame',
@@ -40,7 +41,9 @@ export class FrameComponent implements OnInit, OnDestroy {
               public dialog: MatDialog,
               private breakpointObserver: BreakpointObserver,
               public globalService: GlobalService,
+              private messagesService: MessagesService,
               public themesService: ThemesService,
+              public articlesService: ArticlesService,
               public authService: AuthService) {
 
                 this.userSubscription = this.authService.authSubject.subscribe(u => {
@@ -69,6 +72,7 @@ export class FrameComponent implements OnInit, OnDestroy {
                     this.isAdmin = false;
                   }
                 })
+                this.themesService.getThemes();
   }
 
   ngOnInit() {
@@ -94,6 +98,7 @@ export class FrameComponent implements OnInit, OnDestroy {
 
   onListeArticles(t: Theme) {
     this.themesService.changeCurrentTheme(t);
+    this.articlesService.getArticlesDuTheme(this.themesService.currentTheme!);
     this.router.navigate(['app-liste-articles']);
   }
 
@@ -182,7 +187,7 @@ export class FrameComponent implements OnInit, OnDestroy {
 
       if (data && data.message) {
         const message = new Message(new Date(), dialogConfig.data.email, data.message, false, '');
-        this.globalService.addMessage(message);
+        this.messagesService.addMessage(message);
       }
     },
     (error) => {

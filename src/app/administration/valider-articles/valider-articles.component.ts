@@ -1,4 +1,4 @@
-import { Component, OnInit, OnDestroy } from '@angular/core';
+import { Component, OnInit, OnDestroy, Input } from '@angular/core';
 import { Article } from '../../modeles/article';
 import { GlobalService, Droits } from 'src/app/services/global.service';
 import { Pdf } from '../../modeles/pdf';
@@ -7,6 +7,7 @@ import { Subscription } from 'rxjs';
 import { AuthService } from 'src/app/services/auth.service';
 import { ArticlesService } from 'src/app/services/articles.service';
 import { PdfService } from 'src/app/services/pdf.service';
+import { PhotosService } from 'src/app/services/photos.service';
 
 @Component({
   selector: 'app-valider-articles',
@@ -14,6 +15,8 @@ import { PdfService } from 'src/app/services/pdf.service';
   styleUrls: ['./valider-articles.component.scss']
 })
 export class ValiderArticlesComponent implements OnInit, OnDestroy {
+  @Input() articlesAValider: Article[] = [];
+  
   public article: Article | undefined | null;
   public isConnected = false;
   public canWrite: boolean = false;
@@ -25,12 +28,15 @@ export class ValiderArticlesComponent implements OnInit, OnDestroy {
   isEditPhotosDeClasse = false;
   isModerateur = false;
 
+  pdfsAValider: Pdf[] = [];
+
   constructor(public globalService: GlobalService,
               public pdfService: PdfService,
+              public photosService: PhotosService,
               private authService: AuthService,
               private articlesService: ArticlesService) {
     this.authSubscription = this.authService.authSubject.subscribe(data => {
-      if (data === true) {
+      if (data != null) {
         let currentUser = this.authService.getCurrentUser();
         // tslint:disable-next-line:no-bitwise
         if (currentUser && currentUser.status && (currentUser.status & Droits.administrateur) === Droits.administrateur) {
@@ -55,7 +61,12 @@ export class ValiderArticlesComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit() {
-
+    this.articlesService.getArticlesAValider().subscribe(Articles => {
+      this.articlesAValider = Articles.docs as Article[];
+    });
+    this.pdfService.getListePdfAValider().subscribe(data => {
+      this.pdfsAValider = data.docs;
+    });
   }
 
   ngOnDestroy() {
@@ -89,11 +100,11 @@ export class ValiderArticlesComponent implements OnInit, OnDestroy {
   }
 
   onValidePhoto(p: Photo) {
-    this.globalService.validerPhoto(p);
+    this.photosService.validerPhoto(p);
   }
 
   onRejetePhoto(p: Photo) {
-    this.globalService.rejeterPhoto(p);
+    this.photosService.rejeterPhoto(p);
   }
 
 }

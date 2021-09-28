@@ -46,7 +46,6 @@
           <mat-grid-tile *ngIf="i >= photoCourante && i < (photoCourante + pasPhotos)">
             <mat-card>
               <mat-card-header> 
-                <div mat-card-avatar class="header-image"> </div> 
                 <mat-card-title>{{p.annee}}</mat-card-title> 
                 <mat-card-subtitle>{{p.titre}}</mat-card-subtitle> 
               </mat-card-header> 
@@ -75,11 +74,10 @@
       <button mat-button (click)="onIncrementeArticle()" *ngIf="pageCouranteArticle < nbPagesArticles">>></button>
       <button mat-button *ngIf="pageCouranteArticle >= nbPagesArticles" disabled>>></button>
       <mat-grid-list cols="4" rowHeight="1000" gutterSize="20px">
-        <div *ngFor="let a of globalService.allArticles; let i = index">
-        <mat-grid-tile *ngIf="i >= articleCourant && i <= (articleCourant + pasArticles)">
+        <div *ngFor="let a of articlesService.articles; let i = index">
+        <mat-grid-tile *ngIf="i >= articleCourant && i < (articleCourant + pasArticles)">
           <mat-card>
             <mat-card-header> 
-              <div mat-card-avatar class="header-image"> </div> 
               <mat-card-title>{{a.titre}}</mat-card-title> 
               <mat-card-subtitle>{{a.legende}}</mat-card-subtitle> 
             </mat-card-header> 

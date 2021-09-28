@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 import { AuthService } from './services/auth.service';
-import { GlobalService } from './services/global.service';
+import { ThemesService } from './services/themes.service';
 
 @Component({
   selector: 'app-root',
@@ -10,7 +10,9 @@ import { GlobalService } from './services/global.service';
 export class AppComponent {
   title = 'MemoireMorieroise';
   
-  constructor(private authService: AuthService) {
-    this.authService.signInVisiteur();
+  constructor(private authService: AuthService,
+              private themesService: ThemesService) {
+    this.authService.signInVisiteur().then(() => {
+    });
   }
 }

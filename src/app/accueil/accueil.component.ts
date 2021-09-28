@@ -7,6 +7,7 @@ import { Subscription } from 'rxjs';
 import { NgbCarousel } from '@ng-bootstrap/ng-bootstrap';
 import { Carousel } from '../modeles/carousel';
 import { AuthService } from '../services/auth.service';
+import { ArticlesService } from '../services/articles.service';
 
 @Component({
   selector: 'app-accueil',
@@ -17,7 +18,7 @@ export class AccueilComponent implements OnInit, OnDestroy {
   @ViewChild('ngcarousel', { static: true })
   ngCarousel!: NgbCarousel;
   
-  articles: Article[] = [];
+  // articles: Article[] = [];
   photos: Photo[] = [];
   articleCourant = 0;
   photoCourante = 0;
@@ -29,12 +30,16 @@ export class AccueilComponent implements OnInit, OnDestroy {
   nbPagesPhotos = 0;
   nbPagesArticles = 0;
   private photosSubscription: Subscription | undefined;
-  private dataSubscription: Subscription | undefined;
+  private articlesSubscription: Subscription | undefined;
 
 
   constructor(public globalService: GlobalService,
               private photosService: PhotosService,
-              public authService: AuthService) { }
+              public articlesService: ArticlesService,
+              public authService: AuthService) {
+                this.articlesService.getArticles();
+                this.photosService.getPhotos();
+              }
 
   // Initialisation de la page
   ngOnInit() {
@@ -48,22 +53,15 @@ export class AccueilComponent implements OnInit, OnDestroy {
         })
       });
     });
-
-    this.dataSubscription = this.globalService.dataSubject.subscribe(b => {
-      if (b)
-        this.nbPagesArticles = Math.round(this.globalService.allArticles.length / this.pasArticles);
+    this.articlesSubscription = this.articlesService.articlesSubject.subscribe(article => {
+      this.nbPagesArticles = Math.round(this.articlesService.articles.length / this.pasArticles);
     });
-
-    this.photosService.emitPhoto();
-    this.globalService.emitDataChange();
+    this.articlesService.emitArticles();
   }
 
   ngOnDestroy() {
     if(this.photosSubscription != null) {
       this.photosSubscription.unsubscribe();
-    }
-    if(this.dataSubscription != null) {
-      this.dataSubscription.unsubscribe();
     }
   }
 

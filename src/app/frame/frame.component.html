@@ -17,7 +17,7 @@
       </mat-nav-list>
       <h4>Articles :</h4>
       <mat-nav-list>
-        <button mat-button *ngFor="let t of themesService.listeThemes" (click)="onListeArticles(t)">{{t.nom}}</button>
+        <button mat-button *ngFor="let t of themesService.themes" (click)="onListeArticles(t)">{{t.nom}}</button>
       </mat-nav-list>
       <h4>Photos de classes :</h4>
       <mat-nav-list>

@@ -10,6 +10,7 @@ import { AngularFirestore } from '@angular/fire/compat/firestore';
 export class PhotosService {
   public photo: Photo  | undefined;
   private listePhotos: Photo[] = []
+  public photosAValider: Photo[] = [];
   public currentPhoto: Photo | undefined;
   photoSubject = new Subject<Photo[]>();
 
@@ -68,5 +69,20 @@ export class PhotosService {
       });
   }
 
+  public getPhotosAValider() {
+    return this.angularFirestore.collection('Photos', p => p.where('status', '==', 0)).get()
+  }
+
+  public validerPhoto(p: Photo) {
+    return this.angularFirestore.collection('Photos').doc(p.id).update({
+      status: Status.valide
+    });
+  }
+
+  public rejeterPhoto(p: Photo) {
+    return this.angularFirestore.collection('Photos').doc(p.id).update({
+      status: Status.rejete
+    });
+  }
 
 }

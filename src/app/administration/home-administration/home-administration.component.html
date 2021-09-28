@@ -3,6 +3,9 @@
 <ul *ngIf="isAdmin">
     <li *ngIf="isModerateur || isAdmin">
         <a routerLink="/app-valider-articles">Valider articles, photos et documents ({{totalAValider}})</a>
+        <div *ngIf="articlesAValider && articlesAValider.length > 0">
+            <app-valider-articles *ngIf="articlesAValider && articlesAValider.length > 0" [articlesAValider]="articlesAValider"></app-valider-articles>
+        </div>
     </li>
     <li *ngIf="isModerateur || isAdmin">
         <a routerLink="/app-liste-messages">Messages</a>

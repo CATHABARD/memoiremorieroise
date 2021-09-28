@@ -3,7 +3,7 @@
   height: auto;
   margin-top: 0pt;
   margin-bottom: 20pt;
-  padding-top: 0pt;
+  padding-top: 0;
 }
 
 .card-container {
@@ -22,11 +22,11 @@ a {
 }
 
 .img {
-  max-width: 20%;
-  max-height: 20%;
+  max-width: 24%;
+  max-height: 30%;
   align-content: left;
 }
 
 .card-item {
-  margin-top: 15px;
+  margin-top: 5px;
 }

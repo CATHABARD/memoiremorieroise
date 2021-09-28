@@ -7,6 +7,7 @@ import { AuthService } from 'src/app/services/auth.service';
 import { Subscription } from 'rxjs';
 import { shareReplay } from 'rxjs/operators';
 import { ThemesService } from 'src/app/services/themes.service';
+import { ArticlesService } from 'src/app/services/articles.service';
 
 @Component({
   selector: 'app-liste-articles',
@@ -21,7 +22,8 @@ export class ListeArticlesComponent implements OnInit, OnDestroy {
   private userSubscription: Subscription;
 
   constructor(public globalService: GlobalService,
-    public themesService: ThemesService,
+              public themesService: ThemesService,
+              public articlesService: ArticlesService,
               public authService: AuthService,
               private router: Router,
               private matDialog: MatDialog) {
@@ -67,7 +69,7 @@ export class ListeArticlesComponent implements OnInit, OnDestroy {
   }
 
   onZoom(a: Article) {
-    this.globalService.currentArticle = a;
+    this.articlesService.currentArticle = a;
     const dialogRef = this.matDialog.open(DialogMaximiseArticleImageComponent, {
       height: '90%',
       width: '60%'
@@ -91,12 +93,13 @@ export class DialogMaximiseArticleImageComponent {
   titre: string;
   sousTitre: string = '';;
 
-  constructor(private globalService: GlobalService) {
-      this.image = globalService.currentArticle.photo;
-      this.image2 = globalService.currentArticle.photo2;
-      this.legende = globalService.currentArticle.legende;
-      this.texte = globalService.currentArticle.texte;
-      this.titre = globalService.currentArticle.titre;
+  constructor(private globalService: GlobalService,
+              public articlesService: ArticlesService) {
+      this.image = articlesService.currentArticle?.photo!;
+      this.image2 = articlesService.currentArticle?.photo2!;
+      this.legende = articlesService.currentArticle?.legende!;
+      this.texte = articlesService.currentArticle?.texte!;
+      this.titre = articlesService.currentArticle?.titre!;
   }
 
 }

@@ -29,12 +29,13 @@ export class ArticleFormComponent implements OnInit {
   form: FormGroup;
   errorMessage: string = '';
   fileIsUploading = false;
-  fileUrl: string = '';
   fileUploaded = true;
   isFileAttached: boolean = false;
 
-  uploadPercent: Observable<number | undefined> | undefined;
-  downloadURL: Observable<string | undefined> | undefined;
+  // uploadPercent: Observable<number | undefined> | undefined;
+  uploadPercent: number | undefined;
+  // downloadURL: Observable<string | undefined> | undefined;
+  downloadURL: string | undefined;
 
   readonly maxSize = 100000000;
 
@@ -62,8 +63,8 @@ export class ArticleFormComponent implements OnInit {
 
   ngOnInit() {
     this.initForm();
-    (this.article?.photo != undefined)? this.fileUrl = this.article?.photo : '';
-    this.form.controls.photo.setValue(this.fileUrl);
+    (this.article?.photo != undefined)? this.downloadURL = this.article?.photo : '';
+    this.form.controls.photo.setValue(this.downloadURL);
     this.form.controls.legende.setValue(this.article?.legende);
     this.form.controls.titre.setValue(this.article?.titre);
     this.form.controls.texte.setValue(this.article?.texte);
@@ -117,13 +118,12 @@ export class ArticleFormComponent implements OnInit {
     (this.article != undefined)? this.article.titre =  this.form?.get('titre')?.value : '';
     (this.article != undefined)? this.article.texte =  this.form?.get('texte')?.value : '';
     (this.article != undefined)? this.article.idTheme = this.themesService.currentTheme?.id : '';
-    (this.article != undefined)? this.article.photo = this.fileUrl: '';
+    (this.article != undefined)? this.article.photo = this.downloadURL: '';
     (this.article != undefined)? this.article.legende = this.form?.get('legende')?.value : '';
     // Ajouter un article
     if (this.article?.id === '') {
       this.article.auteur = this.authService.getCurrentUser()?.uid;
       this.articlesService.addArticle(this.article).then(res => {
-        console.log(this.article);
         alert('Merci pour cet article qui sera trés prochainement publié.');
       });
     } else { // mettre un article à jour
@@ -135,17 +135,18 @@ export class ArticleFormComponent implements OnInit {
 
   onUpload(event: any) {
     const file = event.target.files[0];
-    const filePath = 'Images';
+    const filePath = 'Images/';
     const fileRef = this.angularFireStorage.ref(filePath);
     const task = this.angularFireStorage.upload(filePath, file);
 
-    // observe percentage changes
-    this.uploadPercent = task.percentageChanges();
-    // get notified when the download URL is available
+    task.percentageChanges().subscribe(val => {
+      this.uploadPercent = val;
+    });
+
     task.snapshotChanges().pipe(
-        finalize(() => this.downloadURL = fileRef.getDownloadURL() )
-     )
-    .subscribe()
+        finalize(() => fileRef.getDownloadURL().subscribe(path => {
+          this.downloadURL = path;
+        }))
+     );
   }
-  
 }

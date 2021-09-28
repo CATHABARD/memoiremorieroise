@@ -3,16 +3,22 @@ import { Status } from './global.service';
 import { Article } from '../modeles/article';
 import { Theme } from '../modeles/themes';
 import { AngularFirestore } from '@angular/fire/compat/firestore';
+import { Observable, Subject } from 'rxjs';
 
 
 @Injectable({
   providedIn: 'root'
 })
 export class ArticlesService {
-  private currentArticle: Article | undefined;
-  private articlesAValider: Article[] = [];
+  public currentArticle: Article | undefined;
+  public articles: Article[] = [];
+  public articlesSubject = new Subject<Article[]>();
 
   constructor(private angularFirestore: AngularFirestore) { }
+
+  emitArticles() {
+    this.articlesSubject.next(this.articles);
+  }
 
   public addArticle(article: Article) {
     return this.angularFirestore.collection('Articles').add({
@@ -28,21 +34,35 @@ export class ArticlesService {
   }
 
   getArticles() {
-      return this.angularFirestore.collection('Articles').get();
+      this.angularFirestore.collection('Articles', a => a.where('status', '>', Status.initial)).get().subscribe(a => {
+        this.articles = a.docs.map(A => {
+          const d = A.data() as Article;
+          d.id = A.id;
+          return d;
+        })
+        this.emitArticles();
+      });
   }
 
   getArticle(id: string) {
     return this.angularFirestore.collection('Articles').doc(id).get();
   }
 
-  getArticlesDuTheme(idTheme: string) {
-    return this.angularFirestore.collection('Articles', a => a.where('idTheme', '==', idTheme)).get();
+  getArticlesDuTheme(theme: Theme) {
+    this.angularFirestore.collection('Articles', a => a.where('idTheme', '==', theme.id).where('status', '==', Status.valide)).get().subscribe(a => {
+      theme.articles = a.docs.map(A => {
+        const d = A.data() as Article;
+        d.id = A.id;
+        return d;
+      });
+    });
+    if(this.articles.length > 0) {
+      this.currentArticle = this.articles[0];
+    }
   }
 
-  async getArticlesAValider() {
-    this.angularFirestore.collection('Articles', a => a.where('status', '>', 0)).get().subscribe(Articles => {
-      this.articlesAValider = Articles.docs as Article[];
-    });
+  getArticlesAValider(): Observable<firebase.default.firestore.QuerySnapshot<unknown>> {
+    return this.angularFirestore.collection('Articles', a => a.where('status', '==', Status.initial)).get();
   }
 
   valideArticle(article: Article) {

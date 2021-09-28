@@ -53,9 +53,7 @@ export class PdfService {
   }
 
   public getListePdfAValider() {
-    this.angularFirestore.collection('listePdf', l => l.where('Status', '==', Status.initial)).get().subscribe(data => {
-      this.pdfsAValider = data.docs;
-    });
+    return this.angularFirestore.collection('listePdf', l => l.where('Status', '==', Status.initial)).get();
   }
 
   public GetSinglePdf(id: string) {

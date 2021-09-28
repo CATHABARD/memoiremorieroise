@@ -7,6 +7,8 @@ import { ArticlesService } from 'src/app/services/articles.service';
 import { PdfService } from 'src/app/services/pdf.service';
 import { PhotosService } from 'src/app/services/photos.service';
 import { shareReplay } from 'rxjs/operators';
+import { Article } from 'src/app/modeles/article';
+import { Pdf } from 'src/app/modeles/pdf';
 
 @Component({
   selector: 'app-home-administration',
@@ -20,6 +22,9 @@ export class HomeAdministrationComponent implements OnInit, OnDestroy {
   isModerateur = false;
   totalAValider = 0;
   authSubscription: Subscription;
+  articlesAValider: Article[] = [];
+  pdfsAValider: Pdf[] = [];
+  photosAValider: Pdf[] = [];
 
   constructor(private router: Router,
               private globalService: GlobalService,
@@ -50,11 +55,17 @@ export class HomeAdministrationComponent implements OnInit, OnDestroy {
   ngOnInit() {
     let currentUser = this.authService.getCurrentUser();
 
-    this.articlesService.getArticlesAValider();
-    this.pdfService.getListePdfAValider();
-    this.globalService.getPhotosAValider();
+    this.articlesService.getArticlesAValider().subscribe(Articles => {
+      this.articlesAValider = Articles.docs as Article[];
+        this.pdfService.getListePdfAValider().subscribe(data => {
+          this.pdfsAValider = data.docs;
+          this.photoService.getPhotosAValider().subscribe(data => {
+            this.photosAValider = data.docs;
+            this.totalAValider = this.articlesAValider.length + this.photosAValider.length + this.pdfService.pdfsAValider.length;
+          });
+        });
+      });
 
-    this.totalAValider = this.globalService.ArticlesAValider.length + this.globalService.photosAValider.length + this.pdfService.pdfsAValider.length;
     if (currentUser && currentUser.status && (currentUser.status & Droits.administrateur) === Droits.administrateur) {
       this.isAdmin = true;
     } else {
