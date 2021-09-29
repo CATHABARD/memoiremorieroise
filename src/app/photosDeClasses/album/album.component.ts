@@ -45,7 +45,7 @@ export class AlbumComponent implements OnInit, OnDestroy {
 
                 this.userSubscription = this.authService.authSubject.pipe(shareReplay(1)).subscribe(u => {
                   // consolelog(u);
-                  ((u.status! & Status.valide) == Status.valide)? this.isConnected = true : this.isConnected  =  false;
+                  ((u && u.status! & Status.valide) == Status.valide)? this.isConnected = true : this.isConnected  =  false;
                   if (this.isConnected) {
                     d = u.status;
                     // tslint:disable-next-line:no-bitwise

@@ -63,6 +63,9 @@ export class AccueilComponent implements OnInit, OnDestroy {
     if(this.photosSubscription != null) {
       this.photosSubscription.unsubscribe();
     }
+    if(this.articlesSubscription != null) {
+      this.articlesSubscription.unsubscribe();
+    }
   }
 
   onDecrementePhoto() {

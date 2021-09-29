@@ -44,7 +44,7 @@ const routes: Routes = [
   { path: 'app-album', component: AlbumComponent},
   { path: 'app-edit-photo-de-classe/:id', canActivate: [AuthGuardService], component: EditPhotoDeClasseComponent},
   { path: 'app-add-photo-de-classe', canActivate: [AuthGuardService], component: AddPhotoDeClasseComponent},
-  { path: 'app-photos-de-classe-form', component: PhotosDeClasseFormComponent},
+  { path: 'app-photos-de-classe-form', canActivate: [AuthGuardService], component: PhotosDeClasseFormComponent},
   { path: 'app-droits', canActivate: [AuthGuardService], component: DroitsComponent},
   { path: 'app-droits-form', canActivate: [AuthGuardService], component: DroitsFormComponent},
   { path: 'app-home-administration', canActivate: [AuthGuardService], component: HomeAdministrationComponent},

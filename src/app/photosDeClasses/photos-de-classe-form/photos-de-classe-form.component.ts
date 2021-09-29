@@ -9,7 +9,8 @@ import { map, shareReplay } from 'rxjs/operators';
 import { AuthService } from 'src/app/services/auth.service';
 import { PhotosService } from 'src/app/services/photos.service';
 import { User } from 'src/app/modeles/user';
-import { Breakpoints, BreakpointState } from '@angular/cdk/layout';
+import { BreakpointObserver, Breakpoints } from '@angular/cdk/layout';
+import { AngularFireStorage } from '@angular/fire/compat/storage';
 
 @Component({
   selector: 'app-photos-de-classe-form',
@@ -22,7 +23,6 @@ export class PhotosDeClasseFormComponent implements OnInit {
 
   addPhotoForm: FormGroup;
   errorMessage: string = '';
-  hide = true;
   currentUser: User | undefined;
   public isConnected = false;
   public canWrite = false;
@@ -34,7 +34,7 @@ export class PhotosDeClasseFormComponent implements OnInit {
 
   isHandset$: Observable<boolean> = this.breakpointObserver.observe(Breakpoints.Small)
   .pipe(
-    map((result: BreakpointState) => result.matches)
+    map(result => result.matches)
   );
 
   private userSubscription: Subscription;
@@ -43,8 +43,9 @@ export class PhotosDeClasseFormComponent implements OnInit {
   constructor(private formBuilder: FormBuilder,
               private authService: AuthService,
               private photosService: PhotosService,
-              private location: Location/* ,
-              private breakpointObserver: BreakpointObserver */) {
+              private location: Location,
+              private angularFireStorage: AngularFireStorage,
+              private breakpointObserver: BreakpointObserver) {
                 if (this.photo == undefined) {
                   this.photo = new Photo('', undefined, this.authService.getCurrentUser()?.id, '', '', '');
                 }
@@ -111,7 +112,6 @@ export class PhotosDeClasseFormComponent implements OnInit {
       console.log(this.currentUser);
       this.photosService.addPhoto(this.photo!);
     } else { // S'il s'agit d'une modification
-      // console.log(this.photo);
       this.photosService.updatePhoto(this.photo!);
     }
     this.location.back();
@@ -145,15 +145,23 @@ export class PhotosDeClasseFormComponent implements OnInit {
       return msg;
     }
 
-    detectFiles(event: any) {
-      this.onUploadFile(event.target.files[0]);
+    onUpload(event: any) {
+      this.fileIsUploading = true;
+      const file = event.target.files[0];
+      const filePath = 'Classes/' + new Date().toJSON() + '_' + event.target.files[0].name;
+      const fileRef = this.angularFireStorage.ref(filePath);
+      const task = this.angularFireStorage.upload(filePath, file);
+  
+      task.percentageChanges().subscribe((val: any) => {
+        this.uploadPercent = val;
+      });
+       task.then(() => {
+        this.fileIsUploading = false;
+        this.fileUploaded = true;
+        fileRef.getDownloadURL().subscribe((name: any) => {
+          this.fileUrl = name;
+        })
+      });
     }
 
-    onUploadFile(file: File) {
-
-    }
-
-    onChangeVisibilite() {
-      this.hide = !this.hide;
-    }
 }

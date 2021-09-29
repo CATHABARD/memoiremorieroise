@@ -2,15 +2,15 @@ import { Component, OnInit, Input } from '@angular/core';
 import { Article } from '../../modeles/article';
 import { FormGroup, FormBuilder, Validators, Form } from '@angular/forms';
 import { EditArticleComponent } from '../edit-article/edit-article.component';
-import { from, Observable } from 'rxjs';
+import { Observable } from 'rxjs';
 import { BreakpointObserver, Breakpoints } from '@angular/cdk/layout';
-import { finalize, map, switchMap } from 'rxjs/operators';
+import { finalize, map } from 'rxjs/operators';
 import { Location } from '@angular/common';
 import { AuthService } from 'src/app/services/auth.service';
 import { ArticlesService } from 'src/app/services/articles.service';
 import { ThemesService } from 'src/app/services/themes.service';
-import { AngularFireStorage, AngularFireUploadTask } from '@angular/fire/compat/storage';
-import { UploadMetadata } from '@angular/fire/compat/storage/interfaces';
+import { AngularFireStorage } from '@angular/fire/compat/storage';
+import { ThemePalette } from '@angular/material/core';
 
 export interface FilesUploadMetadata {
   uploadProgress: Observable<number | undefined>;
@@ -26,6 +26,7 @@ export interface FilesUploadMetadata {
 export class ArticleFormComponent implements OnInit {
   @Input() article: Article | undefined;
 
+  color: ThemePalette = 'primary';
   form: FormGroup;
   errorMessage: string = '';
   fileIsUploading = false;
@@ -134,19 +135,21 @@ export class ArticleFormComponent implements OnInit {
   }
 
   onUpload(event: any) {
+    this.fileIsUploading = true;
     const file = event.target.files[0];
-    const filePath = 'Images/';
+    const filePath = 'Images/' + new Date().toJSON() + '_' + event.target.files[0].name;
     const fileRef = this.angularFireStorage.ref(filePath);
     const task = this.angularFireStorage.upload(filePath, file);
 
     task.percentageChanges().subscribe(val => {
       this.uploadPercent = val;
     });
-
-    task.snapshotChanges().pipe(
-        finalize(() => fileRef.getDownloadURL().subscribe(path => {
-          this.downloadURL = path;
-        }))
-     );
+     task.then(() => {
+      this.fileIsUploading = false;
+      this.fileUploaded = true;
+      fileRef.getDownloadURL().subscribe(name => {
+        this.downloadURL = name;
+      })
+    })
   }
 }

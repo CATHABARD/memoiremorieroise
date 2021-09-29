@@ -32,15 +32,3 @@
     max-height: 15%;
     align-content: left;
   }
-
-  .photo-input {
-    border: thin;
-    border-color: white;
-    width: 10%;
-    background-color: white;
-    color: black;
-  }
-
-  .file-input {
-    color: black;
-  }

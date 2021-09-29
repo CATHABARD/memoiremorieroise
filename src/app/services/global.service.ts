@@ -128,9 +128,10 @@ public initThemes() {
 
 export enum Droits {
   visiteur = 1,
-  moderateur = 2,
+  moderateur = 0x1C,
   editArticle = 4,
   editPhotosDeClasse = 8,
+  editPdf = 0x10,
   administrateur = 0xFF
 }
 

@@ -2,14 +2,14 @@
   <form [formGroup]="form" (ngSubmit)="onSubmit()">
     <div *ngIf="isFileAttached == false">
       <h5>Vous voulez joindre une photo ?</h5>
-      <mat-form-field class="full-width">
-        <ngx-mat-file-input class="photo-input" formControlName="photo" placeholder="Cliquez ici pour sélectionner une photo" (change)="onUpload($event)">
-          
+      <mat-form-field class="full-width" appearance="outline">
+        <ngx-mat-file-input formControlName="photo" placeholder="Cliquez ici pour sélectionner une photo" (change)="onUpload($event)">
+
         </ngx-mat-file-input>
         <mat-icon matSuffix>folder</mat-icon>
         <mat-error *ngIf="form?.get('photo')?.hasError('maxSize')">{{getErrorMessage('photo')}}</mat-error>
       </mat-form-field>
-      <mat-progress-bar mode="determinate" *ngIf="fileIsUploading" [value]="uploadPercent"></mat-progress-bar>
+      <mat-progress-bar color='primary' mode="determinate" [value]="uploadPercent" *ngIf="fileIsUploading"></mat-progress-bar>
     </div>
     <div>
       <img class='img' src={{article?.photo}} alt="">

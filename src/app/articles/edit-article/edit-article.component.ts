@@ -18,8 +18,9 @@ export class EditArticleComponent implements OnInit, OnDestroy {
               private route: ActivatedRoute) {
       const id = this.route.snapshot.params.id;
       
-      this.articlesService.getArticle(id).subscribe((data: any) => {
-        this.article = data.data() as Article;
+      this.articlesService.getArticle(id).subscribe((d: any) => {
+        this.article = d.data() as Article;
+        this.article.id = d.id;
       },
       (error: any) => {
         console.log('Erreur = ' + error);

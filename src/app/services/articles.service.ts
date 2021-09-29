@@ -87,6 +87,7 @@ export class ArticlesService {
   }
 
   updateArticle(article: Article) {
+    console.log(article.id);
     if (article.photo === undefined) {
       return this.angularFirestore.collection('Articles').doc(article.id).update({
       titre: article.titre,

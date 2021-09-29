@@ -1,9 +1,9 @@
 <form [formGroup]="addPhotoForm" (ngSubmit)="onSubmit()">
   <div *ngIf="photo?.photo != undefined && photo?.photo ==''">
     <mat-form-field class="full-width" appearance="outline">
-      <!--
-      <ngx-mat-file-input formControlName="photo" placeholder="Photo" formControlName="photo" (change)="detectFiles($event)"></ngx-mat-file-input>
-      -->
+      <ngx-mat-file-input formControlName="photo" placeholder="Cliquez ici pour sélectionner une photo" (change)="onUpload($event)">
+
+      </ngx-mat-file-input>
       <mat-icon matSuffix>folder</mat-icon>
       <mat-error *ngIf="addPhotoForm.controls.photo.hasError('required')">
         Merci de sélectionner un fichier.
@@ -11,7 +11,7 @@
       <mat-error *ngIf="addPhotoForm.controls.photo.hasError('maxSize')">{{getErrorMessage('photo')}}</mat-error>
     </mat-form-field>
     <div class="row">
-      <mat-progress-bar mode="indeterminate" *ngIf="fileIsUploading"></mat-progress-bar>
+      <mat-progress-bar mode="determinate" *ngIf="fileIsUploading"></mat-progress-bar>
     </div>
   </div>
   <div *ngIf="photo?.photo ==''">
