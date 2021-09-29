@@ -14,7 +14,7 @@
       <mat-progress-bar mode="determinate" *ngIf="fileIsUploading"></mat-progress-bar>
     </div>
   </div>
-  <div *ngIf="photo?.photo ==''">
+  <div *ngIf="photo?.photo !=''">
     <img *ngIf="photo?.photo != undefined" class='img' src={{photo?.photo}}>
   </div>
   <div>

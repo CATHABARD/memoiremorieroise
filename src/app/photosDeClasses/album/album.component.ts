@@ -146,6 +146,7 @@ export class AlbumComponent implements OnInit, OnDestroy {
   }
 
   onEdit(p: Photo) {
+    console.log(p);
     this.router.navigate(['app-edit-photo-de-classe', p.id]);
   }
 

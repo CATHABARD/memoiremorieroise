@@ -18,8 +18,9 @@ import { AngularFireStorage } from '@angular/fire/compat/storage';
   styleUrls: ['./photos-de-classe-form.component.css']
 })
 export class PhotosDeClasseFormComponent implements OnInit {
-  [x: string]: any;
   @Input() photo: Photo | undefined;
+
+  uploadPercent = 0;
 
   addPhotoForm: FormGroup;
   errorMessage: string = '';
@@ -153,7 +154,7 @@ export class PhotosDeClasseFormComponent implements OnInit {
       const task = this.angularFireStorage.upload(filePath, file);
   
       task.percentageChanges().subscribe((val: any) => {
-        this.uploadPercent = val;
+        this.uploadPercent = val as number;
       });
        task.then(() => {
         this.fileIsUploading = false;

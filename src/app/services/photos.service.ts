@@ -35,6 +35,7 @@ export class PhotosService {
     return this.angularFirestore.collection('Photos').get().subscribe(photos => {
       this.listePhotos = photos.docs.map(P => {
         let photo = P.data() as Photo;
+        photo.id = P.id;
         return photo;
       })
       if (this.listePhotos.length > 0) {
