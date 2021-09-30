@@ -4,13 +4,13 @@ import { FormGroup, FormBuilder, Validators, Form } from '@angular/forms';
 import { EditArticleComponent } from '../edit-article/edit-article.component';
 import { Observable } from 'rxjs';
 import { BreakpointObserver, Breakpoints } from '@angular/cdk/layout';
-import { finalize, map } from 'rxjs/operators';
-import { Location } from '@angular/common';
+import { map } from 'rxjs/operators';
 import { AuthService } from 'src/app/services/auth.service';
 import { ArticlesService } from 'src/app/services/articles.service';
 import { ThemesService } from 'src/app/services/themes.service';
 import { AngularFireStorage } from '@angular/fire/compat/storage';
 import { ThemePalette } from '@angular/material/core';
+import { Router } from '@angular/router';
 
 export interface FilesUploadMetadata {
   uploadProgress: Observable<number | undefined>;
@@ -50,7 +50,7 @@ export class ArticleFormComponent implements OnInit {
               private themesService: ThemesService,
               private authService: AuthService,
               private articlesService: ArticlesService,
-              private location: Location,
+              private router: Router,
               private breakpointObserver: BreakpointObserver) {
                   this.form = this.formBuilder.group({
                     photo: [{ value: this.article?.photo, visible: this.isFileAttached }],
@@ -63,7 +63,6 @@ export class ArticleFormComponent implements OnInit {
               
 
   ngOnInit() {
-    this.initForm();
     (this.article?.photo != undefined)? this.downloadURL = this.article?.photo : '';
     this.form.controls.photo.setValue(this.downloadURL);
     this.form.controls.legende.setValue(this.article?.legende);
@@ -74,10 +73,7 @@ export class ArticleFormComponent implements OnInit {
     } else {
       this.isFileAttached = false;
     } 
-}
-
-  initForm() {
-}
+  }
 
   getErrorMessage(ctrl: string) {
     let msg = '';
@@ -118,7 +114,7 @@ export class ArticleFormComponent implements OnInit {
   onSubmit() {
     (this.article != undefined)? this.article.titre =  this.form?.get('titre')?.value : '';
     (this.article != undefined)? this.article.texte =  this.form?.get('texte')?.value : '';
-    (this.article != undefined)? this.article.idTheme = this.themesService.currentTheme?.id : '';
+    (this.article != undefined)? this.article.idTheme = this.themesService.getCurrentTheme()?.id : '';
     (this.article != undefined)? this.article.photo = this.downloadURL: '';
     (this.article != undefined)? this.article.legende = this.form?.get('legende')?.value : '';
     // Ajouter un article
@@ -128,10 +124,12 @@ export class ArticleFormComponent implements OnInit {
         alert('Merci pour cet article qui sera trés prochainement publié.');
       });
     } else { // mettre un article à jour
-      this.articlesService.updateArticle(this.article!).then(res => {
+      this.articlesService.updateArticle(this.article!).then(() => {
       });
     }
-    this.location.back();
+    this.themesService.getThemes();
+    this.articlesService.getArticlesDuTheme(this.themesService.getCurrentTheme()!);
+    this.router.navigate(['app-liste-articles/']);
   }
 
   onUpload(event: any) {

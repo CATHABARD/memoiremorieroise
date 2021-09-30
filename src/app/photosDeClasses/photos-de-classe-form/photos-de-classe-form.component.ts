@@ -110,11 +110,11 @@ export class PhotosDeClasseFormComponent implements OnInit {
       this.photo!.photo = this.fileUrl;
       this.photo!.auteur = this.currentUser?.id;
       this.photo!.nomAuteur = this.authService.getCurrentUser()?.prenom;
-      console.log(this.currentUser);
       this.photosService.addPhoto(this.photo!);
     } else { // S'il s'agit d'une modification
       this.photosService.updatePhoto(this.photo!);
     }
+    this.photosService.getPhotos();
     this.location.back();
   }
 

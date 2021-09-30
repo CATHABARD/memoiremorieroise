@@ -44,7 +44,6 @@ export class AlbumComponent implements OnInit, OnDestroy {
                 this.canWrite = false;
 
                 this.userSubscription = this.authService.authSubject.pipe(shareReplay(1)).subscribe(u => {
-                  // consolelog(u);
                   ((u && u.status! & Status.valide) == Status.valide)? this.isConnected = true : this.isConnected  =  false;
                   if (this.isConnected) {
                     d = u.status;

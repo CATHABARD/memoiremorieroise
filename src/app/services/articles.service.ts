@@ -4,6 +4,7 @@ import { Article } from '../modeles/article';
 import { Theme } from '../modeles/themes';
 import { AngularFirestore } from '@angular/fire/compat/firestore';
 import { Observable, Subject } from 'rxjs';
+import { ThemesService } from './themes.service';
 
 
 @Injectable({
@@ -14,7 +15,7 @@ export class ArticlesService {
   public articles: Article[] = [];
   public articlesSubject = new Subject<Article[]>();
 
-  constructor(private angularFirestore: AngularFirestore) { }
+  constructor(private angularFirestore: AngularFirestore, private themesService: ThemesService) { }
 
   emitArticles() {
     this.articlesSubject.next(this.articles);
@@ -55,10 +56,23 @@ export class ArticlesService {
         d.id = A.id;
         return d;
       });
+      if(this.articles.length > 0) {
+        this.currentArticle = this.articles[0];
+      }
     });
-    if(this.articles.length > 0) {
-      this.currentArticle = this.articles[0];
-    }
+  }
+
+  getArticlesCurrentTheme() {
+    this.angularFirestore.collection('Articles', a => a.where('idTheme', '==', this.themesService.getCurrentTheme()?.id).where('status', '==', Status.valide)).get().subscribe(a => {
+      this.themesService.getCurrentTheme()!.articles = a.docs.map(A => {
+        const d = A.data() as Article;
+        d.id = A.id;
+        return d;
+      });
+      if(this.articles.length > 0) {
+        this.currentArticle = this.articles[0];
+      }
+    });
   }
 
   getArticlesAValider(): Observable<firebase.default.firestore.QuerySnapshot<unknown>> {
@@ -87,7 +101,6 @@ export class ArticlesService {
   }
 
   updateArticle(article: Article) {
-    console.log(article.id);
     if (article.photo === undefined) {
       return this.angularFirestore.collection('Articles').doc(article.id).update({
       titre: article.titre,

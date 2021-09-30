@@ -98,7 +98,7 @@ export class FrameComponent implements OnInit, OnDestroy {
 
   onListeArticles(t: Theme) {
     this.themesService.changeCurrentTheme(t);
-    this.articlesService.getArticlesDuTheme(this.themesService.currentTheme!);
+    this.articlesService.getArticlesDuTheme(this.themesService.getCurrentTheme()!);
     this.router.navigate(['app-liste-articles']);
   }
 
