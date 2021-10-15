@@ -6,6 +6,7 @@ import { AuthService } from 'src/app/services/auth.service';
 import { User } from 'src/app/modeles/user';
 import { Subscription } from 'rxjs';
 import { PdfService } from 'src/app/services/pdf.service';
+import { shareReplay } from 'rxjs/operators';
 
 @Component({
   selector: 'app-liste-pdf',
@@ -27,35 +28,30 @@ export class ListePdfComponent implements OnDestroy {
               private authService: AuthService) {
                 this.canWrite = false;
                 
-                this.userSubscription = this.authService.authSubject.subscribe(u => {
-                  console.log(u.email);
-                  if (u == null) {
-                    console.log(' = null');
-                    this.currentUser = null;
-                    this.isConnected = false;
-                  } else {
-                    this.currentUser = authService.getCurrentUser();
-                    console.log(this.currentUser);
-                    this.isConnected = true;
-                  }
-                    if (this.isConnected && this.currentUser) {
-                      const d = this.currentUser.status;
-                      // tslint:disable-next-line:no-bitwise
-                      if ((d! & Droits.editArticle) === Droits.editArticle) {
+                this.userSubscription = this.authService.authSubject.pipe(shareReplay(1)).subscribe(u => {
+                  this.canWrite = false;
+                  if (u != null) {
+                    const d = u.status;
+                    if(d != undefined && d >= Droits.visiteur) {
+                      this.isConnected = true;
+                    }
+                    if (this.isConnected) {
+                      if (d != undefined && (d & Droits.editPdf) == Droits.editPdf) {
                         this.canWrite = true;
                       } else {
                         this.canWrite = false;
                       }
-                  } else {
-                    this.canWrite = false;
+                    } else {
+                      this.canWrite = false;
+                    }
                   }
-                });
-
-                this.pdfService.getListePdfsValides();
+                })
+                authService.emitUserChanged();
+            
+                this.pdfService.getPdfsValides();
                 this.pdfsSubscription = this.pdfService.pdfSubject.subscribe(pdfs => {
                   this.listePdf = pdfs;
                 });
-                this.pdfService.emitPdf();
                 if (this.currentUser != undefined) {
                     const d = this.currentUser.status;
                     // tslint:disable-next-line:no-bitwise
@@ -65,7 +61,6 @@ export class ListePdfComponent implements OnDestroy {
                       this.canWrite = false;
                     }
                   }
-                this.pdfService.getListePdfsValides();
             }
 
   ngOnDestroy() {
@@ -76,6 +71,7 @@ export class ListePdfComponent implements OnDestroy {
 
   onAddPdf() {
     this.router.navigate(['app-add-pdf']);
+    this.pdfService.getPdfsValides();
   }
 
   onEditPdf(p: Pdf) {
@@ -84,10 +80,12 @@ export class ListePdfComponent implements OnDestroy {
 
   onValiderPdf(p: Pdf) {
     this.pdfService.validerPdf(p);
+    this.pdfService.getPdfsValides();
   }
 
   onDeletePdf(p: Pdf) {
     this.pdfService.supprimerPdf(p);
+    this.pdfService.getPdfsValides();
   }
 
   onVoirPdf(p: Pdf) {

@@ -7,7 +7,7 @@
             <h4>Nomine ne moreris</h4>
           </td>
           <td [width]="300" class="texte-entete">
-            Mémoire moriéroise
+             Mémoire Moriéroise
             <br>
             Association régie par la loi de 1901
             <br>
@@ -19,13 +19,14 @@
           <td [width]="700">
             <ngb-carousel #ngCarousel
               [showNavigationArrows]="false" 
-              [showNavigationIndicators]="true"
+              [showNavigationIndicators]="false"
               [interval]="3000"
               [keyboard]="false"
               [pauseOnHover]="false"
-              [wrap]="true"
-              [activeId]="'1'">
-              <ng-template  ngbSlide *ngFor="let c of listePhotosCarousel">
+              [wrap]="false"
+              [activeId]="'1'"
+              [attr.aria-activedescendant] = "">
+              <ng-template  ngbSlide *ngFor="let c of photosService.photosCarousel">
                 <div class="picsum-img-wrapper">
                   <img style="width: 600px;" src={{c.path}} alt="">
                 </div>
@@ -34,6 +35,29 @@
           </td>
         </tr>
       </table>
+  <mat-grid-list cols="3">
+    <mat-grid-tile *ngFor="let a of actualitesService.actualites">
+
+      <mat-card class="card">
+        <mat-card-title-group>
+          <mat-card-title>{{a.titre}}</mat-card-title>
+          <mat-card-subtitle>
+            <pre>
+              {{a.sousTitre}}
+            </pre>
+          </mat-card-subtitle>
+          <img mat-card-image class src={{a.photo}} style="width: 480px;">
+        </mat-card-title-group>
+        <mat-card-content>
+          <pre>
+            {{a.texte}}
+          </pre>
+      </mat-card-content>
+      </mat-card>
+
+
+    </mat-grid-tile>
+  </mat-grid-list>
   </mat-tab>
   <mat-tab label="Photos de classes">
       <button mat-button (click)="onDecrementePhoto()" *ngIf="pageCourantePhoto > 1"><<</button>
@@ -42,7 +66,7 @@
       <button mat-button (click)="onIncrementePhoto()" *ngIf="pageCourantePhoto < nbPagesPhotos">>></button>
       <button mat-button *ngIf="pageCourantePhoto >= nbPagesPhotos" disabled>>></button>
       <mat-grid-list cols="4" rowHeight="1000" gutterSize="20px">
-        <div *ngFor="let p of photos; let i = index">
+        <div *ngFor="let p of photosService.photos; let i = index">
           <mat-grid-tile *ngIf="i >= photoCourante && i < (photoCourante + pasPhotos)">
             <mat-card>
               <mat-card-header> 

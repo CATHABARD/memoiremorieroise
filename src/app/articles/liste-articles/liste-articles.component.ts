@@ -29,14 +29,13 @@ export class ListeArticlesComponent implements OnInit, OnDestroy {
               private matDialog: MatDialog) {
 
     this.userSubscription = this.authService.authSubject.pipe(shareReplay(1)).subscribe(u => {
+      this.canWrite = false;
       if (u != null) {
         const d = u.status;
-        if(d != undefined && (d & Status.valide) == Status.valide) {
+        if(d != undefined && d >= Droits.visiteur) {
           this.isConnected = true;
         }
         if (this.isConnected) {
-          this.canWrite = false;
-          // tslint:disable-next-line:no-bitwise
           if (d != undefined && (d & Droits.editArticle) == Droits.editArticle) {
             this.canWrite = true;
           } else {

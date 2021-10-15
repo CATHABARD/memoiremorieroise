@@ -6,7 +6,6 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { RouterTestingModule } from '@angular/router/testing';
 import { environment } from 'src/environments/environment';
 import { AppComponent } from './app.component';
-import { GlobalService } from './services/global.service';
 import { PhotosService } from './services/photos.service';
 import { FrameComponent } from './frame/frame.component';
 // Material 
@@ -96,7 +95,6 @@ describe('AppComponent', () => {
         FrameComponent
       ],
       providers: [
-        GlobalService,
         PhotosService,
         AuthService
       ]

@@ -9,6 +9,10 @@ import { shareReplay } from 'rxjs/operators';
 import { Article } from 'src/app/modeles/article';
 import { Pdf } from 'src/app/modeles/pdf';
 import { Photo } from 'src/app/modeles/photo';
+import { Actualite } from 'src/app/modeles/actualite';
+import { ActualiteService } from 'src/app/services/actualite.service';
+import { Router } from '@angular/router';
+import { environment } from 'src/environments/environment';
 
 @Component({
   selector: 'app-home-administration',
@@ -22,16 +26,21 @@ export class HomeAdministrationComponent implements OnInit, OnDestroy {
   isEditPdf = false;
   isModerateur = false;
   totalAValider = 0;
+  actualitesSubscription: Subscription;
   authSubscription: Subscription;
   articlesAValider: Article[] = [];
   pdfsAValider: Pdf[] = [];
   photosAValider: Photo[] = [];
+  actualites: Actualite[] = [];
+  nonActualites: Actualite[] = [];
+  version: string = environment.version;
 
   constructor(private authService: AuthService,
               private articlesService: ArticlesService,
               private pdfService: PdfService,
               private photoService: PhotosService,
-              ) {
+              public actualiteService: ActualiteService,
+              private router: Router) {
     this.authSubscription = this.authService.authSubject.pipe(shareReplay(1)).subscribe(data => {
       const user = this.authService.getCurrentUser();
       if( user != null && user != undefined ) {
@@ -41,6 +50,18 @@ export class HomeAdministrationComponent implements OnInit, OnDestroy {
         this.isAdmin = (user.status! & Droits.administrateur) == Droits.administrateur;
       }
     });
+
+    this.actualitesSubscription = this.actualiteService.actualitesSubject.pipe(shareReplay(1)).subscribe(aa => {
+      this.actualites = aa;
+      this.actualiteService.getActualitesNonSelect().subscribe(na => {
+        this.nonActualites = na.docs.map(NA => {
+          const n = NA.data() as Actualite;
+          n.id = NA.id;
+          return n;
+        });
+      });
+    });
+    this.actualiteService.emitActualites();
   }
 
   ngOnInit() {
@@ -82,9 +103,14 @@ export class HomeAdministrationComponent implements OnInit, OnDestroy {
         this.isModerateur = true;
       }
     }
+
+    this.actualiteService.getActualites();
   }
 
   ngOnDestroy() {
+    if(this.authSubscription) {
+      
+    }
     this.authSubscription.unsubscribe();
   }
 
@@ -116,6 +142,7 @@ export class HomeAdministrationComponent implements OnInit, OnDestroy {
     this.pdfService.validerPdf(p);
     const i = this.pdfsAValider.indexOf(p);
     this.pdfsAValider.splice(i, 1);
+    this.pdfService.getPdfsValides();
   }
   
   onRejetePdf(p: Pdf) {
@@ -124,4 +151,23 @@ export class HomeAdministrationComponent implements OnInit, OnDestroy {
     this.pdfsAValider.splice(i, 1);
   }
 
+  onEditActualite(e: Actualite) {
+    this.router.navigate(['app-edit-actualite/', e.id]);
+  }
+
+  onSupprimeActualite(a: Actualite) {
+    this.actualiteService.SupprimeActualite(a);
+  }
+
+  onValideActualite(a: Actualite) {
+    this.actualiteService.ValideActualite(a);
+  }
+
+  onDesactiveActualite(a: Actualite) {
+    this.actualiteService.DesactiveActualite(a);
+  }
+
+  onAddActualite() {
+    this.router.navigate(['app-add-actualite']);
+  }
 }

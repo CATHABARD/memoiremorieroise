@@ -2,7 +2,6 @@ import { Injectable } from '@angular/core';
 import { Subject } from 'rxjs';
 import { Message } from '../modeles/message';
 import { AngularFirestore } from '@angular/fire/compat/firestore';
-import * as auth from '@firebase/auth';
 
 @Injectable({
   providedIn: 'root'

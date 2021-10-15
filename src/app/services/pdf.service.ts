@@ -24,7 +24,7 @@ export class PdfService {
 
 
   getPdfs() {
-    this.angularFirestore.collection('Pdf').get().subscribe((data: any) => {
+    this.angularFirestore.collection('listePdf').get().subscribe((data: any) => {
       this.pdfs = data.docs.map((e: any) => {
         const a = e.data() as Pdf;
         a.id = e.id;
@@ -38,11 +38,11 @@ export class PdfService {
   }
 
   getPdf(id: string) {
-    return this.angularFirestore.collection('Pdf').doc(id).get();
+    return this.angularFirestore.collection('listePdf').doc(id).get();
   }
 
-  public getListePdfsValides() {
-    this.angularFirestore.collection('listePdf', l => l.where('Status', '==', Status.valide)).get().subscribe(data => {
+  public getPdfsValides() {
+    this.angularFirestore.collection('listePdf', l => l.where('status', '==', Status.valide)).get().subscribe(data => {
       this.pdfs = data.docs.map(e => {
         const a = e.data() as Pdf;
         a.id = e.id;
@@ -53,7 +53,7 @@ export class PdfService {
   }
 
   public getListePdfAValider() {
-    return this.angularFirestore.collection('listePdf', l => l.where('Status', '==', Status.initial)).get();
+    return this.angularFirestore.collection('listePdf', l => l.where('status', '==', Status.initial)).get();
   }
 
   public GetSinglePdf(id: string) {
@@ -72,10 +72,11 @@ export class PdfService {
         this.angularFirestore.collection('listePdf').add({
           description: pdf.description,
           fichier: pdf.fichier,
-          Status: Status.initial,
+          status: Status.initial,
           titre: pdf.titre
         }).then(data => {
-          },
+          this.emitPdf();
+        },
         (error) => {
           console.log('Erreur ' + error);
         });
@@ -84,23 +85,42 @@ export class PdfService {
   public validerPdf(p: Pdf)  {
     p.status = Status.valide;
     this.angularFirestore.collection('listePdf').doc(p.id).update({
-      Status: p.status
+      status: p.status
+    }).then(() => {
+      this.emitPdf();
     });
   }
 
   public rejeterPdf(p: Pdf)  {
     p.status = Status.rejete;
-    this.angularFirestore.collection('listePdf').doc(p.id).update(p);
+    this.angularFirestore.collection('listePdf').doc(p.id).update(
+      {
+        status: p.status
+      }
+    ).then(() => {
+      this.emitPdf();
+    });
   }
 
   public supprimerPdf(p: Pdf) {
     p.status = Status.supprime;
-    this.angularFirestore.collection('listePdf').doc(p.id).update(p);
+    this.angularFirestore.collection('listePdf').doc(p.id).update(
+      {
+        status: p.status
+      }
+    ).then(() => {
+      this.emitPdf();
+    });
   }
 
   public updatePdf(p: Pdf) {
-    this.angularFirestore.collection('listePdf').doc(p.id).update(p);
+    this.angularFirestore.collection('listePdf').doc(p.id).update(
+      {
+        titre: p.titre,
+        description: p.description
+      }).then(() => {
+        this.emitPdf();
+      });
   }
-
 
 }

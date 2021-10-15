@@ -4,6 +4,7 @@ import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { GlobalService, Status } from 'src/app/services/global.service';
 import { Location } from '@angular/common';
 import { PdfService } from 'src/app/services/pdf.service';
+import { AngularFireStorage } from '@angular/fire/compat/storage';
 
 @Component({
   selector: 'app-pdf-form',
@@ -15,49 +16,55 @@ export class PdfFormComponent implements OnInit {
   form: FormGroup;
   errorMessage: string = '';
 
-  readonly maxSize = 104857600;
+  readonly maxSize = 100000;
   fileIsUploading = false;
-  fileUrl: string = '';
+  downloadURL: string = '';
   fileUploaded: boolean = false;
+  uploadPercent: number | undefined;
 
   constructor(private formBuilder: FormBuilder,
               private location: Location,
               public globalService: GlobalService,
-              private pdfService: PdfService) {
-                if (this.pdf == undefined) {
-                  this.pdf = new Pdf();
-                }
-                if (this.pdf?.id === '') {
-                  this.fileUploaded = false;
-                  this.form = this.formBuilder.group({
-                    fichier: [undefined],
-                    progressbar: ['Progression'],
-                    titre: ['', [Validators.required, Validators.maxLength(50)]],
-                    description: ['', [Validators.required, Validators.minLength(10), Validators.maxLength(100)]],
-                  });
-                } else {
-                  this.fileUploaded = true;
-                  this.form = this.formBuilder.group({
-                    fichier: [{value: undefined, visible: false}],
-                    titre: [this.pdf?.titre, [Validators.required, Validators.maxLength(50)]],
-                    description: [this.pdf?.description, [Validators.required, Validators.minLength(10), Validators.maxLength(100)]],
-                  });
-                }
-            
+              private pdfService: PdfService,
+              private angularFireStorage: AngularFireStorage) {
+
+                this.form = this.formBuilder.group({
+                  fichier: [''],
+                  progressbar: ['Progression'],
+                  titre: ['', [Validators.required, Validators.maxLength(50)]],
+                  description: ['', [Validators.required, Validators.minLength(10), Validators.maxLength(100)]],
+                });
               }
 
   ngOnInit() {
-    this.initForm();
-  }
+    if (this.pdf == undefined || this.pdf.id == '') {
+      this.pdf = new Pdf('', '', '', '', 0);
+      this.fileUploaded = false;
+    } else {
+      this.fileUploaded = true;
+    }
+    this.form.controls.fichier.setValue(this.pdf.fichier);
+    this.form.controls.titre.setValue(this.pdf.titre);
+    this.form.controls.description.setValue(this.pdf.description);
+}
 
-  initForm() {
-  }
+  onUpload(event: any) {
+    this.fileIsUploading = true;
+    const file = event.target.files[0];
+    const filePath = 'listePdf/' + new Date().toJSON() + '_' + event.target.files[0].name;
+    const fileRef = this.angularFireStorage.ref(filePath);
+    const task = this.angularFireStorage.upload(filePath, file);
 
-  detectFiles(event: any) {
-    this.onUploadFile(event.target.files[0]);
-  }
-
-  onUploadFile(file: File) {
+    task.percentageChanges().subscribe(val => {
+      this.uploadPercent = val;
+    });
+     task.then(() => {
+      this.fileIsUploading = false;
+      this.fileUploaded = true;
+      fileRef.getDownloadURL().subscribe(name => {
+        this.downloadURL = name;
+      })
+    })
   }
 
   getErrorMessage(ctrl: string) {
@@ -98,7 +105,7 @@ export class PdfFormComponent implements OnInit {
     this.pdf!.description = this.form?.get('description')?.value;
 
     if (this.pdf?.id  === '') {
-      this.pdf.fichier = this.fileUrl;
+      this.pdf.fichier = this.downloadURL;
       this.pdf.status = Status.initial;
       this.pdfService.addPdf(this.pdf);
     } else {

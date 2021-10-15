@@ -86,6 +86,10 @@ import { AuthGuardService } from './services/auth-guard.service';
 import { UnvalidateUserMessageComponent } from './unvalidate-user-message/unvalidate-user-message.component';
 import { PdfFormComponent } from './pdf/pdf-form/pdf-form.component';
 import { FrameComponent } from './frame/frame.component';
+import { AddActualiteComponent } from './administration/add-actualite/add-actualite.component';
+import { EditActualiteComponent } from './administration/edit-actualite/edit-actualite.component';
+import { ActualiteFormComponent } from './administration/actualite-form/actualite-form.component';
+import { GestionActualiteComponent } from './administration/gestion-actualite/gestion-actualite.component';
 
 import { GlobalService } from './services/global.service';
 import { ArticlesService } from './services/articles.service';
@@ -128,6 +132,10 @@ import { SafePipe } from './safe.pipe';
     UnvalidateUserMessageComponent,
     PdfFormComponent,
     SafePipe,
+    AddActualiteComponent,
+    EditActualiteComponent,
+    ActualiteFormComponent,
+    GestionActualiteComponent,
   ],
   imports: [
     BrowserModule,

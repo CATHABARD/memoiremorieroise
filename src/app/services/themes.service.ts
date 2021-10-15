@@ -8,7 +8,7 @@ import { Theme } from '../modeles/themes';
 })
 export class ThemesService {
   public themes: Theme[] = [];
-  private currentTheme: Theme | undefined;
+  public currentTheme: Theme | undefined;
 
   constructor(private angularFirestore: AngularFirestore) { }
 
@@ -38,10 +38,6 @@ export class ThemesService {
 
   public changeCurrentTheme(t: Theme) {
     this.currentTheme = t;
-  }
-
-  public getCurrentTheme() {
-    return this.currentTheme;
   }
 
   VideListeThemes() {

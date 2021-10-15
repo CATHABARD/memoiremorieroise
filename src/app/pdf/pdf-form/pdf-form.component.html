@@ -1,13 +1,16 @@
 <div class="formulaire">
     <form [formGroup]="form" (ngSubmit)="onSubmit()">
-      <mat-form-field class="full-width" *ngIf="!fileUploaded">
-        <ngx-mat-file-input class="photo-input" formControlName="fichier" placeholder="Cliquez ici pour sélectionner un fichier" (change)="detectFiles($event)" class="file-input" [accept]="'.pdf'"></ngx-mat-file-input>
+      <div *ngIf="fileUploaded == false">
+        <mat-form-field class="full-width" *ngIf="!fileUploaded || fileIsUploading" appearance="outline">
+        <ngx-mat-file-input class="photo-input" formControlName="fichier" placeholder="Cliquez ici pour sélectionner un fichier" (change)="onUpload($event)" class="file-input" [accept]="'.pdf'">
+        </ngx-mat-file-input>
         <mat-icon matSuffix>folder</mat-icon>
         <mat-error>{{getErrorMessage('pdf')}}</mat-error>
-      </mat-form-field>
-      <mat-form-field class="full-width" appearance="outline" color="secondary" *ngIf="fileIsUploading">
-          <mat-progress-bar mode="indeterminate" *ngIf="fileIsUploading">{{globalService.bytesTransfered}}%</mat-progress-bar>
-      </mat-form-field>
+        </mat-form-field>
+        <mat-form-field class="full-width" appearance="outline" color="primary" *ngIf="fileIsUploading">
+          <mat-progress-bar color='primary' mode="determinate" [value]="uploadPercent" *ngIf="fileIsUploading"></mat-progress-bar>
+        </mat-form-field>
+      </div>
       <br/>
       <mat-form-field class="full-width">
         <input matInput formControlName="titre" placeholder="Titre">

@@ -1,9 +1,22 @@
 .card {
-  max-width: 400px;
+  background-color: rgb(50,50,40);
+}
+
+mat-card img{
+  object-fit: cover; /*this makes the image in src fit to the size specified below*/
+  width: 45%; /* Here you can use wherever you want to specify the width and also the height of the <img>*/
+  height: 40%;
+}
+
+mat-grid-tile {
+  margin: 20px;
+}
+
+mat-grid-list {
+  max-width: 97%;
 }
 
 .header-image {
-  background-size: cover;
   vertical-align: top;
 }
 
@@ -20,5 +33,3 @@ button {
   font-size: 12px;
   margin-left: 150px;
 }
-
-

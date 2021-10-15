@@ -1,84 +1,125 @@
 <h2>Administration</h2>
+<h2>Version {{version}}</h2>
+
+<mat-tab-group>
+  <mat-tab label="Articles">
+
 <br/>
-<ul *ngIf="isAdmin">
-    <li *ngIf="isEditArticle || isModerateur || isAdmin">
-        <h4>Validations</h4><br/>
-        <div *ngIf="isEditArticle || isAdmin">
-          <h5>Liste des articles à valider. ({{articlesAValider.length}})</h5>  
-          <div *ngFor="let a of articlesAValider">
-            <mat-card>
-              <mat-card-title>{{a.titre}}</mat-card-title>
-              <mat-card-subtitle>{{a.legende}}</mat-card-subtitle>
-              <img class="img" src={{a.photo}} alt="Photo de Morières introuvable">
-              <mat-card-content class="card-container">
-                <div>
-                  <pre>{{ a.texte }}</pre>
-                </div>
-                <mat-card-actions>
-                  <div class="button-row">
-                    <button  mat-raised-button color="accent" (click)="onValideArticle(a)">Valider l'article</button>
-                    <button  mat-raised-button color="warn" (click)="onRejeteArticle(a)">Rejeter l'article</button>
-                  </div>
-                </mat-card-actions>
-              </mat-card-content>
-            </mat-card>
+  <h3>Liste des articles à valider. ({{articlesAValider.length}})</h3>  
+  <div *ngFor="let a of articlesAValider">
+    <mat-card>
+      <mat-card-title>{{a.titre}}</mat-card-title>
+      <mat-card-subtitle>{{a.legende}}</mat-card-subtitle>
+      <img class="img" src={{a.photo}} alt="Photo de Morières introuvable">
+      <mat-card-content class="card-container">
+        <div>
+          <pre>{{ a.texte }}</pre>
+        </div>
+        <mat-card-actions>
+          <div class="button-row">
+            <button  mat-raised-button color="accent" (click)="onValideArticle(a)">Valider l'article</button>
+            <button  mat-raised-button color="warn" (click)="onRejeteArticle(a)">Rejeter l'article</button>
           </div>
-          <br/>
-        </div>
-    </li>
-    <li *ngIf="isEditPhotosDeClasse || isModerateur || isAdmin">
-      <div>
-        <h5>Liste des photos de classe à valider. ({{photosAValider.length}})</h5>  
-        <div *ngFor="let p of photosAValider">
-          <mat-card>
-            <mat-card-title>{{p.titre}}</mat-card-title>
-            <mat-card-subtitle>{{p.annee}}</mat-card-subtitle>
-            <img class="img" src={{p.photo}} alt="Photo introuvable">
-            <mat-card-content class="card-container">
-              <div>
-                <pre>{{ p.listeEleves }}</pre>
-              </div>
-              <mat-card-actions>
-                <div class="button-row">
-                  <button  mat-raised-button color="accent" (click)="onValidePhoto(p)">Valider la photo de classe</button>
-                  <button  mat-raised-button color="warn" (click)="onRejetePhoto(p)">Rejeter la photo de classe</button>
-                </div>
-              </mat-card-actions>
-            </mat-card-content>
-          </mat-card>
-        </div>
-        <br/>
-      </div>
-  </li>
-  <li *ngIf="isEditPdf || isModerateur || isAdmin">
-    <div>
-      <h5>Liste des documents à valider. ({{pdfsAValider.length}})</h5>  
-      <div *ngFor="let p of pdfsAValider">
-        <mat-card>
-          <mat-card-title>{{p.titre}}</mat-card-title>
-          <mat-card-subtitle>{{p.description}}</mat-card-subtitle>
-          <img class="img" src={{p.fichier}} alt="Document introuvable">
-          <iframe *ngIf="p.fichier == p.fichier" class="e2e-trusted-url" [src]="p.fichier| safe: 'resourceUrl'" width="100%" height="1100px"></iframe>
+        </mat-card-actions>
+      </mat-card-content>
+    </mat-card>
+  </div>
+  </mat-tab>
+  <mat-tab label="Photos de classes">
+  <div>
+    <h3>Liste des photos de classe à valider. ({{photosAValider.length}})</h3>  
+    <div *ngFor="let p of photosAValider">
+      <mat-card>
+        <mat-card-title>{{p.titre}}</mat-card-title>
+        <mat-card-subtitle>{{p.annee}}</mat-card-subtitle>
+        <img class="img" src={{p.photo}} alt="Photo introuvable">
+        <mat-card-content class="card-container">
+          <div>
+            <pre>{{ p.listeEleves }}</pre>
+          </div>
+          <mat-card-actions>
+            <div class="button-row">
+              <button  mat-raised-button color="accent" (click)="onValidePhoto(p)">Valider la photo de classe</button>
+              <button  mat-raised-button color="warn" (click)="onRejetePhoto(p)">Rejeter la photo de classe</button>
+            </div>
+          </mat-card-actions>
+        </mat-card-content>
+      </mat-card>
+    </div>
+    <br/>
+  </div>
+  </mat-tab>
+  <mat-tab label="Documents">
+  <div>
+    <h3>Liste des documents à valider. ({{pdfsAValider.length}})</h3>  
+    <div *ngFor="let p of pdfsAValider">
+      <mat-card>
+        <mat-card-actions>
+          <div class="button-row">
+            <button  mat-raised-button color="accent" (click)="onValidePdf(p)">Valider le document</button>
+            <button  mat-raised-button color="warn" (click)="onRejetePdf(p)">Rejeter le document</button>
+          </div>
+        </mat-card-actions>
+      <mat-card-title>{{p.titre}}</mat-card-title>
+        <mat-card-subtitle>{{p.description}}</mat-card-subtitle>
+        <iframe *ngIf="p.fichier" class="e2e-trusted-url" [src]="p.fichier| safe: 'resourceUrl'" width="100%" height="1100px"></iframe>
+        <mat-card-content class="card-container">
+          <div>
+            <pre>{{ p.description }}</pre>
+          </div>
+        </mat-card-content>
+      </mat-card>
+    </div>
+  <br/>
+</div>
+  </mat-tab>
+  <mat-tab label="Actualités">
+    <div *ngIf="isAdmin">
+        <button  mat-raised-button color="accent" (click)="onAddActualite()">Ajouter un Article à l'actualité</button>
+      <br/>
+      <h3>Liste des actualités validées. ({{actualites.length}})</h3>
+      <mat-card *ngFor="let aa of actualites">
+        <mat-card-title>{{aa.titre}}</mat-card-title>
+        <mat-card-subtitle>{{aa.sousTitre}}</mat-card-subtitle>
+        <img class="img" src={{aa.photo}} alt="Photo">
+        <mat-card-content class="card-container">
+          <div>
+            <pre>{{ aa.texte }}</pre>
+          </div>
+        </mat-card-content>
+        <mat-card-actions>
+          <div class="button-row">
+            <button mat-raised-button color="accent" (click)="onEditActualite(aa)">Editer l'article</button>
+            <button mat-raised-button color="primary" (click)="onDesactiveActualite(aa)">Désactiver l'article</button>
+            <button mat-raised-button color="warn" (click)="onSupprimeActualite(aa)">Supprimer l'article</button>
+          </div>
+        </mat-card-actions>
+      </mat-card>
+      <h3>Liste des actualités non validées. ({{nonActualites.length}})</h3>
+        <mat-card *ngFor="let aa of nonActualites">
+          <mat-card-title>{{aa.titre}}</mat-card-title>
+          <mat-card-subtitle>{{aa.sousTitre}}</mat-card-subtitle>
+          <img class="img" src={{aa.photo}} alt="Photo">
           <mat-card-content class="card-container">
             <div>
-              <pre>{{ p.description }}</pre>
+              <pre>{{ aa.texte }}</pre>
             </div>
-            <mat-card-actions>
-              <div class="button-row">
-                <button  mat-raised-button color="accent" (click)="onValidePdf(p)">Valider le document</button>
-                <button  mat-raised-button color="warn" (click)="onRejetePdf(p)">Rejeter le document</button>
-              </div>
-            </mat-card-actions>
           </mat-card-content>
-        </mat-card>
-      </div>
-      <br/>
+          <mat-card-actions>
+          <div class="button-row">
+            <button mat-raised-button color="accent" (click)="onEditActualite(aa)">Editer l'article</button>
+            <button mat-raised-button color="primary" (click)="onValideActualite(aa)">Activer l'article</button>
+            <button mat-raised-button color="warn" (click)="onSupprimeActualite(aa)">Supprimer l'article</button>
+          </div>
+        </mat-card-actions>
+      </mat-card>
+
     </div>
-</li>
-<li *ngIf="isModerateur || isAdmin">
-        <a routerLink="/app-liste-messages">Messages</a>
-    </li>
-    <li *ngIf="isAdmin">
-        <a routerLink="/app-droits">Gérer les droits.</a>
-    </li>
-</ul>
+  </mat-tab>
+  <mat-tab label="Messages reçus">
+    <app-liste-messages></app-liste-messages>
+  </mat-tab>
+  <mat-tab label="Administration">
+    <app-droits></app-droits>
+  </mat-tab>
+</mat-tab-group>

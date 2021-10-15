@@ -93,6 +93,7 @@ export class ValiderArticlesComponent implements OnInit, OnDestroy {
 
   onValidePdf(p: Pdf) {
     this.pdfService.validerPdf(p);
+    this.pdfService.getPdfs();
   }
 
   onRejetePdf(p: Pdf) {
@@ -101,6 +102,7 @@ export class ValiderArticlesComponent implements OnInit, OnDestroy {
 
   onValidePhoto(p: Photo) {
     this.photosService.validerPhoto(p);
+    this.photosService.getPhotos();
   }
 
   onRejetePhoto(p: Photo) {

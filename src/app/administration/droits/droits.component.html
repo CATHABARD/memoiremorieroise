@@ -1,5 +1,4 @@
-<h5 *ngIf="users">Gestion des droits des {{users.length}} utilisateurs )</h5>
-==============================================================
+<h4 *ngIf="users">Gestion des droits ({{users.length}} utilisateurs )</h4>
 <div>
     <table mat-table [dataSource]="users" class="mat-elevation-z8">
         <ng-container matColumnDef="uid">

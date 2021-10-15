@@ -3,19 +3,26 @@ import { Status } from './global.service';
 import { Photo } from '../modeles/photo';
 import { Subject } from 'rxjs';
 import { AngularFirestore } from '@angular/fire/compat/firestore';
+import { Carousel } from '../modeles/carousel';
 
 @Injectable({
   providedIn: 'root'
 })
 export class PhotosService {
   public photo: Photo  | undefined;
-  private listePhotos: Photo[] = []
+  public photos: Photo[] = []
+  public photosCarousel: Carousel[] = []
   public photosAValider: Photo[] = [];
   public currentPhoto: Photo | undefined;
   photoSubject = new Subject<Photo[]>();
+  photosCarouselSubject = new Subject<Carousel[]>();
 
   emitPhoto() {
-    this.photoSubject.next(this.listePhotos);
+    this.photoSubject.next(this.photos);
+  }
+
+  emitPhotoCarousel() {
+    this.photosCarouselSubject.next(this.photosCarousel);
   }
 
   constructor(private angularFirestore: AngularFirestore) { } 
@@ -33,20 +40,27 @@ export class PhotosService {
 
   getPhotos() {
     return this.angularFirestore.collection('Photos').get().subscribe(photos => {
-      this.listePhotos = photos.docs.map(P => {
+      this.photos = photos.docs.map(P => {
         let photo = P.data() as Photo;
         photo.id = P.id;
         return photo;
       })
-      if (this.listePhotos.length > 0) {
-        this.currentPhoto = this.listePhotos[0];
+      if (this.photos.length > 0) {
+        this.currentPhoto = this.photos[0];
       }
       this.emitPhoto();
     });
   }
 
     getPhotosCarousel() {
-    return this.angularFirestore.collection('Carousel').get();
+      this.angularFirestore.collection('Carousel', p => p.orderBy('indice')).get().subscribe(pc => {
+        this.photosCarousel = pc.docs.map(PC => {
+          let p = PC.data() as Carousel;
+          p.id = PC.id;
+          return p;
+        })
+      });
+      this.emitPhotoCarousel();
   }
 
   getPhoto(id: string) {

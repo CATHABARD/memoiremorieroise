@@ -12,7 +12,9 @@ export class AppComponent {
   
   constructor(private authService: AuthService,
               private themesService: ThemesService) {
-    this.authService.signInVisiteur().then(() => {
-    });
+                
+                this.authService.signInVisiteur().then(() => {
+                  this.themesService.getThemes();
+                });
   }
 }

@@ -11,7 +11,7 @@ import { PdfService } from 'src/app/services/pdf.service';
   styleUrls: ['./edit-pdf.component.scss']
 })
 export class EditPdfComponent implements OnInit, OnDestroy {
-  pdf = new Pdf('', '','', '', 0);
+  pdf: Pdf | undefined;
   pdfSubscription: Subscription;
 
   constructor(private route: ActivatedRoute,
@@ -21,11 +21,15 @@ export class EditPdfComponent implements OnInit, OnDestroy {
                     this.pdf = this.pdfService.currentPdf!;
                   }
                 });
+                const id = this.route.snapshot.params.id;
+                this.pdfService.getPdf(id).subscribe(p => {
+                  this.pdf = p.data() as Pdf;
+                  this.pdf.id = p.id;
+                })
+            
               }
 
   ngOnInit() {
-    const id = this.route.snapshot.params.id;
-    this.pdfService.GetSinglePdf(id);
   }
 
   ngOnDestroy() {

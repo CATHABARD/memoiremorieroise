@@ -1,0 +1,42 @@
+<div class="formulaire">
+    <form [formGroup]="form" (ngSubmit)="onSubmit()">
+      <div *ngIf="isFileAttached == false">
+        <h5>Vous voulez joindre une photo ?</h5>
+        <mat-form-field class="full-width" appearance="outline">
+          <ngx-mat-file-input formControlName="photo" placeholder="Cliquez ici pour sélectionner une photo" (change)="onUpload($event)">
+          </ngx-mat-file-input>
+          <mat-icon matSuffix>folder</mat-icon>
+          <mat-error *ngIf="form?.get('photo')?.hasError('maxSize')">{{getErrorMessage('photo')}}</mat-error>
+        </mat-form-field>
+        <mat-progress-bar color='primary' mode="determinate" [value]="uploadPercent" *ngIf="fileIsUploading"></mat-progress-bar>
+      </div>
+      <div *ngIf="isFileAttached">
+        <img class='img' src={{actualite?.photo}} alt="" style="max-width: 150px;">
+      </div>
+      <mat-form-field class="full-width">
+        <input matInput formControlName="titre" placeholder="Titre">
+        <div class="row">
+          <mat-error class="error-message" *ngIf="form?.get('titre')?.errors?.required">{{getErrorMessage('titre')}}</mat-error>
+        </div>
+      </mat-form-field>
+      <mat-form-field class="full-width">
+        <input matInput formControlName="sousTitre" placeholder="Sous-titre">
+        <div class="row">
+          <mat-error class="error-message" *ngIf="form?.get('sousTitre')?.errors?.required">{{getErrorMessage('sousTitre')}}</mat-error>
+        </div>
+      </mat-form-field>
+      <mat-form-field class="full-width">
+        <textarea matInput rows="25" cols="250" formControlName="texte" placeholder="Texte">
+        </textarea>
+        <div class="row">
+          <mat-error class="error-message" *ngIf="form?.get('texte')?.errors?.required">{{getErrorMessage('texte')}}</mat-error>
+        </div>
+      </mat-form-field>
+      <div class="button-wrapper" *ngIf="!fileIsUploading && form?.valid">
+        <button mat-flat-button color="primary">Valider</button>
+        <button mat-flat-button color="secondary">Annuler</button>
+      </div>
+       
+    </form>
+</div>
+  

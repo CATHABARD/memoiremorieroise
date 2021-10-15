@@ -4,7 +4,8 @@ import { FormGroup, FormBuilder, Validators, Form } from '@angular/forms';
 import { EditArticleComponent } from '../edit-article/edit-article.component';
 import { Observable } from 'rxjs';
 import { BreakpointObserver, Breakpoints } from '@angular/cdk/layout';
-import { map } from 'rxjs/operators';
+import { finalize, map } from 'rxjs/operators';
+import { Location } from '@angular/common';
 import { AuthService } from 'src/app/services/auth.service';
 import { ArticlesService } from 'src/app/services/articles.service';
 import { ThemesService } from 'src/app/services/themes.service';
@@ -33,9 +34,7 @@ export class ArticleFormComponent implements OnInit {
   fileUploaded = true;
   isFileAttached: boolean = false;
 
-  // uploadPercent: Observable<number | undefined> | undefined;
   uploadPercent: number | undefined;
-  // downloadURL: Observable<string | undefined> | undefined;
   downloadURL: string | undefined;
 
   readonly maxSize = 100000000;
@@ -57,12 +56,13 @@ export class ArticleFormComponent implements OnInit {
                     progressbar: [{value: 'Progression', visible: this.isFileAttached }],
                     legende: ['', [Validators.maxLength(50)]],
                     titre: ['', [Validators.required, Validators.maxLength(60)]],
-                    texte: ['', [Validators.required, Validators.minLength(20), Validators.maxLength(6500)]]
+                    texte: ['', [Validators.required, Validators.minLength(20), Validators.maxLength(6500)]],
                   });
                 }
               
 
   ngOnInit() {
+    this.initForm();
     (this.article?.photo != undefined)? this.downloadURL = this.article?.photo : '';
     this.form.controls.photo.setValue(this.downloadURL);
     this.form.controls.legende.setValue(this.article?.legende);
@@ -73,7 +73,10 @@ export class ArticleFormComponent implements OnInit {
     } else {
       this.isFileAttached = false;
     } 
-  }
+}
+
+  initForm() {
+}
 
   getErrorMessage(ctrl: string) {
     let msg = '';
@@ -114,7 +117,7 @@ export class ArticleFormComponent implements OnInit {
   onSubmit() {
     (this.article != undefined)? this.article.titre =  this.form?.get('titre')?.value : '';
     (this.article != undefined)? this.article.texte =  this.form?.get('texte')?.value : '';
-    (this.article != undefined)? this.article.idTheme = this.themesService.getCurrentTheme()?.id : '';
+    (this.article != undefined)? this.article.idTheme = this.themesService.currentTheme?.id : '';
     (this.article != undefined)? this.article.photo = this.downloadURL: '';
     (this.article != undefined)? this.article.legende = this.form?.get('legende')?.value : '';
     // Ajouter un article
@@ -124,11 +127,11 @@ export class ArticleFormComponent implements OnInit {
         alert('Merci pour cet article qui sera trés prochainement publié.');
       });
     } else { // mettre un article à jour
-      this.articlesService.updateArticle(this.article!).then(() => {
+      this.articlesService.updateArticle(this.article!).then(res => {
       });
     }
     this.themesService.getThemes();
-    this.articlesService.getArticlesDuTheme(this.themesService.getCurrentTheme()!);
+    this.articlesService.getArticlesCurrentTheme();
     this.router.navigate(['app-liste-articles/']);
   }
 

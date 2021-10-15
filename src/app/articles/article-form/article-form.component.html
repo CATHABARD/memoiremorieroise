@@ -4,7 +4,6 @@
       <h5>Vous voulez joindre une photo ?</h5>
       <mat-form-field class="full-width" appearance="outline">
         <ngx-mat-file-input formControlName="photo" placeholder="Cliquez ici pour sélectionner une photo" (change)="onUpload($event)">
-
         </ngx-mat-file-input>
         <mat-icon matSuffix>folder</mat-icon>
         <mat-error *ngIf="form?.get('photo')?.hasError('maxSize')">{{getErrorMessage('photo')}}</mat-error>

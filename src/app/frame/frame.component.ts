@@ -50,7 +50,7 @@ export class FrameComponent implements OnInit, OnDestroy {
                   let userDroits = 0;
 
                   if (u != undefined || u != null) {
-                    if( u.email != 'Visiteur') {
+                    if( u.email != 'Visiteur' && u.status as number > 0) {
                       this.userMail = u?.email!;
                       this.isAuth = true;
                       // console.log(u.email);
@@ -65,14 +65,12 @@ export class FrameComponent implements OnInit, OnDestroy {
                     this.userMail = 'Déconnecté';
                     // console.log('u.nom = null');
                   }
-                  // tslint:disable-next-line:no-bitwise
-                  if ((userDroits & Droits.editArticle) === Droits.editArticle) {
+                  if ((userDroits & Droits.administrateur) === Droits.administrateur) {
                     this.isAdmin = true;
                   } else {
                     this.isAdmin = false;
                   }
                 })
-                this.themesService.getThemes();
   }
 
   ngOnInit() {
@@ -82,6 +80,7 @@ export class FrameComponent implements OnInit, OnDestroy {
     if( this.userSubscription != null) {
       this.userSubscription.unsubscribe();
     }
+    this.authService.SignOut();
   }
 
   onGoAccueil() {
@@ -98,7 +97,7 @@ export class FrameComponent implements OnInit, OnDestroy {
 
   onListeArticles(t: Theme) {
     this.themesService.changeCurrentTheme(t);
-    this.articlesService.getArticlesDuTheme(this.themesService.getCurrentTheme()!);
+    this.articlesService.getArticlesCurrentTheme();
     this.router.navigate(['app-liste-articles']);
   }
 

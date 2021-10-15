@@ -42,7 +42,6 @@ import {MatToolbarModule} from '@angular/material/toolbar';
 import {MatTooltipModule} from '@angular/material/tooltip';
 import {MatTreeModule} from '@angular/material/tree';
 import { NgbCarouselModule } from '@ng-bootstrap/ng-bootstrap';
-import { GlobalService } from '../services/global.service';
 
 describe('AppComponent', () => {
   beforeEach(async () => {
@@ -92,9 +91,6 @@ describe('AppComponent', () => {
       ],
       declarations: [
         AccueilComponent,
-      ],
-      providers: [
-          GlobalService
       ]
     }).compileComponents();
   });
@@ -103,12 +99,5 @@ describe('AppComponent', () => {
     const fixture = TestBed.createComponent(AccueilComponent);
     const app = fixture.componentInstance;
     expect(app).toBeTruthy();
-  });
-
-  it('GlobalService doit être importé', () => {
-    const fixture = TestBed.createComponent(AccueilComponent);
-    const app = fixture.componentInstance;
-    const compiled = fixture.debugElement.nativeElement;
-    expect(app).toBeInstanceOf(AccueilComponent);
   });
 });

@@ -34,6 +34,7 @@ export class UsersService {
    }
 
   public changeDroitsUser(idUser: string, droits: number)  {
+    console.log(idUser + '  '  + droits);
     this.angulatFirestore.collection('Users').doc(idUser).update({
       status: droits
     });

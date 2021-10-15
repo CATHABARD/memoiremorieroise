@@ -44,7 +44,8 @@ export class AlbumComponent implements OnInit, OnDestroy {
                 this.canWrite = false;
 
                 this.userSubscription = this.authService.authSubject.pipe(shareReplay(1)).subscribe(u => {
-                  ((u && u.status! & Status.valide) == Status.valide)? this.isConnected = true : this.isConnected  =  false;
+                  // Donner les droits au visiteurt
+                  (u && u.status! >= Droits.visiteur)? this.isConnected = true : this.isConnected  =  false;
                   if (this.isConnected) {
                     d = u.status;
                     // tslint:disable-next-line:no-bitwise
@@ -53,13 +54,6 @@ export class AlbumComponent implements OnInit, OnDestroy {
                     } else {
                       this.canWrite = false;
                     }
-                  } else {
-                    this.canWrite = false;
-                  }
-            
-                  // tslint:disable-next-line:no-bitwise
-                  if ((d! & Droits.editPhotosDeClasse) === Droits.editPhotosDeClasse) {
-                    this.canWrite = true;
                   } else {
                     this.canWrite = false;
                   }

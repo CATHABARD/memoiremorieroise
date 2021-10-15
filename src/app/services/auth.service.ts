@@ -9,7 +9,6 @@ import { UserDatasComponent } from '../auth/user-datas/user-datas.component';
 import { AngularFirestore } from '@angular/fire/compat/firestore'
 import { AngularFireAuth } from '@angular/fire/compat/auth';
 import * as auth from '@firebase/auth';
-
 @Injectable({
   providedIn: 'root'
 })
@@ -29,6 +28,7 @@ export class AuthService {
               private usersService: UsersService,
               private angularFirestore: AngularFirestore,
               private angularFireAuth: AngularFireAuth) {
+
   this.status = 0;
   this.angularFireAuth.onAuthStateChanged(newUser => {
     if(newUser == null) {
@@ -214,4 +214,6 @@ export class AuthService {
   getUserFromDB(user: firebase.default.User ) {
     return this.angularFirestore.collection('Users/', u => u.where('uid', '==', user.uid)).get();
   }
+
+
 }

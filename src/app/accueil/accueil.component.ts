@@ -2,12 +2,11 @@ import { Article } from '../modeles/article';
 import { Photo } from '../modeles/photo';
 import { Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { PhotosService } from '../services/photos.service';
-import { GlobalService } from '../services/global.service';
 import { Subscription } from 'rxjs';
 import { NgbCarousel } from '@ng-bootstrap/ng-bootstrap';
-import { Carousel } from '../modeles/carousel';
 import { AuthService } from '../services/auth.service';
 import { ArticlesService } from '../services/articles.service';
+import { ActualiteService } from '../services/actualite.service';
 
 @Component({
   selector: 'app-accueil',
@@ -22,7 +21,6 @@ export class AccueilComponent implements OnInit, OnDestroy {
   photos: Photo[] = [];
   articleCourant = 0;
   photoCourante = 0;
-  public listePhotosCarousel: Carousel[] = []
   readonly pasPhotos = 4;
   readonly pasArticles = 4;
   pageCourantePhoto = 1;
@@ -31,11 +29,13 @@ export class AccueilComponent implements OnInit, OnDestroy {
   nbPagesArticles = 0;
   private photosSubscription: Subscription | undefined;
   private articlesSubscription: Subscription | undefined;
+  private actualitesSubscription: Subscription | undefined;
+  private photosCarouselSubscription:  Subscription | undefined;
 
 
-  constructor(public globalService: GlobalService,
-              private photosService: PhotosService,
+  constructor(public photosService: PhotosService,
               public articlesService: ArticlesService,
+              public actualitesService: ActualiteService,
               public authService: AuthService) {
                 this.articlesService.getArticles();
                 this.photosService.getPhotos();
@@ -46,17 +46,19 @@ export class AccueilComponent implements OnInit, OnDestroy {
     this.photosSubscription = this.photosService.photoSubject.subscribe(photos => {
       this.photos = photos as Photo[];
       this.nbPagesPhotos = Math.round(photos.length / this.pasPhotos);
-      this.photosService.getPhotosCarousel().subscribe((c: any) => {
-        this.listePhotosCarousel = c.docs.map((C: any) => {
-          let photo = C.data() as Carousel;
-          return photo;
-        })
-      });
     });
-    this.articlesSubscription = this.articlesService.articlesSubject.subscribe(article => {
+    this.photosCarouselSubscription = this.photosService.photosCarouselSubject.subscribe(pc => {
+
+    });
+      this.articlesSubscription = this.articlesService.articlesSubject.subscribe(article => {
       this.nbPagesArticles = Math.round(this.articlesService.articles.length / this.pasArticles);
     });
     this.articlesService.emitArticles();
+    this.actualitesSubscription = this.actualitesService.actualitesSubject.subscribe(actualites => {
+
+    });
+    this.photosService.getPhotosCarousel();
+    this.actualitesService.getActualites();
   }
 
   ngOnDestroy() {

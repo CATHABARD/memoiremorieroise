@@ -1,5 +1,5 @@
 import { Component, OnInit, Inject, OnDestroy } from '@angular/core';
-import { GlobalService, Droits } from 'src/app/services/global.service';
+import { Droits } from 'src/app/services/global.service';
 import { User } from '../../modeles/user';
 import { MatDialog, MatDialogConfig, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { DroitsFormComponent } from '../droits-form/droits-form.component';
@@ -19,8 +19,7 @@ export class DroitsComponent implements OnInit, OnDestroy {
 
   displayedColumns: string[] = ['uid', 'email', 'nom', 'prenom', 'status', 'action'];
 
-  constructor(public globalService: GlobalService,
-              private usersService: UsersService,
+  constructor(private usersService: UsersService,
               public dialog: MatDialog) { }
 
   ngOnInit() {
@@ -51,12 +50,12 @@ export class DroitsComponent implements OnInit, OnDestroy {
       return 'Non';
     }
 
-    if (d === 0xFF) {
+    if ((d & Droits.administrateur) === Droits.administrateur) {
       return 'Administrateur';
     }
 
     // tslint:disable-next-line:no-bitwise
-    if ((d & 1) === 1) {
+    if ((d & Droits.visiteur) === Droits.visiteur) {
       if (ret !== '') {
         ret += ', ';
       }
@@ -64,14 +63,14 @@ export class DroitsComponent implements OnInit, OnDestroy {
     }
 
    // tslint:disable-next-line:no-bitwise
-    if ((d & 2) === 2) {
+    if ((d & Droits.moderateur) === Droits.moderateur) {
       if (ret !== '') {
         ret += ', ';
       }
       ret += 'Modérateur';
     }
     // tslint:disable-next-line:no-bitwise
-    if ((d & 4) === 4) {
+    if ((d & Droits.editArticle) === Droits.editArticle) {
       if (ret !== '') {
         ret += ', ';
       }
@@ -79,19 +78,21 @@ export class DroitsComponent implements OnInit, OnDestroy {
     }
 
     // tslint:disable-next-line:no-bitwise
-    if ((d & 8) === 8) {
+    if ((d & Droits.editPhotosDeClasse) === Droits.editPhotosDeClasse) {
       if (ret !== '') {
         ret += ', ';
       }
       ret += 'Editer photos de classes';
     }
 
-    /* if (d === 65536) {
-      // tslint:disable-next-line:no-bitwise
-      if ((Droits[Droits[i]] & 4) === 4) {
-        console.log('i = ' + i);
+    // tslint:disable-next-line:no-bitwise
+    if ((d & Droits.editPdf) === Droits.editPdf) {
+      if (ret !== '') {
+        ret += ', ';
       }
-    }*/
+      ret += 'Editer des documents';
+    }
+
     if (ret === '') {
       ret = 'Non';
     }
@@ -104,13 +105,13 @@ export class DroitsComponent implements OnInit, OnDestroy {
     dialogConfig.autoFocus = true;
     dialogConfig.width = '300px';
     dialogConfig.height = '400px';
-    dialogConfig.data = {user: row};
+    dialogConfig.data = row.status;
 
     const dialogRef = this.dialog.open(DroitsFormComponent, dialogConfig);
 
     this.dialogResultSuscription = dialogRef.afterClosed().subscribe(data => {
       if (data !== undefined ) {
-        this.usersService.changeDroitsUser(row.id!, data.status);
+        this.usersService.changeDroitsUser(row.id as string, data);
       }
     },
     (error) => {
