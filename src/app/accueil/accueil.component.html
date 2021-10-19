@@ -4,7 +4,7 @@
         <tr>
           <td [width]="300" class="texte-entete">
             <img src="../../assets/images/blason/Blason_ville_fr_Morières-lès-Avignon_(Vaucluse).svg.png" alt="" height="250" style="align-items:center">
-            <h4>Nomine ne moreris</h4>
+            <h4>Domine ne moreris</h4>
           </td>
           <td [width]="300" class="texte-entete">
              Mémoire Moriéroise
@@ -23,7 +23,7 @@
               [interval]="3000"
               [keyboard]="false"
               [pauseOnHover]="false"
-              [wrap]="false"
+              [wrap]="true"
               [activeId]="'1'"
               [attr.aria-activedescendant] = "">
               <ng-template  ngbSlide *ngFor="let c of photosService.photosCarousel">
@@ -37,25 +37,22 @@
       </table>
   <mat-grid-list cols="3">
     <mat-grid-tile *ngFor="let a of actualitesService.actualites">
-
       <mat-card class="card">
-        <mat-card-title-group>
+        <mat-card-header>
           <mat-card-title>{{a.titre}}</mat-card-title>
           <mat-card-subtitle>
             <pre>
               {{a.sousTitre}}
             </pre>
           </mat-card-subtitle>
-          <img mat-card-image class src={{a.photo}} style="max-width: 400px; width: 400px; margin-left: 5px;">
-        </mat-card-title-group>
+        </mat-card-header>
+        <img mat-card-xl-image class src={{a.photo}}>
         <mat-card-content>
-          <pre>
-            {{a.texte}}
-          </pre>
-      </mat-card-content>
+            <pre>
+              {{a.texte}}
+            </pre>
+        </mat-card-content>
       </mat-card>
-
-
     </mat-grid-tile>
   </mat-grid-list>
   </mat-tab>
