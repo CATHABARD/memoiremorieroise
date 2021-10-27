@@ -17,7 +17,7 @@ export class AccueilComponent implements OnInit, OnDestroy {
   @ViewChild('ngcarousel', { static: true })
   ngCarousel!: NgbCarousel;
   
-  isConnected = true;
+  isConnected: boolean;
   photos: Photo[] = [];
   articleCourant = 0;
   photoCourante = 0;
@@ -38,6 +38,8 @@ export class AccueilComponent implements OnInit, OnDestroy {
               public articlesService: ArticlesService,
               public actualitesService: ActualiteService,
               public authService: AuthService) {
+                this.isConnected = false;
+
                 this.articlesService.getArticles();
                 this.photosService.getPhotos();
               }
@@ -47,6 +49,8 @@ export class AccueilComponent implements OnInit, OnDestroy {
     this.authSubscription = this.authService.authSubject.subscribe(auth => {
       this.isConnected = auth.email != 'Visiteur';
     })
+    this.authService.emitUserChanged();
+    
     this.photosSubscription = this.photosService.photoSubject.subscribe(photos => {
       this.photos = photos as Photo[];
       this.nbPagesPhotos = Math.round(photos.length / this.pasPhotos);
