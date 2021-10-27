@@ -1,12 +1,11 @@
 .card {
-  background-color: rgb(50,50,40);
+  background-color: rgb(49,49,49);
 }
 
-mat-card img{
-  object-fit: cover; /*this makes the image in src fit to the size specified below*/
-  width: 45%; /* Here you can use wherever you want to specify the width and also the height of the <img>*/
-  height: 40%;
-  margin-bottom: 20px;
+.img{
+  object-fit: cover;
+  width: 200px;
+  max-height: 290px;
 }
 
 mat-grid-tile {
@@ -33,3 +32,17 @@ button {
   font-size: 12px;
   margin-left: 150px;
 }
+
+pre {
+  display: block;
+  margin-top: 1em;
+  margin-bottom: 1em;
+  font-family: monospace;
+  font-size: 1.6vh;
+  white-space: pre-wrap;
+  overflow-x: auto ;
+  padding-bottom: 12px;
+  box-sizing: border-box;
+  color: white;
+}
+

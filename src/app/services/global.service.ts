@@ -19,5 +19,5 @@ export enum Status {
   valide = 1,
   rejete = 0x100,
   supprime = 0x1000,
-  visiteur = 0x10000
+  visiteur = 0x10000,
 }

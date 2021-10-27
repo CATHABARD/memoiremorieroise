@@ -4,17 +4,18 @@
 </button>
 <div *ngFor="let p of listeSelectedPhotos">
     <mat-card class="card-item">
-    <mat-card-title>{{p.titre}} par : {{p.nomAuteur}} (Cliquez sur la  photo pour l'agrandir.)</mat-card-title>
-    <mat-card-subtitle>{{p.annee}}</mat-card-subtitle>
-    <img class="img" src={{p.photo}} alt="Photo introuvable" (click)="onSurvol(p)"> 
-    <mat-card-content class="card-container">
-        <div>
-            <pre>{{p.listeEleves}}</pre>
-        </div>
-        <div class="button-row">
-            <button  mat-flat-button color="primary" *ngIf="canWrite" (click)="onEdit(p)">Modifier la liste des élèves</button>
-        </div>
-    </mat-card-content>
-</mat-card>
-</div> 
+        <mat-card-title>{{p.titre}} par : {{p.nomAuteur}} (Cliquez sur la  photo pour l'agrandir.)</mat-card-title>
+        <mat-card-subtitle>{{p.annee}}</mat-card-subtitle>
+        <img class="img" src={{p.photo}} alt="Photo introuvable" (click)="onZoom(p)"> 
+        <mat-card-content class="card-container">
+            <div>
+                <pre>{{p.listeEleves}}</pre>
+            </div>
+            <div class="button-row">
+                <button  mat-flat-button color="primary" *ngIf="canWrite" (click)="onEdit(p)">Modifier la liste des élèves</button>
+            </div>
+        </mat-card-content>
+    </mat-card>
+  <div style="height: 15px;"></div>
+</div>
   

@@ -10,6 +10,7 @@ import { UsersService } from './users.services';
 })
 export class ActualiteService {
   actualites: Actualite[] = [];
+  messagesVisiteurs: Actualite[] = [];
   public actualitesSubject = new Subject<Actualite[]>();
 
   constructor(private angularFirestore: AngularFirestore,
@@ -21,6 +22,14 @@ export class ActualiteService {
     }
   
     getActualites() {
+      this.angularFirestore.collection('Actualites', a => a.where('status', '==', Status.visiteur)).get().subscribe(a => {
+        this.messagesVisiteurs = a.docs.map(A => {
+          const a = A.data() as Actualite;
+          a.id = A.id;
+          return a;
+        })
+        this.emitActualites();
+      });
       this.angularFirestore.collection('Actualites', a => a.where('status', '==', Status.valide)).get().subscribe(a => {
         this.actualites = a.docs.map(A => {
           const a = A.data() as Actualite;

@@ -35,9 +35,9 @@
           </td>
         </tr>
       </table>
-  <mat-grid-list cols="3">
-    <mat-grid-tile *ngFor="let a of actualitesService.actualites">
-      <mat-card class="card">
+  <mat-grid-list cols="3" *ngIf="!isConnected">
+    <mat-grid-tile *ngFor="let a of actualitesService.messagesVisiteurs">
+      <mat-card fxFlex="20" class="card">
         <mat-card-header>
           <mat-card-title>{{a.titre}}</mat-card-title>
           <mat-card-subtitle>
@@ -46,7 +46,7 @@
             </pre>
           </mat-card-subtitle>
         </mat-card-header>
-        <img mat-card-xl-image class src={{a.photo}}>
+        <img mat-card-image class="img" src={{a.photo}}>
         <mat-card-content>
             <pre>
               {{a.texte}}
@@ -55,7 +55,28 @@
       </mat-card>
     </mat-grid-tile>
   </mat-grid-list>
-  </mat-tab>
+
+  <mat-grid-list cols="3" *ngIf="isConnected">
+    <mat-grid-tile *ngFor="let a of actualitesService.actualites">
+      <mat-card fxFlex="20" class="card">
+        <mat-card-header>
+          <mat-card-title>{{a.titre}}</mat-card-title>
+          <mat-card-subtitle>
+            <pre>
+              {{a.sousTitre}}
+            </pre>
+          </mat-card-subtitle>
+        </mat-card-header>
+        <img mat-card-image class="img" src={{a.photo}}>
+        <mat-card-content>
+            <pre>
+              {{a.texte}}
+            </pre>
+        </mat-card-content>
+      </mat-card>
+    </mat-grid-tile>
+  </mat-grid-list>
+</mat-tab>
   <mat-tab label="Photos de classes">
       <button mat-button (click)="onDecrementePhoto()" *ngIf="pageCourantePhoto > 1"><<</button>
       <button mat-button *ngIf="pageCourantePhoto <= 1" disabled><<</button>

@@ -14,9 +14,7 @@ export class PdfService {
   pdfSubject = new Subject<Pdf[]>();
 
 
-  constructor(private angularFirestore: AngularFirestore) { 
-
-  }
+  constructor(private angularFirestore: AngularFirestore) { }
 
   emitPdf() {
     this.pdfSubject.next(this.pdfs);
@@ -42,7 +40,7 @@ export class PdfService {
   }
 
   public getPdfsValides() {
-    this.angularFirestore.collection('listePdf', l => l.where('status', '==', Status.valide)).get().subscribe(data => {
+    this.angularFirestore.collection('listePdf', l => l.where('Status', '==', Status.valide)).get().subscribe(data => {
       this.pdfs = data.docs.map(e => {
         const a = e.data() as Pdf;
         a.id = e.id;
@@ -53,7 +51,7 @@ export class PdfService {
   }
 
   public getListePdfAValider() {
-    return this.angularFirestore.collection('listePdf', l => l.where('status', '==', Status.initial)).get();
+    return this.angularFirestore.collection('listePdf', l => l.where('Status', '==', Status.initial)).get();
   }
 
   public GetSinglePdf(id: string) {
@@ -72,7 +70,7 @@ export class PdfService {
         this.angularFirestore.collection('listePdf').add({
           description: pdf.description,
           fichier: pdf.fichier,
-          status: Status.initial,
+          Status: Status.initial,
           titre: pdf.titre
         }).then(data => {
           this.emitPdf();
@@ -85,7 +83,7 @@ export class PdfService {
   public validerPdf(p: Pdf)  {
     p.status = Status.valide;
     this.angularFirestore.collection('listePdf').doc(p.id).update({
-      status: p.status
+      Status: p.status
     }).then(() => {
       this.emitPdf();
     });
@@ -95,7 +93,7 @@ export class PdfService {
     p.status = Status.rejete;
     this.angularFirestore.collection('listePdf').doc(p.id).update(
       {
-        status: p.status
+        Status: p.status
       }
     ).then(() => {
       this.emitPdf();
@@ -106,7 +104,7 @@ export class PdfService {
     p.status = Status.supprime;
     this.angularFirestore.collection('listePdf').doc(p.id).update(
       {
-        status: p.status
+        Status: p.status
       }
     ).then(() => {
       this.emitPdf();

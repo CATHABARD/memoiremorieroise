@@ -60,6 +60,18 @@ export class ArticlesService {
         d.id = A.id;
         return d;
       });
+      // Trier sur le champ date
+      this.themesService.currentTheme!.articles.sort((t1, t2) => {
+        if(new Date(t1.date!) > new Date(t2.date!)) {
+          return -1;
+        } else {
+          if(new Date(t1.date!) < new Date(t2.date!)) {
+            return 1;
+          } else {
+            return 0;
+          }
+      }
+      });
       // recherche du nom de l'auteur
       this.themesService.currentTheme!.articles!.forEach(a => {
         this.usersService.getUserByUid(a.auteur!.trim()).subscribe(u => {

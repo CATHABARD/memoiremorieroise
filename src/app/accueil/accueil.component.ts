@@ -17,7 +17,7 @@ export class AccueilComponent implements OnInit, OnDestroy {
   @ViewChild('ngcarousel', { static: true })
   ngCarousel!: NgbCarousel;
   
-  // articles: Article[] = [];
+  isConnected = true;
   photos: Photo[] = [];
   articleCourant = 0;
   photoCourante = 0;
@@ -31,6 +31,7 @@ export class AccueilComponent implements OnInit, OnDestroy {
   private articlesSubscription: Subscription | undefined;
   private actualitesSubscription: Subscription | undefined;
   private photosCarouselSubscription:  Subscription | undefined;
+  private authSubscription: Subscription | undefined;
 
 
   constructor(public photosService: PhotosService,
@@ -43,6 +44,9 @@ export class AccueilComponent implements OnInit, OnDestroy {
 
   // Initialisation de la page
   ngOnInit() {
+    this.authSubscription = this.authService.authSubject.subscribe(auth => {
+      this.isConnected = auth.email != 'Visiteur';
+    })
     this.photosSubscription = this.photosService.photoSubject.subscribe(photos => {
       this.photos = photos as Photo[];
       this.nbPagesPhotos = Math.round(photos.length / this.pasPhotos);

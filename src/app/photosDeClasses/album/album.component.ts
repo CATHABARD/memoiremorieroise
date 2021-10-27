@@ -17,7 +17,6 @@ import { shareReplay } from 'rxjs/operators';
 })
 export class AlbumComponent implements OnInit, OnDestroy {
   public selectedPhoto: Photo | undefined;
-  public zoom = false;
   queryParamsSuscription: Subscription | undefined;
   public isConnected = false;
   public canWrite: boolean;
@@ -126,24 +125,15 @@ export class AlbumComponent implements OnInit, OnDestroy {
     });
   }
 
-  onZoomImage() {
-    this.zoom = true;
-  }
-
-  onDeZoomImage() {
-    this.zoom = false;
-  }
-
   onAddPhoto() {
     this.router.navigate(['app-add-photo-de-classe']);
   }
 
   onEdit(p: Photo) {
-    console.log(p);
     this.router.navigate(['app-edit-photo-de-classe', p.id]);
   }
 
-  onSurvol(p: Photo) {
+  onZoom(p: Photo) {
     this.photosService.currentPhoto = p;
     const dialogRef = this.matDialog.open(DialogMaximiseImageComponent, {
       height: '100%',
