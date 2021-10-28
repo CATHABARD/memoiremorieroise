@@ -50,22 +50,26 @@ export class AccueilComponent implements OnInit, OnDestroy {
       this.isConnected = auth.email != 'Visiteur';
     })
     this.authService.emitUserChanged();
-    
+     
     this.photosSubscription = this.photosService.photoSubject.subscribe(photos => {
       this.photos = photos as Photo[];
       this.nbPagesPhotos = Math.round(photos.length / this.pasPhotos);
     });
+
     this.photosCarouselSubscription = this.photosService.photosCarouselSubject.subscribe(pc => {
 
     });
-      this.articlesSubscription = this.articlesService.articlesSubject.subscribe(article => {
+    this.photosService.getPhotosCarousel();
+
+
+    this.articlesSubscription = this.articlesService.articlesSubject.subscribe(article => {
       this.nbPagesArticles = Math.round(this.articlesService.articles.length / this.pasArticles);
     });
     this.articlesService.emitArticles();
+
     this.actualitesSubscription = this.actualitesService.actualitesSubject.subscribe(actualites => {
 
     });
-    this.photosService.getPhotosCarousel();
     this.actualitesService.getActualites();
   }
 

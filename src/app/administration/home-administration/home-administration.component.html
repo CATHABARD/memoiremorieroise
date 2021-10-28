@@ -113,6 +113,22 @@
           </div>
         </mat-card-actions>
       </mat-card>
+      
+      <h3>Messages au visiteur.</h3>
+        <mat-card *ngFor="let aa of actualiteService.messagesVisiteurs">
+          <mat-card-title>{{aa.titre}}</mat-card-title>
+          <mat-card-subtitle>{{aa.sousTitre}}</mat-card-subtitle>
+          <mat-card-content class="card-container">
+            <div>
+              <pre>{{ aa.texte }}</pre>
+            </div>
+          </mat-card-content>
+          <mat-card-actions>
+          <div class="button-row">
+            <button mat-raised-button color="accent" (click)="onEditActualite(aa)">Editer l'article</button>
+          </div>
+        </mat-card-actions>
+      </mat-card>
 
     </div>
   </mat-tab>

@@ -9,5 +9,5 @@ export const environment = {
     storageBucket: "memoiremorieroise-73e3b.appspot.com",
     messagingSenderId: "201883520409",
   },
-  version: '1.1.6'
+  version: '1.1.7'
 };

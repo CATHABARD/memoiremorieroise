@@ -28,6 +28,18 @@ export class ActualiteService {
           a.id = A.id;
           return a;
         })
+        // Trier sur le champ date
+        this.messagesVisiteurs.sort((t1, t2) => {
+          if(new Date(t1.date!) < new Date(t2.date!)) {
+            return -1;
+          } else {
+            if(new Date(t1.date!) > new Date(t2.date!)) {
+              return 1;
+            } else {
+              return 0;
+            }
+          }
+        });
         this.emitActualites();
       });
       this.angularFirestore.collection('Actualites', a => a.where('status', '==', Status.valide)).get().subscribe(a => {
