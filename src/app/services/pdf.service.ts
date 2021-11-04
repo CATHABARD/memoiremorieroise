@@ -40,14 +40,7 @@ export class PdfService {
   }
 
   public getPdfsValides() {
-    this.angularFirestore.collection('listePdf', l => l.where('Status', '==', Status.valide)).get().subscribe(data => {
-      this.pdfs = data.docs.map(e => {
-        const a = e.data() as Pdf;
-        a.id = e.id;
-        return a;
-      });
-    });
-    this.emitPdf();
+    return this.angularFirestore.collection('listePdf', l => l.where('Status', '==', Status.valide)).get();
   }
 
   public getListePdfAValider() {

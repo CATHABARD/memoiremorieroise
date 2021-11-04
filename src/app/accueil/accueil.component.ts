@@ -42,35 +42,37 @@ export class AccueilComponent implements OnInit, OnDestroy {
 
                 this.articlesService.getArticles();
                 this.photosService.getPhotos();
+
+                this.authSubscription = this.authService.authSubject.subscribe(auth => {
+                  this.isConnected = (auth && auth.email != 'Visiteur');
+                })
+                this.authService.emitUserChanged();
+                 
+                this.photosSubscription = this.photosService.photoSubject.subscribe(photos => {
+                  this.photos = photos as Photo[];
+                  this.nbPagesPhotos = Math.ceil(photos.length / this.pasPhotos);
+                });
+            
+                this.photosCarouselSubscription = this.photosService.photosCarouselSubject.subscribe(pc => {
+            
+                });
+                this.photosService.getPhotosCarousel();
+            
+                this.articlesSubscription = this.articlesService.articlesSubject.subscribe(article => {
+                  this.nbPagesArticles = Math.ceil(this.articlesService.articles.length / this.pasArticles);
+                });
+                this.articlesService.emitArticles();
+            
+                this.actualitesSubscription = this.actualitesService.actualitesSubject.subscribe(actualites => {
+            
+                });
+                this.actualitesService.getActualites();
+            
               }
 
   // Initialisation de la page
   ngOnInit() {
-    this.authSubscription = this.authService.authSubject.subscribe(auth => {
-      this.isConnected = auth.email != 'Visiteur';
-    })
-    this.authService.emitUserChanged();
-     
-    this.photosSubscription = this.photosService.photoSubject.subscribe(photos => {
-      this.photos = photos as Photo[];
-      this.nbPagesPhotos = Math.round(photos.length / this.pasPhotos);
-    });
-
-    this.photosCarouselSubscription = this.photosService.photosCarouselSubject.subscribe(pc => {
-
-    });
-    this.photosService.getPhotosCarousel();
-
-
-    this.articlesSubscription = this.articlesService.articlesSubject.subscribe(article => {
-      this.nbPagesArticles = Math.round(this.articlesService.articles.length / this.pasArticles);
-    });
-    this.articlesService.emitArticles();
-
-    this.actualitesSubscription = this.actualitesService.actualitesSubject.subscribe(actualites => {
-
-    });
-    this.actualitesService.getActualites();
+    
   }
 
   ngOnDestroy() {
@@ -84,24 +86,24 @@ export class AccueilComponent implements OnInit, OnDestroy {
 
   onDecrementePhoto() {
     this.photoCourante -= this.pasPhotos;
-    this.pageCourantePhoto = Math.round(this.photoCourante / this.pasPhotos) + 1; 
+    this.pageCourantePhoto = Math.ceil(this.photoCourante / this.pasPhotos) + 1; 
     console.log(this.photoCourante);
   }
 
   onIncrementePhoto() {
     this.photoCourante += this.pasArticles;
-    this.pageCourantePhoto = Math.round(this.photoCourante / this.pasPhotos) + 1;
+    this.pageCourantePhoto = Math.ceil(this.photoCourante / this.pasPhotos) + 1;
     console.log(this.photoCourante);
 }
 
   onDecrementeArticle() {
     this.articleCourant -= this.pasArticles;
-    this.pageCouranteArticle = Math.round(this.articleCourant / this.pasArticles) + 1;
+    this.pageCouranteArticle = Math.ceil(this.articleCourant / this.pasArticles) + 1;
   }
 
   onIncrementeArticle() {
     this.articleCourant += this.pasArticles;
-    this.pageCouranteArticle = Math.round(this.articleCourant / this.pasArticles) + 1;
+    this.pageCouranteArticle = Math.ceil(this.articleCourant / this.pasArticles) + 1;
   }
 
 

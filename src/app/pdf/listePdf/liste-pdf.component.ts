@@ -17,10 +17,14 @@ export class ListePdfComponent implements OnDestroy {
   url: string | undefined = '';
   canWrite = false;
   isConnected = false;
-  listePdf: Pdf[] = [];
   private currentUser: User | undefined | null;
   private userSubscription: Subscription;
-  private pdfsSubscription: Subscription;
+
+  pdfs: Pdf[] = [];
+  pageCourante = 1;
+  nbPages = 0;
+  pdfCourant = 0;
+  pas = 6;
 
   constructor(private router: Router,
               public globalService: GlobalService,
@@ -48,10 +52,16 @@ export class ListePdfComponent implements OnDestroy {
                 })
                 authService.emitUserChanged();
             
-                this.pdfService.getPdfsValides();
-                this.pdfsSubscription = this.pdfService.pdfSubject.subscribe(pdfs => {
-                  this.listePdf = pdfs;
+                this.pdfService.getPdfsValides().subscribe(data => {
+                  this.pdfs = data.docs.map(e => {
+                    const a = e.data() as Pdf;
+                    a.id = e.id;
+                    return a;
+                  });
+                  this.nbPages = Math.ceil(this.pdfs.length / this.pas);
                 });
+                
+
                 if (this.currentUser != undefined) {
                     const d = this.currentUser.status;
                     // tslint:disable-next-line:no-bitwise
@@ -91,4 +101,17 @@ export class ListePdfComponent implements OnDestroy {
   onVoirPdf(p: Pdf) {
     (this.url === p.fichier) ? this.url = '' : (this.url = p.fichier);
   }
+
+
+  onDecremente() {
+    this.pdfCourant -= this.pas;
+    this.pageCourante = Math.ceil(this.pdfCourant / this.pas) + 1; 
+  }
+
+  onIncremente() {
+    this.pdfCourant += this.pas;
+    this.pageCourante = Math.ceil(this.pdfCourant / this.pas) + 1;
+}
+
+ 
 }

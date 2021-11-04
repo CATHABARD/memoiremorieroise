@@ -17,7 +17,6 @@ export class ActualiteService {
               private usersService: UsersService,) { }
 
     emitActualites() {
-      console.log('emit');
       this.actualitesSubject.next(this.actualites);
     }
   
