@@ -2,43 +2,44 @@
     Ajouter un document.
   </button>
   
-
-  <button mat-button (click)="onDecremente()" *ngIf="pageCourante > 1"><<</button>
-  <button mat-button *ngIf="pageCourante <= 1" disabled><<</button>
-  Page {{pageCourante}} sur {{nbPages}}
-  <button mat-button (click)="onIncremente()" *ngIf="pageCourante < nbPages">>></button>
-  <button mat-button *ngIf="pageCourante >= nbPages" disabled>>></button>
-  
-  <mat-grid-list cols="1" rowHeight="1000" gutterSize="20px">  
-    <div *ngFor="let p of pdfs; let i = index">
-      <mat-grid-title *ngIf="i >= pdfCourant && i < (pdfCourant + pas)">
-        <mat-card class="card-item">
-          <mat-card-title>{{p.titre}}</mat-card-title>
-          <mat-card-content class="card-container">
-            <div>
-              <pre>{{ p.description }}</pre>
-            </div>
-            <mat-card-actions>
-              <div class="button-row">
-                <button mat-raised-button color="accent" (click)="onVoirPdf(p)" *ngIf="p.fichier==url">Fermer le document</button>
-                <button mat-raised-button color="accent" (click)="onVoirPdf(p)" *ngIf="p.fichier!=url">Ouvrir le document</button>
-                <button mat-raised-button color="accent" *ngIf="p.status==0 && canWrite" (click)="onValiderPdf(p)">Valider</button>
-                <button mat-raised-button color="primary" *ngIf="canWrite" (click)="onEditPdf(p)">Modifier</button>
-                <button mat-raised-button color="warn" *ngIf="canWrite" (click)="onDeletePdf(p)">Supprimer</button> 
+  <div>
+    <button mat-button (click)="onDecremente()" *ngIf="pageCourante > 1"><<</button>
+    <button mat-button *ngIf="pageCourante <= 1" disabled><<</button>
+    Page {{pageCourante}} sur {{nbPages}}
+    <button mat-button (click)="onIncremente()" *ngIf="pageCourante < nbPages">>></button>
+    <button mat-button *ngIf="pageCourante >= nbPages" disabled>>></button>
+  </div>
+  <div style="height: 80%;">
+    <mat-grid-list cols="1" rowHeight="1000" gutterSize="20px">  
+      <div *ngFor="let p of pdfs; let i = index">
+        <mat-grid-title *ngIf="i >= pdfCourant && i < (pdfCourant + pas)">
+          <mat-card class="card-item">
+            <mat-card-title>{{p.titre}}</mat-card-title>
+            <mat-card-content class="card-container">
+              <div>
+                <pre>{{ p.description }}</pre>
               </div>
-              <iframe *ngIf="p.fichier == url" class="e2e-trusted-url" [src]="url | safe: 'resourceUrl'" width="100%" height="1100px"></iframe>
-            </mat-card-actions>
-          </mat-card-content>
-        </mat-card>
+              <mat-card-actions>
+                <div class="button-row">
+                  <button mat-raised-button color="accent" (click)="onVoirPdf(p)" *ngIf="p.fichier==url">Fermer le document</button>
+                  <button mat-raised-button color="accent" (click)="onVoirPdf(p)" *ngIf="p.fichier!=url">Ouvrir le document</button>
+                  <button mat-raised-button color="accent" *ngIf="p.status==0 && canWrite" (click)="onValiderPdf(p)">Valider</button>
+                  <button mat-raised-button color="primary" *ngIf="canWrite" (click)="onEditPdf(p)">Modifier</button>
+                  <button mat-raised-button color="warn" *ngIf="canWrite" (click)="onDeletePdf(p)">Supprimer</button> 
+                </div>
+                <iframe *ngIf="p.fichier == url" class="e2e-trusted-url" [src]="url | safe: 'resourceUrl'" width="100%" height="1100px"></iframe>
+              </mat-card-actions>
+            </mat-card-content>
+          </mat-card>
 
-      </mat-grid-title>
-    </div>
-  </mat-grid-list>
-
-  <button mat-button (click)="onDecremente()" *ngIf="pageCourante > 1"><<</button>
-  <button mat-button *ngIf="pageCourante <= 1" disabled><<</button>
-  Page {{pageCourante}} sur {{nbPages}}
-  <button mat-button (click)="onIncremente()" *ngIf="pageCourante < nbPages">>></button>
-  <button mat-button *ngIf="pageCourante >= nbPages" disabled>>></button>
-
-   
+        </mat-grid-title>
+      </div>
+    </mat-grid-list>
+  </div>
+  <div>
+    <button mat-button (click)="onDecremente()" *ngIf="pageCourante > 1"><<</button>
+    <button mat-button *ngIf="pageCourante <= 1" disabled><<</button>
+    Page {{pageCourante}} sur {{nbPages}}
+    <button mat-button (click)="onIncremente()" *ngIf="pageCourante < nbPages">>></button>
+    <button mat-button *ngIf="pageCourante >= nbPages" disabled>>></button>
+  </div>  
