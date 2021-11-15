@@ -7,7 +7,7 @@
   <div *ngFor="let a of themesService.currentTheme?.articles">
     <mat-card class="card-item">
       <mat-card-title>{{a.titre}} (par : {{a.nomAuteur}}) (Cliquez sur la photo pour l'agrandir.)</mat-card-title>
-      <img src={{a.photo}} alt="Photo de Morières" height="250px" style="margin: 25px;" (click)="onZoom(a)"> 
+      <img src={{a.photo}} alt="Photo de Morières" height="250px" style="margin: 25px;" *ngIf="a.photo" (click)="onZoom(a)"> 
       <img src={{a.photo2}} alt="Photo de Morières" style="margin: 25px;" *ngIf="a.photo2" height="250px" (click)="onZoom(a)"> 
       <mat-card-subtitle >{{a.legende}}</mat-card-subtitle>
       <div><h2>
