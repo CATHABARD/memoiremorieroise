@@ -52,17 +52,6 @@ export class PhotosService {
     });
   }
 
-    getPhotosCarousel() {
-      this.angularFirestore.collection('Carousel', p => p.orderBy('indice')).get().subscribe(pc => {
-        this.photosCarousel = pc.docs.map(PC => {
-          let p = PC.data() as Carousel;
-          p.id = PC.id;
-          return p;
-        })
-      });
-      this.emitPhotoCarousel();
-  }
-
   getPhoto(id: string) {
     return this.angularFirestore.collection('Photos').doc(id).get();
   }
@@ -100,4 +89,39 @@ export class PhotosService {
     });
   }
 
+  public addPhotoCarousel(p: Carousel) {
+    this.angularFirestore.collection('Carousel').add({
+      path: p.path,
+      numero: p.numero,
+      status: Status.valide
+    });
+  }
+
+  getPhotosCarousel() {
+    this.angularFirestore.collection('Carousel', p => p.orderBy('numero', 'asc')).get().subscribe(pc => {
+      this.photosCarousel = pc.docs.map(PC => {
+        let p = PC.data() as Carousel;
+        p.id = PC.id;
+        return p;
+      })
+    });
+    this.emitPhotoCarousel();
+  }
+
+  updatePhotoCarousel(p: Carousel) {
+    return this.angularFirestore.collection('Carousel').doc(p.id).update({
+      numero: p.numero
+    })
+  }
+
+  getNextNumero(): number {
+    let numero = 0;
+
+    this.photosCarousel.forEach(p => {
+      if(p.numero! > numero) {
+        numero = p.numero!;
+      }
+    })
+    return numero + 1;
+  }
 }

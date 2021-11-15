@@ -1,8 +1,11 @@
+import { componentFactoryName } from '@angular/compiler';
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { AccueilComponent } from './accueil/accueil.component';
 import { ActualiteFormComponent } from './administration/actualite-form/actualite-form.component';
 import { AddActualiteComponent } from './administration/add-actualite/add-actualite.component';
+import { AddPhotoCarouselComponent } from './administration/add-photo-carousel/add-photo-carousel.component';
+import { CarouselFormComponent } from './administration/carousel-form/carousel-form.component';
 import { DroitsFormComponent } from './administration/droits-form/droits-form.component';
 import { DroitsComponent } from './administration/droits/droits.component';
 import { EditActualiteComponent } from './administration/edit-actualite/edit-actualite.component';
@@ -60,6 +63,8 @@ const routes: Routes = [
   { path: 'app-edit-actualite/:id', canActivate: [AuthGuardService], component: EditActualiteComponent},
   { path: 'app-gestion-actualite', canActivate: [AuthGuardService], component: GestionActualiteComponent},
   { path: 'app-actualite-form', canActivate: [AuthGuardService], component: ActualiteFormComponent},
+  { path: 'app-carousel-form', canActivate: [AuthGuardService], component: CarouselFormComponent},
+  { path: 'app-add-photo-carousel', canActivate: [AuthGuardService], component: AddPhotoCarouselComponent},
   { path: '', redirectTo: 'app-accueil', pathMatch: 'full' },
   { path: '**', redirectTo: 'app-accueil' }
 ];

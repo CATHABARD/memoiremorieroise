@@ -90,6 +90,9 @@ import { AddActualiteComponent } from './administration/add-actualite/add-actual
 import { EditActualiteComponent } from './administration/edit-actualite/edit-actualite.component';
 import { ActualiteFormComponent } from './administration/actualite-form/actualite-form.component';
 import { GestionActualiteComponent } from './administration/gestion-actualite/gestion-actualite.component';
+import { CarouselComponent } from './administration/carousel/carousel.component';
+import { CarouselFormComponent } from './administration/carousel-form/carousel-form.component';
+import { AddPhotoCarouselComponent } from './administration/add-photo-carousel/add-photo-carousel.component';
 
 import { GlobalService } from './services/global.service';
 import { ArticlesService } from './services/articles.service';
@@ -136,6 +139,9 @@ import { SafePipe } from './safe.pipe';
     EditActualiteComponent,
     ActualiteFormComponent,
     GestionActualiteComponent,
+    CarouselComponent,
+    CarouselFormComponent,
+    AddPhotoCarouselComponent,
   ],
   imports: [
     BrowserModule,

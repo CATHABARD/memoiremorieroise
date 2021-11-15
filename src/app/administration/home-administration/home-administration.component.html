@@ -71,32 +71,14 @@
       </mat-card>
     </div>
   <br/>
-</div>
-  </mat-tab>
-  <mat-tab label="Actualités">
-    <div *ngIf="isAdmin">
-        <button  mat-raised-button color="accent" (click)="onAddActualite()">Ajouter un Article à l'actualité</button>
-      <br/>
-      <h3>Liste des actualités validées. ({{actualites.length}})</h3>
-      <mat-card *ngFor="let aa of actualites">
-        <mat-card-title>{{aa.titre}}</mat-card-title>
-        <mat-card-subtitle>{{aa.sousTitre}}</mat-card-subtitle>
-        <img class="img" src={{aa.photo}} alt="Photo">
-        <mat-card-content class="card-container">
-          <div>
-            <pre>{{ aa.texte }}</pre>
-          </div>
-        </mat-card-content>
-        <mat-card-actions>
-          <div class="button-row">
-            <button mat-raised-button color="accent" (click)="onEditActualite(aa)">Editer l'article</button>
-            <button mat-raised-button color="primary" (click)="onDesactiveActualite(aa)">Désactiver l'article</button>
-            <button mat-raised-button color="warn" (click)="onSupprimeActualite(aa)">Supprimer l'article</button>
-          </div>
-        </mat-card-actions>
-      </mat-card>
-      <h3>Liste des actualités non validées. ({{nonActualites.length}})</h3>
-        <mat-card *ngFor="let aa of nonActualites">
+  </div>
+    </mat-tab>
+    <mat-tab label="Actualités">
+      <div *ngIf="isAdmin">
+          <button  mat-raised-button color="accent" (click)="onAddActualite()">Ajouter un Article à l'actualité</button>
+        <br/>
+        <h3>Liste des actualités validées. ({{actualites.length}})</h3>
+        <mat-card *ngFor="let aa of actualites">
           <mat-card-title>{{aa.titre}}</mat-card-title>
           <mat-card-subtitle>{{aa.sousTitre}}</mat-card-subtitle>
           <img class="img" src={{aa.photo}} alt="Photo">
@@ -106,36 +88,57 @@
             </div>
           </mat-card-content>
           <mat-card-actions>
-          <div class="button-row">
-            <button mat-raised-button color="accent" (click)="onEditActualite(aa)">Editer l'article</button>
-            <button mat-raised-button color="primary" (click)="onValideActualite(aa)">Activer l'article</button>
-            <button mat-raised-button color="warn" (click)="onSupprimeActualite(aa)">Supprimer l'article</button>
-          </div>
-        </mat-card-actions>
-      </mat-card>
-      
-      <h3>Messages au visiteur.</h3>
-        <mat-card *ngFor="let aa of actualiteService.messagesVisiteurs">
-          <mat-card-title>{{aa.titre}}</mat-card-title>
-          <mat-card-subtitle>{{aa.sousTitre}}</mat-card-subtitle>
-          <mat-card-content class="card-container">
-            <div>
-              <pre>{{ aa.texte }}</pre>
+            <div class="button-row">
+              <button mat-raised-button color="accent" (click)="onEditActualite(aa)">Editer l'article</button>
+              <button mat-raised-button color="primary" (click)="onDesactiveActualite(aa)">Désactiver l'article</button>
+              <button mat-raised-button color="warn" (click)="onSupprimeActualite(aa)">Supprimer l'article</button>
             </div>
-          </mat-card-content>
-          <mat-card-actions>
-          <div class="button-row">
-            <button mat-raised-button color="accent" (click)="onEditActualite(aa)">Editer l'article</button>
-          </div>
-        </mat-card-actions>
-      </mat-card>
+          </mat-card-actions>
+        </mat-card>
+        <h3>Liste des actualités non validées. ({{nonActualites.length}})</h3>
+          <mat-card *ngFor="let aa of nonActualites">
+            <mat-card-title>{{aa.titre}}</mat-card-title>
+            <mat-card-subtitle>{{aa.sousTitre}}</mat-card-subtitle>
+            <img class="img" src={{aa.photo}} alt="Photo">
+            <mat-card-content class="card-container">
+              <div>
+                <pre>{{ aa.texte }}</pre>
+              </div>
+            </mat-card-content>
+            <mat-card-actions>
+            <div class="button-row">
+              <button mat-raised-button color="accent" (click)="onEditActualite(aa)">Editer l'article</button>
+              <button mat-raised-button color="primary" (click)="onValideActualite(aa)">Activer l'article</button>
+              <button mat-raised-button color="warn" (click)="onSupprimeActualite(aa)">Supprimer l'article</button>
+            </div>
+          </mat-card-actions>
+        </mat-card>
+        
+        <h3>Messages au visiteur.</h3>
+          <mat-card *ngFor="let aa of actualiteService.messagesVisiteurs">
+            <mat-card-title>{{aa.titre}}</mat-card-title>
+            <mat-card-subtitle>{{aa.sousTitre}}</mat-card-subtitle>
+            <mat-card-content class="card-container">
+              <div>
+                <pre>{{ aa.texte }}</pre>
+              </div>
+            </mat-card-content>
+            <mat-card-actions>
+            <div class="button-row">
+              <button mat-raised-button color="accent" (click)="onEditActualite(aa)">Editer l'article</button>
+            </div>
+          </mat-card-actions>
+        </mat-card>
 
-    </div>
-  </mat-tab>
-  <mat-tab label="Messages reçus">
-    <app-liste-messages></app-liste-messages>
-  </mat-tab>
-  <mat-tab label="Administration">
-    <app-droits></app-droits>
-  </mat-tab>
-</mat-tab-group>
+      </div>
+    </mat-tab>
+    <mat-tab label="Messages reçus">
+      <app-liste-messages></app-liste-messages>
+    </mat-tab>
+    <mat-tab label="Administration utilisateurs">
+      <app-droits></app-droits>
+    </mat-tab>
+    <mat-tab label="Carousel">
+      <app-carousel></app-carousel>
+    </mat-tab>
+  </mat-tab-group>

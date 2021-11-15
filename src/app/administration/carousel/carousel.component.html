@@ -1,0 +1,20 @@
+<h2>Gestion du carousel :</h2>
+
+<button mat-flat-button color='accent' (click)="onAddPhoto()">
+  Ajouter une photo au carousel
+</button>
+<br/>
+<div *ngIf="photos && photos.length > 0">
+  <div *ngFor="let p of photosService.photosCarousel">
+    <mat-card class="card-item">
+      <mat-card-title>{{p.numero}}</mat-card-title>
+      <img src={{p.path}} alt="Photo de Morières" height="250px" style="margin: 25px;"> 
+      <mat-card-subtitle >{{p.status}}</mat-card-subtitle>
+      <div class="button-row">
+        <button *ngIf="p.numero! > 1" mat-flat-button color="primary" (click)="onMonte(p)">Monter</button>
+        <button *ngIf="p.numero! < photos.length" mat-flat-button color="primary" (click)="onDescend(p)">Descendre</button>
+      </div>
+    </mat-card>
+    <div style="height: 15px;"></div>
+  </div> 
+</div>

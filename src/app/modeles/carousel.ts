@@ -1,6 +1,6 @@
 export class Carousel {
     constructor(public id?: string,
-        public indice?: number,
+        public numero?: number,
         public path?: string,
         public status?: number) { }
 }
