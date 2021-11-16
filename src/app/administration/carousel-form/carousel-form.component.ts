@@ -65,6 +65,7 @@ export class CarouselFormComponent implements OnInit {
       this.fileUploaded = true;
       fileRef.getDownloadURL().subscribe(name => {
         this.downloadURL = name;
+        this.carousel!.path = name;
         this.isFileAttached = true;
       })
     })

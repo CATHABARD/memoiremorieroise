@@ -11,7 +11,7 @@
         <mat-progress-bar color='primary' mode="determinate" [value]="uploadPercent" *ngIf="fileIsUploading"></mat-progress-bar>
       </div>
       <div *ngIf="isFileAttached == true">
-        <img class='img' src={{carousel?.path}} alt="">
+        <img height="250px" class='img' src={{carousel?.path}} alt="">
       </div>
       <br/>
       <div class="button-wrapper" *ngIf="!fileIsUploading && form?.valid">

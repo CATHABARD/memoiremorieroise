@@ -9,7 +9,7 @@
     <mat-card class="card-item">
       <mat-card-title>{{p.numero}}</mat-card-title>
       <img src={{p.path}} alt="Photo de Morières" height="250px" style="margin: 25px;"> 
-      <mat-card-subtitle >{{p.status}}</mat-card-subtitle>
+      <mat-card-subtitle >{{p.id}}</mat-card-subtitle>
       <div class="button-row">
         <button *ngIf="p.numero! > 1" mat-flat-button color="primary" (click)="onMonte(p)">Monter</button>
         <button *ngIf="p.numero! < photos.length" mat-flat-button color="primary" (click)="onDescend(p)">Descendre</button>

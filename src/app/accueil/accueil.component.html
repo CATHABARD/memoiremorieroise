@@ -1,10 +1,9 @@
   <mat-tab-group>
     <mat-tab label="Accueil">
-      <table [cellSpacing]="0" [cellPadding]="30">
+      <table [cellSpacing]="0" [cellPadding]="30" style="height: 43%;">
         <tr>
           <td [width]="300" class="texte-entete">
-            <img src="../../assets/images/blason/Blason_ville_fr_Morières-lès-Avignon_(Vaucluse).svg.png" alt="" height="250" style="align-items:center">
-            <h4>Domine ne moreris</h4>
+            <img src="../../assets/images/blason/blason.gif" alt="" height="250" style="align-items:center">
           </td>
           <td [width]="300" class="texte-entete">
              Mémoire Moriéroise
@@ -16,13 +15,13 @@
             84310 Morières les Avignon
           </td>
           
-          <td [width]="700">
+          <td [width]="700" [height]="600">
             <ngb-carousel #ngCarousel
               [showNavigationArrows]="false" 
               [showNavigationIndicators]="false"
               [interval]="3000"
               [keyboard]="false"
-              [pauseOnHover]="false"
+              [pauseOnHover]="true"
               [wrap]="true"
               [activeId]="'1'"
               [attr.aria-activedescendant] = "">
@@ -35,49 +34,49 @@
           </td>
         </tr>
       </table>
-  <mat-grid-list cols="3" *ngIf="!isConnected">
-    <mat-grid-tile *ngFor="let a of actualitesService.messagesVisiteurs">
-      <mat-card fxFlex="20" class="card">
-        <mat-card-header>
-          <mat-card-title>{{a.titre}}</mat-card-title>
-          <mat-card-subtitle>
-            <pre>
-              {{a.sousTitre}}
-            </pre>
-          </mat-card-subtitle>
-        </mat-card-header>
-        <mat-card-content>
-            <pre>
-              {{a.texte}}
-            </pre>
-        </mat-card-content>
-      </mat-card>
-    </mat-grid-tile>
-  </mat-grid-list>
+    <mat-grid-list cols="3" *ngIf="!isConnected">
+      <mat-grid-tile *ngFor="let a of actualitesService.messagesVisiteurs">
+        <mat-card fxFlex="20" class="card">
+          <mat-card-header>
+            <mat-card-title>{{a.titre}}</mat-card-title>
+            <mat-card-subtitle>
+              <pre>
+                {{a.sousTitre}}
+              </pre>
+            </mat-card-subtitle>
+          </mat-card-header>
+          <mat-card-content>
+              <pre>
+                {{a.texte}}
+              </pre>
+          </mat-card-content>
+        </mat-card>
+      </mat-grid-tile>
+    </mat-grid-list>
 
-  <mat-grid-list cols="3" *ngIf="isConnected">
-    <mat-grid-tile *ngFor="let a of actualitesService.actualites">
-      <mat-card fxFlex="20" class="card">
-        <mat-card-header>
-          <mat-card-title>{{a.titre}}</mat-card-title>
-          <mat-card-subtitle>
-            <pre>
-              {{a.sousTitre}}
-            </pre>
-          </mat-card-subtitle>
-        </mat-card-header>
-        <img mat-card-image class="img" src={{a.photo}}>
-        <mat-card-content>
-            <pre>
-              {{a.texte}}
-            </pre>
-        </mat-card-content>
-      </mat-card>
-    </mat-grid-tile>
-  </mat-grid-list>
-</mat-tab>
+    <mat-grid-list cols="3" *ngIf="isConnected">
+      <mat-grid-tile *ngFor="let a of actualitesService.actualites">
+        <mat-card fxFlex="20" class="card">
+          <mat-card-header>
+            <mat-card-title>{{a.titre}}</mat-card-title>
+            <mat-card-subtitle>
+              <pre>
+                {{a.sousTitre}}
+              </pre>
+            </mat-card-subtitle>
+          </mat-card-header>
+          <img mat-card-image class="img" src={{a.photo}}>
+          <mat-card-content>
+              <pre>
+                {{a.texte}}
+              </pre>
+          </mat-card-content>
+        </mat-card>
+      </mat-grid-tile>
+    </mat-grid-list>
+  </mat-tab>
 
-<mat-tab label="Photos de classes">
+  <mat-tab label="Photos de classes">
     <button mat-button (click)="onDecrementePhoto()" *ngIf="pageCourantePhoto > 1"><<</button>
     <button mat-button *ngIf="pageCourantePhoto <= 1" disabled><<</button>
     Page {{pageCourantePhoto}} sur {{nbPagesPhotos}}
@@ -108,37 +107,37 @@
     <button mat-button (click)="onIncrementePhoto()" *ngIf="pageCourantePhoto < nbPagesPhotos">>></button>
     <button mat-button *ngIf="pageCourantePhoto >= nbPagesPhotos" disabled>>></button>
   </mat-tab>
-  
-  <mat-tab label="Articles sur Morières">
+    
+    <mat-tab label="Articles sur Morières">
+      <button mat-button (click)="onDecrementeArticle()" *ngIf="pageCouranteArticle > 1"><<</button>
+      <button mat-button *ngIf="pageCouranteArticle <= 1" disabled><<</button>
+      Page {{pageCouranteArticle}} sur {{nbPagesArticles}}
+      <button mat-button (click)="onIncrementeArticle()" *ngIf="pageCouranteArticle < nbPagesArticles">>></button>
+      <button mat-button *ngIf="pageCouranteArticle >= nbPagesArticles" disabled>>></button>
+      <mat-grid-list cols="4" rowHeight="1000" gutterSize="20px">
+        <div *ngFor="let a of articlesService.articles; let i = index">
+          <mat-grid-tile *ngIf="i >= articleCourant && i < (articleCourant + pasArticles)">
+            <mat-card>
+              <mat-card-header> 
+                <mat-card-title>{{a.titre}}</mat-card-title> 
+                <mat-card-subtitle>{{a.legende}}</mat-card-subtitle> 
+              </mat-card-header> 
+              <img mat-card-image src={{a.photo}} alt="Photo"> 
+              <mat-card-content> 
+                <pre *ngIf="a.texte">
+                  {{a.texte.substring(0, 300)}} ...
+                </pre> 
+                <p>Article à lire dans les rubriques Articles</p>
+              </mat-card-content> 
+            </mat-card>
+          </mat-grid-tile>
+        </div>
+      </mat-grid-list>
     <button mat-button (click)="onDecrementeArticle()" *ngIf="pageCouranteArticle > 1"><<</button>
     <button mat-button *ngIf="pageCouranteArticle <= 1" disabled><<</button>
     Page {{pageCouranteArticle}} sur {{nbPagesArticles}}
     <button mat-button (click)="onIncrementeArticle()" *ngIf="pageCouranteArticle < nbPagesArticles">>></button>
     <button mat-button *ngIf="pageCouranteArticle >= nbPagesArticles" disabled>>></button>
-    <mat-grid-list cols="4" rowHeight="1000" gutterSize="20px">
-      <div *ngFor="let a of articlesService.articles; let i = index">
-      <mat-grid-tile *ngIf="i >= articleCourant && i < (articleCourant + pasArticles)">
-        <mat-card>
-          <mat-card-header> 
-            <mat-card-title>{{a.titre}}</mat-card-title> 
-            <mat-card-subtitle>{{a.legende}}</mat-card-subtitle> 
-          </mat-card-header> 
-          <img mat-card-image src={{a.photo}} alt="Photo"> 
-          <mat-card-content> 
-            <pre *ngIf="a.texte">
-              {{a.texte.substring(0, 300)}} ...
-            </pre> 
-            <p>Article à lire dans les rubriques Articles</p>
-          </mat-card-content> 
-        </mat-card>
-      </mat-grid-tile>
-    </div>
-  </mat-grid-list>
-  <button mat-button (click)="onDecrementeArticle()" *ngIf="pageCouranteArticle > 1"><<</button>
-  <button mat-button *ngIf="pageCouranteArticle <= 1" disabled><<</button>
-  Page {{pageCouranteArticle}} sur {{nbPagesArticles}}
-  <button mat-button (click)="onIncrementeArticle()" *ngIf="pageCouranteArticle < nbPagesArticles">>></button>
-  <button mat-button *ngIf="pageCouranteArticle >= nbPagesArticles" disabled>>></button>
-</mat-tab>
+  </mat-tab>
 </mat-tab-group>
   

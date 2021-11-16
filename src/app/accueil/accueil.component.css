@@ -5,6 +5,7 @@
 
 .img{
   object-fit: fill;
+  height: 40%;
   max-height: 40%;
   max-width: 60%;
 }
