@@ -197,4 +197,8 @@ export class FrameComponent implements OnInit, OnDestroy {
   onAdmin() {
     this.router.navigate(['app-home-administration']);
   }
+
+  onAlbumPhotos() {
+    this.router.navigate(['app-album-photos']);
+  }
 }

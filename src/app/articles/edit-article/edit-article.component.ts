@@ -1,4 +1,4 @@
-import { Component, OnInit, OnDestroy } from '@angular/core';
+ import { Component, OnInit, OnDestroy } from '@angular/core';
 import { Article } from '../../modeles/article';
 import { GlobalService } from 'src/app/services/global.service';
 import { ActivatedRoute } from '@angular/router';
@@ -32,7 +32,7 @@ export class EditArticleComponent implements OnInit, OnDestroy {
   }
 
   ngOnDestroy() {
-    // this.GetSingleArticleSuscription.unsubscribe();
+
   }
 
 }

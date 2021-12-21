@@ -93,6 +93,10 @@ import { GestionActualiteComponent } from './administration/gestion-actualite/ge
 import { CarouselComponent } from './administration/carousel/carousel.component';
 import { CarouselFormComponent } from './administration/carousel-form/carousel-form.component';
 import { AddPhotoCarouselComponent } from './administration/add-photo-carousel/add-photo-carousel.component';
+import { EditPhotoAlbumComponent } from './PhotosMorieres/edit-photo-album/edit-photo-album.component';
+import { AddPhotoAlbumComponent } from './PhotosMorieres/add-photo-album/add-photo-album.component';
+import { PhotoAlbumFormComponent } from './PhotosMorieres/photo-album-form/photo-album-form.component';
+import { AlbumPhotosComponent, DialogMaximisePhotoMorieresComponent } from './PhotosMorieres/album-photos/album-photos.component';
 
 import { GlobalService } from './services/global.service';
 import { ArticlesService } from './services/articles.service';
@@ -142,6 +146,11 @@ import { SafePipe } from './safe.pipe';
     CarouselComponent,
     CarouselFormComponent,
     AddPhotoCarouselComponent,
+    AlbumPhotosComponent,
+    EditPhotoAlbumComponent,
+    AddPhotoAlbumComponent,
+    PhotoAlbumFormComponent,
+    DialogMaximisePhotoMorieresComponent
   ],
   imports: [
     BrowserModule,

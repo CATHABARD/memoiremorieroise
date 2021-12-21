@@ -19,6 +19,10 @@
       <mat-nav-list>
         <button mat-button *ngFor="let t of themesService.themes" (click)="onListeArticles(t)">{{t.nom}}</button>
       </mat-nav-list>
+      <hr width="100%" color="blue" size="3">
+      <h4>Album photos :</h4>
+      <button mat-button (click)="onAlbumPhotos()">Photos de Morières</button>
+      <hr width="100%" color="blue" size="3">
       <h4>Photos de classes :</h4>
       <mat-nav-list>
         <button mat-button (click)="onEditAlbum(1901, 1910)">1901-1910</button>

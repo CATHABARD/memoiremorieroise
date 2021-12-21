@@ -14,7 +14,6 @@ import { HomeAdministrationComponent } from './administration/home-administratio
 import { ListeMessagesComponent } from './administration/liste-messages/liste-messages.component';
 import { ValiderArticlesComponent } from './administration/valider-articles/valider-articles.component';
 import { AddArticleComponent } from './articles/add-article/add-article.component';
-
 import { ArticleFormComponent } from './articles/article-form/article-form.component';
 import { EditArticleComponent } from './articles/edit-article/edit-article.component';
 import { DialogMaximiseArticleImageComponent, ListeArticlesComponent } from './articles/liste-articles/liste-articles.component';
@@ -32,6 +31,10 @@ import { EditPhotoDeClasseComponent } from './photosDeClasses/edit-photo-de-clas
 import { PhotosDeClasseFormComponent } from './photosDeClasses/photos-de-classe-form/photos-de-classe-form.component';
 import { AuthGuardService } from './services/auth-guard.service';
 import { UnvalidateUserMessageComponent } from './unvalidate-user-message/unvalidate-user-message.component';
+import { AlbumPhotosComponent } from './PhotosMorieres/album-photos/album-photos.component';
+import { EditPhotoAlbumComponent } from './PhotosMorieres/edit-photo-album/edit-photo-album.component';
+import { AddPhotoAlbumComponent } from './PhotosMorieres/add-photo-album/add-photo-album.component';
+import { PhotoAlbumFormComponent } from './PhotosMorieres/photo-album-form/photo-album-form.component';
 
 const routes: Routes = [
   { path: 'app-accueil', component: AccueilComponent },
@@ -65,6 +68,10 @@ const routes: Routes = [
   { path: 'app-actualite-form', canActivate: [AuthGuardService], component: ActualiteFormComponent},
   { path: 'app-carousel-form', canActivate: [AuthGuardService], component: CarouselFormComponent},
   { path: 'app-add-photo-carousel', canActivate: [AuthGuardService], component: AddPhotoCarouselComponent},
+  { path: 'app-album-photos', component: AlbumPhotosComponent},
+  { path: 'app-edit-photo-album', component: EditPhotoAlbumComponent},
+  { path: 'app-Add-photo-album', component: AddPhotoAlbumComponent},
+  { path: 'app-photo-album-form', component: PhotoAlbumFormComponent},
   { path: '', redirectTo: 'app-accueil', pathMatch: 'full' },
   { path: '**', redirectTo: 'app-accueil' }
 ];

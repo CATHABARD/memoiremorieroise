@@ -1,0 +1,37 @@
+<h2>Album photos de Morières</h2>
+
+<button mat-flat-button *ngIf="isConnected" color='accent' (click)="onAddPhoto()">
+  Ajouter une photo de Morières.
+</button>
+<hr width="100%" color="blue" size="3">
+
+<h3>Cliquez sur une photo pour l'agrandir.</h3>
+<button mat-button (click)="onDecrementePhoto()" *ngIf="pageCourantePhoto > 1"><<</button>
+<button mat-button *ngIf="pageCourantePhoto <= 1" disabled><<</button>
+Page {{pageCourantePhoto}} sur {{nbPagesPhotos}}
+<button mat-button (click)="onIncrementePhoto()" *ngIf="pageCourantePhoto < nbPagesPhotos">>></button>
+<button mat-button *ngIf="pageCourantePhoto >= nbPagesPhotos" disabled>>></button>
+<mat-grid-list cols="4" rowHeight="1000" gutterSize="20px">
+  <div *ngFor="let p of photos; let i = index">
+    <mat-grid-tile *ngIf="i >= photoCourante && i < (photoCourante + pasPhotos)">
+      <mat-card>
+        <mat-card-header>
+          <mat-card-title>{{p.titre}}</mat-card-title> 
+          <mat-card-subtitle>Photo mise en ligne par : {{p.nomAuteur}}</mat-card-subtitle> 
+        </mat-card-header> 
+        <img mat-card-image src={{p.photo}} alt="Photo" (click)="onZoom(p)"> 
+        <mat-card-content> 
+          <pre *ngIf="p.texte">
+            {{p.texte}}
+          </pre> 
+        </mat-card-content> 
+      </mat-card>
+    </mat-grid-tile>
+  </div>
+</mat-grid-list>
+<button mat-button (click)="onDecrementePhoto()" *ngIf="pageCourantePhoto > 1"><<</button>
+<button mat-button *ngIf="pageCourantePhoto <= 1" disabled><<</button>
+Page {{pageCourantePhoto}} sur {{nbPagesPhotos}}
+<button mat-button (click)="onIncrementePhoto()" *ngIf="pageCourantePhoto < nbPagesPhotos">>></button>
+<button mat-button *ngIf="pageCourantePhoto >= nbPagesPhotos" disabled>>></button>
+  
