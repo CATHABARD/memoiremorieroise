@@ -15,9 +15,14 @@ export class PhotoMorieresService {
   public photosAValider: PhotoMorieres[] = [];
   public currentPhoto: PhotoMorieres | undefined;
   photoMorieresSubject = new Subject<PhotoMorieres[]>();
+  photoMorieresAValiderSubject = new Subject<PhotoMorieres[]>();
 
   emitPhotoMorieres() {
     this.photoMorieresSubject.next(this.photos);
+  }
+
+  emitPhotoMorieresAValider() {
+    this.photoMorieresAValiderSubject.next(this.photosAValider);
   }
 
   constructor(private angularFirestore: AngularFirestore,
@@ -63,20 +68,26 @@ export class PhotoMorieresService {
   }
 
   public updatePhotoMorieres(p: PhotoMorieres) {
-    console.log(p);
     this.angularFirestore.collection('/PhotosMorieres').doc(p.id).update(
-      {
-        auteur: p.auteur,
-        titre: p.titre,
-        periode: p.periode,
-        texte: p.texte,
-        photo: p.photo,
-        status: p.status
-      });
+    {
+      auteur: p.auteur,
+      titre: p.titre,
+      periode: p.periode,
+      texte: p.texte,
+      photo: p.photo,
+      status: p.status
+    });
   }
 
   public getPhotosMorieresAValider() {
-    return this.angularFirestore.collection('/PhotosMorieres', p => p.where('status', '==', 0)).get()
+    this.angularFirestore.collection('/PhotosMorieres', p => p.where('status', '==', Status.initial)).get().subscribe(pmav => {
+      this.photosAValider = pmav.docs.map(P => {
+        let photo = P.data() as PhotoMorieres;
+        photo.id = P.id;
+        return photo;
+      });
+      this.emitPhotoMorieresAValider();
+    });
   }
 
   public validerPhotoMorieres(p: PhotoMorieres) {

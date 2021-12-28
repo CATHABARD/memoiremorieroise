@@ -66,6 +66,10 @@ export class AlbumPhotosComponent implements OnInit {
     this.router.navigate(['app-Add-photo-album']);
   }
 
+  onEdit(p: PhotoMorieres) {
+    this.router.navigate(['app-edit-photo-album/', p.id]);
+  }
+
   onDecrementePhoto() {
     this.photoCourante -= this.pasPhotos;
     this.pageCourantePhoto = Math.ceil(this.photoCourante / this.pasPhotos) + 1; 

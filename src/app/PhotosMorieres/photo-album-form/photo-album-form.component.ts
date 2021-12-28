@@ -48,15 +48,14 @@ export class PhotoAlbumFormComponent implements OnInit {
               private angularFireStorage: AngularFireStorage,
               private breakpointObserver: BreakpointObserver,
               private matDialog: MatDialog) {
+                console.log(this.photo);
                 if (this.photo == undefined) {
                   this.photo = new PhotoMorieres('', undefined, this.authService.getCurrentUser()?.id, '', '', '');
                 }
                 if (this.photo?.photo == undefined) {
                   this.photo!.photo = '';
                 }
-                // S'il s'agit d'une création
                   this.addPhotoForm = this.formBuilder.group({
-                    // , [Validators.required, FileValidator.maxContentSize(this.maxSize)]
                     photo: [undefined],
                     progressbar: ['Progression'],
                     titre: ['', [Validators.required, Validators.maxLength(50)]],
@@ -120,50 +119,50 @@ export class PhotoAlbumFormComponent implements OnInit {
     this.location.back();
   }
 
-    getErrorMessage(ctrl: string) {
-      let msg = '';
+  getErrorMessage(ctrl: string) {
+    let msg = '';
 
-      switch (ctrl) {
-        case 'titre':
-          if (this.addPhotoForm?.controls.titre.touched) {
-            msg = this.addPhotoForm.controls.titre.hasError('required') ? 'Vous devez saisir un titre' : '';
-          }
-          break;
-        case 'periode':
-          if (this.addPhotoForm?.controls.periode.touched) {
-            msg = this.addPhotoForm.controls.periode.hasError('required') ? 'Vous devez saisir une année' : '';
-          }
-          break;
-        case 'listeEleves':
-          if (this.addPhotoForm?.controls.texte.touched) {
-            msg = this.addPhotoForm.controls.texte.hasError('required') ? 'Vous devez saisir un texte' : '';
-          }
-          break;
-        case 'photo':
-          if (this.addPhotoForm?.controls.photo.touched) {
-            msg = this.addPhotoForm.controls.photo.hasError('required') ? 'Vous devez sélectionner une photo' : '';
-          }
-          break;
+    switch (ctrl) {
+      case 'titre':
+        if (this.addPhotoForm?.controls.titre.touched) {
+          msg = this.addPhotoForm.controls.titre.hasError('required') ? 'Vous devez saisir un titre' : '';
         }
-      return msg;
-    }
+        break;
+      case 'periode':
+        if (this.addPhotoForm?.controls.periode.touched) {
+          msg = this.addPhotoForm.controls.periode.hasError('required') ? 'Vous devez saisir une année' : '';
+        }
+        break;
+      case 'listeEleves':
+        if (this.addPhotoForm?.controls.texte.touched) {
+          msg = this.addPhotoForm.controls.texte.hasError('required') ? 'Vous devez saisir un texte' : '';
+        }
+        break;
+      case 'photo':
+        if (this.addPhotoForm?.controls.photo.touched) {
+          msg = this.addPhotoForm.controls.photo.hasError('required') ? 'Vous devez sélectionner une photo' : '';
+        }
+        break;
+      }
+    return msg;
+  }
 
-    onUpload(event: any) {
-      this.fileIsUploading = true;
-      const file = event.target.files[0];
-      const filePath = 'PhotosMorieres/' + new Date().toJSON() + '_' + event.target.files[0].name;
-      const fileRef = this.angularFireStorage.ref(filePath);
-      const task = this.angularFireStorage.upload(filePath, file);
-  
-      task.percentageChanges().subscribe((val: any) => {
-        this.uploadPercent = val as number;
-      });
-       task.then(() => {
-        this.fileIsUploading = false;
-        this.fileUploaded = true;
-        fileRef.getDownloadURL().subscribe((name: any) => {
-          this.fileUrl = name;
-        })
-      });
-    }
+  onUpload(event: any) {
+    this.fileIsUploading = true;
+    const file = event.target.files[0];
+    const filePath = 'PhotosMorieres/' + new Date().toJSON() + '_' + event.target.files[0].name;
+    const fileRef = this.angularFireStorage.ref(filePath);
+    const task = this.angularFireStorage.upload(filePath, file);
+
+    task.percentageChanges().subscribe((val: any) => {
+      this.uploadPercent = val as number;
+    });
+      task.then(() => {
+      this.fileIsUploading = false;
+      this.fileUploaded = true;
+      fileRef.getDownloadURL().subscribe((name: any) => {
+        this.fileUrl = name;
+      })
+    });
+  }
 }

@@ -4,7 +4,7 @@
 <mat-tab-group>
   <mat-tab label="Articles">
 
-<br/>
+  <br/>
   <h3>Liste des articles à valider. ({{articlesAValider.length}})</h3>  
   <div *ngFor="let a of articlesAValider">
     <mat-card>
@@ -49,6 +49,32 @@
     <br/>
   </div>
   </mat-tab>
+
+  <mat-tab label="Photos de Morières">
+    <div>
+      <h3>Liste des photos de Morières à valider. ({{photosMorieresAValider.length}})</h3>  
+      <div *ngFor="let p of photosMorieresAValider">
+        <mat-card>
+          <mat-card-title>{{p.titre}}</mat-card-title>
+          <mat-card-subtitle>{{p.periode}}</mat-card-subtitle>
+          <img class="img" src={{p.photo}} alt="Photo introuvable">
+          <mat-card-content class="card-container">
+            <div>
+              <pre>{{ p.texte }}</pre>
+            </div>
+            <mat-card-actions>
+              <div class="button-row">
+                <button  mat-raised-button color="accent" (click)="onValidePhotoMorieres(p)">Valider la photo de Morières</button>
+                <button  mat-raised-button color="warn" (click)="onRejetePhotoMorieres(p)">Rejeter la photo de Morières</button>
+              </div>
+            </mat-card-actions>
+          </mat-card-content>
+        </mat-card>
+      </div>
+      <br/>
+    </div>
+    </mat-tab>
+  
   <mat-tab label="Documents">
   <div>
     <h3>Liste des documents à valider. ({{pdfsAValider.length}})</h3>  

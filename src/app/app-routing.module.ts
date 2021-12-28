@@ -59,7 +59,7 @@ const routes: Routes = [
   { path: 'app-droits', canActivate: [AuthGuardService], component: DroitsComponent},
   { path: 'app-droits-form', canActivate: [AuthGuardService], component: DroitsFormComponent},
   { path: 'app-home-administration', canActivate: [AuthGuardService], component: HomeAdministrationComponent},
-  { path: 'app-liste-messages', component: ListeMessagesComponent},
+  { path: 'app-liste-messages', canActivate: [AuthGuardService], component: ListeMessagesComponent},
   { path: 'app-valider-articles', canActivate: [AuthGuardService], component: ValiderArticlesComponent},
   { path: 'app-messages', canActivate: [AuthGuardService], component: MessagesComponent},
   { path: 'app-add-actualite', canActivate: [AuthGuardService], component: AddActualiteComponent},
@@ -69,9 +69,9 @@ const routes: Routes = [
   { path: 'app-carousel-form', canActivate: [AuthGuardService], component: CarouselFormComponent},
   { path: 'app-add-photo-carousel', canActivate: [AuthGuardService], component: AddPhotoCarouselComponent},
   { path: 'app-album-photos', component: AlbumPhotosComponent},
-  { path: 'app-edit-photo-album', component: EditPhotoAlbumComponent},
-  { path: 'app-Add-photo-album', component: AddPhotoAlbumComponent},
-  { path: 'app-photo-album-form', component: PhotoAlbumFormComponent},
+  { path: 'app-edit-photo-album/:id', canActivate: [AuthGuardService], component: EditPhotoAlbumComponent},
+  { path: 'app-Add-photo-album', canActivate: [AuthGuardService], component: AddPhotoAlbumComponent},
+  { path: 'app-photo-album-form', canActivate: [AuthGuardService], component: PhotoAlbumFormComponent},
   { path: '', redirectTo: 'app-accueil', pathMatch: 'full' },
   { path: '**', redirectTo: 'app-accueil' }
 ];

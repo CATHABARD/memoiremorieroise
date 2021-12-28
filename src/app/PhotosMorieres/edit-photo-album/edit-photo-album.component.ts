@@ -13,9 +13,10 @@ export class EditPhotoAlbumComponent implements OnInit {
 
   constructor(private route: ActivatedRoute,
               private photosMorieresService: PhotoMorieresService) {
-        const id = this.route.snapshot.params.id;
+                const id = this.route.snapshot.params.id;
         photosMorieresService.getPhotoMorieres(id).subscribe(p => {
           this.photo = p.data() as PhotoMorieres;
+          this.photo.id = p.id;
         })
    }
 

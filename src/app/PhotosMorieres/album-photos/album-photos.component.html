@@ -25,6 +25,9 @@ Page {{pageCourantePhoto}} sur {{nbPagesPhotos}}
             {{p.texte}}
           </pre> 
         </mat-card-content> 
+        <div class="button-row">
+          <button mat-flat-button *ngIf="canWrite" color="primary" (click)="onEdit(p)">Modifier le texte</button>
+        </div>
       </mat-card>
     </mat-grid-tile>
   </div>
@@ -34,4 +37,4 @@ Page {{pageCourantePhoto}} sur {{nbPagesPhotos}}
 Page {{pageCourantePhoto}} sur {{nbPagesPhotos}}
 <button mat-button (click)="onIncrementePhoto()" *ngIf="pageCourantePhoto < nbPagesPhotos">>></button>
 <button mat-button *ngIf="pageCourantePhoto >= nbPagesPhotos" disabled>>></button>
-  
+

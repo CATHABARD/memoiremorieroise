@@ -13,6 +13,8 @@ import { Actualite } from 'src/app/modeles/actualite';
 import { ActualiteService } from 'src/app/services/actualite.service';
 import { Router } from '@angular/router';
 import { environment } from 'src/environments/environment';
+import { PhotoMorieres } from 'src/app/modeles/photosMorières';
+import { PhotoMorieresService } from 'src/app/services/photo-morieres.service';
 
 @Component({
   selector: 'app-home-administration',
@@ -25,20 +27,25 @@ export class HomeAdministrationComponent implements OnInit, OnDestroy {
   isEditPhotosDeClasse = false;
   isEditPdf = false;
   isModerateur = false;
+  
   totalAValider = 0;
   actualitesSubscription: Subscription;
   authSubscription: Subscription;
+  photosMorieresSubscription: Subscription;
   articlesAValider: Article[] = [];
   pdfsAValider: Pdf[] = [];
   photosAValider: Photo[] = [];
   actualites: Actualite[] = [];
   nonActualites: Actualite[] = [];
+  photosMorieresAValider: PhotoMorieres[] = [];
+
   version: string = environment.version;
 
   constructor(private authService: AuthService,
               private articlesService: ArticlesService,
               private pdfService: PdfService,
               private photoService: PhotosService,
+              private photosMorieresService: PhotoMorieresService,
               public actualiteService: ActualiteService,
               private router: Router) {
     this.authSubscription = this.authService.authSubject.pipe(shareReplay(1)).subscribe(data => {
@@ -61,7 +68,12 @@ export class HomeAdministrationComponent implements OnInit, OnDestroy {
         });
       });
     });
+
+    this.photosMorieresSubscription = this.photosMorieresService.photoMorieresAValiderSubject.pipe(shareReplay(1)).subscribe(pm => {
+      this.photosMorieresAValider = pm;
+    });
     this.actualiteService.emitActualites();
+    this.photosMorieresService.getPhotosMorieresAValider();
   }
 
   ngOnInit() {
@@ -136,6 +148,18 @@ export class HomeAdministrationComponent implements OnInit, OnDestroy {
     this.photoService.rejeterPhoto(p);
     const i = this.photosAValider.indexOf(p);
     this.photosAValider.splice(i, 1);
+  }
+
+  onValidePhotoMorieres(p: PhotoMorieres) {
+    this.photosMorieresService.validerPhotoMorieres(p);
+    const i = this.photosMorieresAValider.indexOf(p);
+    this.photosMorieresAValider.splice(i, 1);
+  }
+  
+  onRejetePhotoMorieres(p: PhotoMorieres) {
+    this.photosMorieresService.rejeterPhotoMorieres(p);
+    const i = this.photosMorieresAValider.indexOf(p);
+    this.photosMorieresAValider.splice(i, 1);
   }
 
   onValidePdf(p: Pdf) {
