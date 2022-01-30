@@ -13,7 +13,7 @@ export const environment = {
     storageBucket: "memoiremorieroise-73e3b.appspot.com",
     messagingSenderId: "201883520409",
   },
-  version: '1.3.1'
+  version: '1.3.2'
 };
 
 /*
