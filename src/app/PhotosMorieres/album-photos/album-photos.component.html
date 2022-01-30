@@ -5,7 +5,7 @@
 </button>
 <hr width="100%" color="blue" size="3">
 
-<h3>Cliquez sur une photo pour l'agrandir.</h3>
+<h1>Cliquez sur une photo pour l'agrandir.</h1>
 <button mat-button (click)="onDecrementePhoto()" *ngIf="pageCourantePhoto > 1"><<</button>
 <button mat-button *ngIf="pageCourantePhoto <= 1" disabled><<</button>
 Page {{pageCourantePhoto}} sur {{nbPagesPhotos}}

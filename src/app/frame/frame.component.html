@@ -15,15 +15,15 @@
       <mat-nav-list>
         <button mat-button (click)="onMessage()" *ngIf="isAuth">Envoyer un message.</button>
       </mat-nav-list>
-      <h4>Articles :</h4>
+      <h1>Articles :</h1>
       <mat-nav-list>
         <button mat-button *ngFor="let t of themesService.themes" (click)="onListeArticles(t)">{{t.nom}}</button>
       </mat-nav-list>
       <hr width="100%" color="blue" size="3">
-      <h4>Album photos :</h4>
+      <h1>Album photos :</h1>
       <button mat-button (click)="onAlbumPhotos()">Photos de Morières</button>
       <hr width="100%" color="blue" size="3">
-      <h4>Photos de classes :</h4>
+      <h1>Photos de classes :</h1>
       <mat-nav-list>
         <button mat-button (click)="onEditAlbum(1901, 1910)">1901-1910</button>
         <br/>
@@ -47,21 +47,21 @@
       </mat-nav-list>
       <mat-nav-list>
         <button mat-button (click)="onOpenPdf()">
-          <h3>Autres documents sur Morières.</h3>
+          <h1>Documents sur Morières.</h1>
         </button>
-        </mat-nav-list>
+      </mat-nav-list>
       <mat-nav-list>
-        <h4>Autres sources d'information</h4>
+        <h1>Autres information</h1>
       <ul>
         <li><a href="http://www.ville-moriereslesavignon.fr/" target="_blank">Le site officiel de la ville</a></li><br/>
       </ul>
-      <h4>A voir sur wikipedia</h4>
+      <h1>Voir sur wikipedia</h1>
       <ul>
         <li><a href="https://fr.wikipedia.org/wiki/Mori%C3%A8res-l%C3%A8s-Avignon" target="_blank">Morières les Avignon</a></li><br/>
         <li><a href="https://fr.wikipedia.org/wiki/Jean-Charles_de_Folard" target="_blank">Le chevalier de Folard</a></li><br/>
         <li><a href="https://fr.wikipedia.org/wiki/Agricol_Perdiguier" target="_blank">Agricol Perdiguier</a></li><br/>
       </ul>
-      <h4>A voir sur Petit patrimoine</h4>
+      <h1>Voir sur Petit patrimoine</h1>
       <ul>
         <li><a href="https://www.petit-patrimoine.com/fiche-petit-patrimoine.php?id_pp=84081_1" target="_blank">L'église de Morières</a></li>
       </ul>
