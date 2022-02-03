@@ -167,6 +167,7 @@ export class FrameComponent implements OnInit, OnDestroy {
   onDisconnectDialog() {
     this.authService.SignOut();
     this.router.navigate(['app-accueil']);
+    this.authService.emitUserChanged();
   }
   
   onMessage() {

@@ -43,7 +43,7 @@ export class AuthService {
                                     'Visiteur',
                                     'Visiteur',
                                     true,
-                                    Status.initial);
+                                    Status.visiteur);
           this.emitUserChanged();
         } else {
           let o = usersService.getUserByUid(newUser.uid).subscribe((user: any) => {
@@ -91,12 +91,15 @@ export class AuthService {
   }
 
   createNewUser(user: User, password: string) {
+  if(user.email == undefined || password == undefined)
+    return;
   return new Promise((resolve, reject) => {
     this.angularFireAuth.createUserWithEmailAndPassword(user!.email!.trim(), password.trim()).then(u => {
         u.user!.updateProfile({displayName: user.nom + '/' + user.prenom});
           user.uid = u.user!.uid;
-          u.user!.sendEmailVerification().then(() => {
-            alert('Un email vous a été envoyé, merci de cliquer sur le lien qu\'il contien afin de valider vôtre inscription.');
+          if(u.user)
+            u.user.sendEmailVerification().then(() => {
+              alert('Un email vous a été envoyé, merci de cliquer sur le lien qu\'il contien afin de valider vôtre inscription.');
           }).catch((error: any) => {
               console.log(error);
               reject(error);
@@ -118,7 +121,33 @@ export class AuthService {
     return this.angularFireAuth.signInWithEmailAndPassword(email, password).then(user => {
           // Vérifier si le mail a bien été validé
           if (user.user!.emailVerified) {
-            this.emitUserChanged();
+            //  Controler si user est dans la base de données
+            if(user.user) {
+              // console.log('Vérifié.');
+              this.getUserFromDB(user.user).subscribe(u => {
+                let currentsUser: User[] = u.docs.map((U: any) => {
+                  let user = U.data() as User;
+                  user.id = U.id;
+                  return user;
+                });
+                if(currentsUser.length > 0) {
+                  // l'utilisateur est enregistré
+                  this.currentUser = currentsUser[0];
+                  this.emitUserChanged();
+                } else {
+                  // Il faut créer l'utilisateur dans la BD
+                  this.currentUser = new User('', 
+                                              user.user?.uid,
+                                              user.user?.displayName?.substring(0, user.user.displayName?.indexOf('/')),
+                                              user.user?.displayName?.substring(user.user.displayName?.indexOf('/') + 1), 
+                                              user.user?.email!,
+                                              true,
+                                              Status.valide);
+                    this.usersService.addUser(this.currentUser);
+                    this.emitUserChanged();
+                }
+              })
+            }
           } else { // mail non validé
             this.router.navigate(['app-unvalidate-user-message']);
           }

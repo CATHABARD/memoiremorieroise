@@ -23,7 +23,7 @@
     "@angular/router": "~12.2.0",
     "@ng-bootstrap/ng-bootstrap": "^10.0.0",
     "bootstrap": "^5.1.1",
-    "firebase": "^9.0.2",
+    "firebase": "^9.6.5",
     "firebase-cli": "^1.2.0",
     "ngx-mat-file-input": "^3.0.0-beta.0",
     "rxfire": "^6.0.0",
