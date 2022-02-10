@@ -50,7 +50,8 @@ export class ArticleFormComponent implements OnInit {
               private authService: AuthService,
               private articlesService: ArticlesService,
               private router: Router,
-              private breakpointObserver: BreakpointObserver) {
+              private breakpointObserver: BreakpointObserver,
+              private location: Location) {
                   this.form = this.formBuilder.group({
                     photo: [{ value: this.article?.photo, visible: this.isFileAttached }],
                     progressbar: [{value: 'Progression', visible: this.isFileAttached }],
@@ -117,7 +118,6 @@ export class ArticleFormComponent implements OnInit {
   onSubmit() {
     (this.article != undefined)? this.article.titre =  this.form?.get('titre')?.value : '';
     (this.article != undefined)? this.article.texte =  this.form?.get('texte')?.value : '';
-    (this.article != undefined)? this.article.idTheme = this.themesService.currentTheme?.id : '';
     (this.article != undefined)? this.article.photo = this.downloadURL: '';
     (this.article != undefined)? this.article.legende = this.form?.get('legende')?.value : '';
     // Ajouter un article
@@ -132,7 +132,7 @@ export class ArticleFormComponent implements OnInit {
     }
     this.themesService.getThemes();
     this.articlesService.getArticlesCurrentTheme();
-    this.router.navigate(['app-liste-articles/']);
+    this.location.back();
   }
 
   onUpload(event: any) {

@@ -18,6 +18,7 @@
         <mat-card-actions>
           <div class="button-row">
             <button  mat-raised-button color="accent" (click)="onValideArticle(a)">Valider l'article</button>
+            <button  mat-raised-button color="accent" (click)="onEditeArticle(a)">Editer l'article</button>
             <button  mat-raised-button color="warn" (click)="onRejeteArticle(a)">Rejeter l'article</button>
           </div>
         </mat-card-actions>
@@ -40,6 +41,7 @@
           <mat-card-actions>
             <div class="button-row">
               <button  mat-raised-button color="accent" (click)="onValidePhoto(p)">Valider la photo de classe</button>
+              <button  mat-raised-button color="accent" (click)="onEditePhoto(p)">Editer la photo de classe</button>
               <button  mat-raised-button color="warn" (click)="onRejetePhoto(p)">Rejeter la photo de classe</button>
             </div>
           </mat-card-actions>
@@ -107,7 +109,7 @@
         <mat-card *ngFor="let aa of actualites">
           <mat-card-title>{{aa.titre}}</mat-card-title>
           <mat-card-subtitle>{{aa.sousTitre}}</mat-card-subtitle>
-          <img class="img" src={{aa.photo}} alt="Photo">
+          <img *ngIf="aa.photo" class="img" src={{aa.photo}} alt="Photo">
           <mat-card-content class="card-container">
             <div>
               <pre>{{ aa.texte }}</pre>

@@ -8,6 +8,8 @@ import { AuthService } from 'src/app/services/auth.service';
 import { ArticlesService } from 'src/app/services/articles.service';
 import { PdfService } from 'src/app/services/pdf.service';
 import { PhotosService } from 'src/app/services/photos.service';
+import { MatDialog } from '@angular/material/dialog';
+import { DialogMaximiseArticleImageComponent } from 'src/app/articles/liste-articles/liste-articles.component';
 
 @Component({
   selector: 'app-valider-articles',
@@ -34,7 +36,8 @@ export class ValiderArticlesComponent implements OnInit, OnDestroy {
               public pdfService: PdfService,
               public photosService: PhotosService,
               private authService: AuthService,
-              private articlesService: ArticlesService) {
+              private articlesService: ArticlesService,
+              private matDialog: MatDialog) {
     this.authSubscription = this.authService.authSubject.subscribe(data => {
       if (data != null) {
         let currentUser = this.authService.getCurrentUser();
@@ -91,6 +94,14 @@ export class ValiderArticlesComponent implements OnInit, OnDestroy {
     });
   }
 
+  onEditeArticle(a: Article) {
+    this.articlesService.currentArticle = a;
+    const dialogRef = this.matDialog.open(DialogMaximiseArticleImageComponent, {
+      height: '90%',
+      width: '60%'
+    });
+  }
+
   onValidePdf(p: Pdf) {
     this.pdfService.validerPdf(p);
     this.pdfService.getPdfs();
@@ -108,5 +119,4 @@ export class ValiderArticlesComponent implements OnInit, OnDestroy {
   onRejetePhoto(p: Photo) {
     this.photosService.rejeterPhoto(p);
   }
-
 }

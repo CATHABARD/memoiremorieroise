@@ -28,7 +28,7 @@
     </mat-form-field>
     <br/>
     <mat-form-field class="full-width">
-      <textarea matInput rows="25" cols="250" formControlName="texte" placeholder="Texte">
+      <textarea matInput rows="45" cols="250" formControlName="texte" placeholder="Texte">
       </textarea>
       <div class="row">
         <mat-error class="error-message" *ngIf="form?.get('texte')?.errors?.required">{{getErrorMessage('texte')}}</mat-error>

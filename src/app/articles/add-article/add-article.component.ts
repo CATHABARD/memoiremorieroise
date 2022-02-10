@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Article } from '../../modeles/article';
 import { AuthService } from 'src/app/services/auth.service';
-import { GlobalService } from 'src/app/services/global.service';
+import { ThemesService } from 'src/app/services/themes.service';
 
 @Component({
   selector: 'app-add-article',
@@ -9,9 +9,10 @@ import { GlobalService } from 'src/app/services/global.service';
   styleUrls: ['./add-article.component.css']
 })
 export class AddArticleComponent implements OnInit {
-  article = new Article('', '', '', '', new Date().toJSON(), '', '', '', this.authService.getCurrentUser()?.uid, '', 0 );
+  article = new Article('', '', '', this.themesService.currentTheme?.id, new Date().toJSON(), '', '', '', this.authService.getCurrentUser()?.uid, '', 0 );
 
-  constructor(private globalService: GlobalService, private authService: AuthService) {
+  constructor(private authService: AuthService,
+              private themesService: ThemesService) {
 
   }
 

@@ -15,6 +15,8 @@ import { Router } from '@angular/router';
 import { environment } from 'src/environments/environment';
 import { PhotoMorieres } from 'src/app/modeles/photosMorières';
 import { PhotoMorieresService } from 'src/app/services/photo-morieres.service';
+import { MatDialog } from '@angular/material/dialog';
+import { DialogMaximiseArticleImageComponent } from 'src/app/articles/liste-articles/liste-articles.component';
 
 @Component({
   selector: 'app-home-administration',
@@ -47,7 +49,8 @@ export class HomeAdministrationComponent implements OnInit, OnDestroy {
               private photoService: PhotosService,
               private photosMorieresService: PhotoMorieresService,
               public actualiteService: ActualiteService,
-              private router: Router) {
+              private router: Router,
+              private matDialog: MatDialog) {
     this.authSubscription = this.authService.authSubject.pipe(shareReplay(1)).subscribe(data => {
       const user = this.authService.getCurrentUser();
       if( user != null && user != undefined ) {
@@ -132,6 +135,11 @@ export class HomeAdministrationComponent implements OnInit, OnDestroy {
     this.articlesAValider.splice(i, 1);
   }
   
+  onEditeArticle(a: Article) {
+      this.router.navigate(['app-edit-article/', a.id]);
+   }
+  
+  
   onRejeteArticle(a: Article) {
     this.articlesService.rejeteArticle(a)
     const i = this.articlesAValider.indexOf(a);
@@ -142,6 +150,10 @@ export class HomeAdministrationComponent implements OnInit, OnDestroy {
     this.photoService.validerPhoto(p);
     const i = this.photosAValider.indexOf(p);
     this.photosAValider.splice(i, 1);
+  }
+  
+  onEditePhoto(p: Photo) {
+    this.router.navigate(['app-edit-photo-de-classe/', p.id]);
   }
   
   onRejetePhoto(p: Photo) {

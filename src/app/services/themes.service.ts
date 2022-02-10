@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import { AngularFirestore } from '@angular/fire/compat/firestore';
 import { Observable } from 'rxjs';
 import { Theme } from '../modeles/themes';
+import { Status } from './global.service';
 
 @Injectable({
   providedIn: 'root'
@@ -13,7 +14,7 @@ export class ThemesService {
   constructor(private angularFirestore: AngularFirestore) { }
 
   getThemes(): void {
-    this.angularFirestore.collection('Themes').get().subscribe(t => {
+    this.angularFirestore.collection('Themes', t => t.where('status', '==', Status.valide)).get().subscribe(t => {
       this.themes = t.docs.map(T => {
         const V = T.data() as Theme;
         V.id = T.id;

@@ -78,6 +78,7 @@ export class ActualiteService {
         titre: a.titre,
         sousTitre: a.sousTitre,
         texte: a.texte,
+        photo: a.photo
       }).then(() => {
         this.getActualites();
       });

@@ -20,7 +20,7 @@ export class ActualiteFormComponent implements OnInit {
   isFileAttached: boolean = false;
 
   uploadPercent: number | undefined;
-  downloadURL: string | undefined;
+  downloadURL = '';
 
   constructor(private formBuilder: FormBuilder,
               private router: Router,
@@ -118,6 +118,9 @@ this.form.controls.titre.setValue(this.actualite?.titre);
       this.actualiteService.AddActualite(this.actualite);
     } else {
       // Update
+      
+      if(this.downloadURL != '')
+        this.actualite!.photo = this.downloadURL;
       this.actualiteService.UpdateActualite(this.actualite!);
     }
     this.router.navigate(['app-home-administration']);  

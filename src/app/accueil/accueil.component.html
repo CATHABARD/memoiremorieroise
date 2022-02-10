@@ -65,7 +65,7 @@
               </pre>
             </mat-card-subtitle>
           </mat-card-header>
-          <img mat-card-image class="img" src={{a.photo}}>
+          <img *ngIf="a.photo" mat-card-image class="img" src={{a.photo}}>
           <mat-card-content>
               <pre>
                 {{a.texte}}
