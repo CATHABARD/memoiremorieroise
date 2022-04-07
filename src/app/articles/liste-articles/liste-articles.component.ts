@@ -1,4 +1,4 @@
-import { Component, OnInit, OnDestroy } from '@angular/core';
+import { Component, OnInit, OnDestroy, AfterViewInit, OnChanges, SimpleChanges, AfterContentInit } from '@angular/core';
 import { GlobalService, Droits } from 'src/app/services/global.service';
 import { Article } from '../../modeles/article';
 import { Router } from '@angular/router';
@@ -14,7 +14,7 @@ import { ArticlesService } from 'src/app/services/articles.service';
   templateUrl: './liste-articles.component.html',
   styleUrls: ['./liste-articles.component.css']
 })
-export class ListeArticlesComponent implements OnInit, OnDestroy {
+export class ListeArticlesComponent implements OnInit, OnDestroy, AfterContentInit {
   public article: Article | undefined;
   public isConnected = false;
   public canWrite = false;
@@ -47,16 +47,23 @@ export class ListeArticlesComponent implements OnInit, OnDestroy {
       }
     })
     authService.emitUserChanged();
-  }
-
-  ngOnInit() {
 
   }
 
-  ngOnDestroy() {
+  ngOnInit(): void {
+
+  }
+
+  ngOnDestroy(): void {
+    this.globalService.finDeVue();
     if( this.userSubscription != null) {
       this.userSubscription.unsubscribe();
     }
+  }
+
+  ngAfterContentInit(): void {
+    //console.log('ngAfterContentInit');
+    this.globalService.finDeVue();
   }
 
   onEdit(a: Article) {

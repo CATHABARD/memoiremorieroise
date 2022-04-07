@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { Router } from '@angular/router';
 import { Subscription } from 'rxjs';
@@ -14,7 +14,7 @@ import { AddPhotoAlbumComponent } from '../add-photo-album/add-photo-album.compo
   templateUrl: './album-photos.component.html',
   styleUrls: ['./album-photos.component.css']
 })
-export class AlbumPhotosComponent implements OnInit {
+export class AlbumPhotosComponent implements OnInit, OnDestroy {
   public photos: PhotoMorieres[] = [];
   public isConnected = false;
   public canWrite = false;
@@ -23,12 +23,13 @@ export class AlbumPhotosComponent implements OnInit {
   readonly pasPhotos = 4;
   pageCourantePhoto = 1;
   nbPagesPhotos = 0;
-  photosSubscription: Subscription;
-  photosCarouselSubscription:  Subscription | undefined;
-  authSubscription: Subscription | undefined;
+  private photosSubscription: Subscription;
+  private photosCarouselSubscription:  Subscription | undefined;
+  private authSubscription: Subscription | undefined;
 
   constructor(public photosMorieresService: PhotoMorieresService,
               private router: Router,
+              private globalService: GlobalService,
               private authService: AuthService,
               private matDialog: MatDialog) {
 
@@ -59,7 +60,22 @@ export class AlbumPhotosComponent implements OnInit {
                 this.photosMorieresService.getPhotosMorieres();
                }
 
+  
   ngOnInit(): void {
+
+  }
+
+  ngOnDestroy(): void {
+    this.globalService.finDeVue();
+    if(this.authSubscription != null) {
+      this.authSubscription.unsubscribe();
+    }
+    if(this.photosSubscription != null) {
+      this.photosSubscription.unsubscribe();
+    }
+    if(this.photosCarouselSubscription != null) {
+      this.photosCarouselSubscription.unsubscribe();
+    }
   }
 
   onAddPhoto() {

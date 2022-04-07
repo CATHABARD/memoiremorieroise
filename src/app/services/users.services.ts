@@ -7,22 +7,22 @@ import { AngularFirestore } from '@angular/fire/compat/firestore';
 })
 export class UsersService {
 
-  constructor(private angulatFirestore: AngularFirestore) { }
+  constructor(private angularFirestore: AngularFirestore) { }
 
   getUsers() {
-    return this.angulatFirestore.collection('Users').get(); 
+    return this.angularFirestore.collection('Users').get(); 
 }
 
   getUser(id: string) {
-      return this.angulatFirestore.collection('Users').doc(id).get(); 
+      return this.angularFirestore.collection('Users').doc(id).get(); 
   }
 
-  getUserByUid(uid: string) {
-    return this.angulatFirestore.collection('Users', u => u.where('uid', '==', uid)).get(); 
+  getUserByUid(uid: string ) {
+    return this.angularFirestore.collection('Users/', u => u.where('uid', '==', uid)).get();
   }
 
   addUser(user: User) {
-    return this.angulatFirestore.collection('Users').add({
+    return this.angularFirestore.collection('Users').add({
       nom: user.nom,
       prenom: user.prenom,
       email: user.email,
@@ -35,7 +35,7 @@ export class UsersService {
 
   public changeDroitsUser(idUser: string, droits: number)  {
     console.log(idUser + '  '  + droits);
-    this.angulatFirestore.collection('Users').doc(idUser).update({
+    this.angularFirestore.collection('Users').doc(idUser).update({
       status: droits
     });
   }

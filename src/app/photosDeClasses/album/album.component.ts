@@ -17,7 +17,7 @@ import { shareReplay } from 'rxjs/operators';
 })
 export class AlbumComponent implements OnInit, OnDestroy {
   public selectedPhoto: Photo | undefined;
-  queryParamsSuscription: Subscription | undefined;
+  private queryParamsSubscription: Subscription | undefined;
   public isConnected = false;
   public canWrite: boolean;
 
@@ -59,7 +59,7 @@ export class AlbumComponent implements OnInit, OnDestroy {
                 })
                 authService.emitUserChanged();
             
-                this.queryParamsSuscription = this.route.queryParamMap.subscribe(param => {
+                this.queryParamsSubscription = this.route.queryParamMap.subscribe(param => {
                   if (param.has('debut') && param.has('fin')) {
                     this.debut = (param.get('debut') as unknown) as number;
                     this.fin = (param.get('fin') as unknown) as number;
@@ -79,12 +79,12 @@ export class AlbumComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit() {
-
   }
 
   ngOnDestroy() {
-    if (this.queryParamsSuscription != null) {
-      this.queryParamsSuscription.unsubscribe();
+    this.globalService.finDeVue();
+    if (this.queryParamsSubscription != null) {
+      this.queryParamsSubscription.unsubscribe();
     }
     if( this.userSubscription != null) {
       this.userSubscription.unsubscribe();

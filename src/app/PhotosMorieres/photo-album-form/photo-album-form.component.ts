@@ -1,5 +1,5 @@
 import { BreakpointObserver, Breakpoints } from '@angular/cdk/layout';
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, Input, OnDestroy, OnInit } from '@angular/core';
 import { AngularFireStorage } from '@angular/fire/compat/storage';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Observable, Subscription } from 'rxjs';
@@ -17,7 +17,7 @@ import { MatDialog } from '@angular/material/dialog';
   templateUrl: './photo-album-form.component.html',
   styleUrls: ['./photo-album-form.component.css']
 })
-export class PhotoAlbumFormComponent implements OnInit {
+export class PhotoAlbumFormComponent implements OnInit, OnDestroy {
   @Input() photo: PhotoMorieres | undefined;
 
   uploadPercent = 0;
@@ -67,7 +67,7 @@ export class PhotoAlbumFormComponent implements OnInit {
                   this.userSubscription = this.authService.authSubject.pipe(shareReplay(1)).subscribe(u => {
                     this.currentUser = u;
                     if (u != null) {
-                      this.isConnected = (u != null && u.email?.trim() != authService.getVisiteur()?.trim());
+                      this.isConnected = (u != null && u.email?.trim() != authService.getVisiteur().id.trim());
                       if (this.isConnected) {
                         const d = u.status;
                         // tslint:disable-next-line:no-bitwise
@@ -87,6 +87,12 @@ export class PhotoAlbumFormComponent implements OnInit {
             
   ngOnInit() {
     this.initForm();
+  }
+
+  ngOnDestroy(): void {
+      if(this.userSubscription != null) {
+        this.userSubscription.unsubscribe();
+      }
   }
 
   initForm() {

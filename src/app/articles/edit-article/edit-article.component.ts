@@ -11,7 +11,6 @@ import { ArticlesService } from 'src/app/services/articles.service';
 })
 export class EditArticleComponent implements OnInit, OnDestroy {
   public article: Article | undefined;
-  // GetSingleArticleSuscription: Subscription;
 
   constructor(public globalService: GlobalService,
               private articlesService: ArticlesService,

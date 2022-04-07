@@ -108,6 +108,7 @@ import { PhotosService } from './services/photos.service';
 import { UsersService } from './services/users.services';
 
 import { SafePipe } from './safe.pipe';
+import { ConnexionsComponent } from './administration/connexions/connexions.component';
 
 @NgModule({
   declarations: [
@@ -150,7 +151,8 @@ import { SafePipe } from './safe.pipe';
     EditPhotoAlbumComponent,
     AddPhotoAlbumComponent,
     PhotoAlbumFormComponent,
-    DialogMaximisePhotoMorieresComponent
+    DialogMaximisePhotoMorieresComponent,
+    ConnexionsComponent
   ],
   imports: [
     BrowserModule,

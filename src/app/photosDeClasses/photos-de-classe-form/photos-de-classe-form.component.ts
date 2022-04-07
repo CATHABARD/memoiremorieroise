@@ -1,7 +1,7 @@
-import { Component, OnInit, Input } from '@angular/core';
+import { Component, OnInit, Input, OnDestroy } from '@angular/core';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { Photo } from '../../modeles/photo';
-import { Droits } from 'src/app/services/global.service';
+import { Droits, GlobalService } from 'src/app/services/global.service';
 import { Location } from '@angular/common';
 import { Observable, Subscription } from 'rxjs';
 // import { BreakpointObserver, Breakpoints } from '@angular/cdk/layout';
@@ -17,7 +17,7 @@ import { AngularFireStorage } from '@angular/fire/compat/storage';
   templateUrl: './photos-de-classe-form.component.html',
   styleUrls: ['./photos-de-classe-form.component.css']
 })
-export class PhotosDeClasseFormComponent implements OnInit {
+export class PhotosDeClasseFormComponent implements OnInit, OnDestroy {
   @Input() photo: Photo | undefined;
 
   uploadPercent = 0;
@@ -42,6 +42,7 @@ export class PhotosDeClasseFormComponent implements OnInit {
 
 
   constructor(private formBuilder: FormBuilder,
+    private globalService: GlobalService,
               private authService: AuthService,
               private photosService: PhotosService,
               private location: Location,
@@ -68,7 +69,7 @@ export class PhotosDeClasseFormComponent implements OnInit {
                   this.userSubscription = this.authService.authSubject.pipe(shareReplay(1)).subscribe(u => {
                     this.currentUser = u;
                     if (u != null) {
-                      this.isConnected = (u != null && u.email?.trim() != authService.getVisiteur()?.trim());
+                      this.isConnected = (u != null && u.email?.trim() != authService.getVisiteur().id.trim());
                       if (this.isConnected) {
                         const d = u.status;
                         // tslint:disable-next-line:no-bitwise
@@ -87,7 +88,14 @@ export class PhotosDeClasseFormComponent implements OnInit {
   }
             
   ngOnInit() {
-    this.initForm();
+   this.initForm();
+  }
+
+  ngOnDestroy(): void {
+    this.globalService.finDeVue();
+      if(this.userSubscription != null) {
+        this.userSubscription.unsubscribe();
+      }
   }
 
   initForm() {

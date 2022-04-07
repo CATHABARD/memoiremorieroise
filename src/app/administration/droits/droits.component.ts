@@ -17,7 +17,7 @@ export class DroitsComponent implements OnInit, OnDestroy {
   public formVisible = false;
   dialogResultSuscription: Subscription | undefined;
 
-  displayedColumns: string[] = ['uid', 'email', 'nom', 'prenom', 'status', 'action'];
+  displayedColumns: string[] = ['email', 'nom', 'prenom', 'status', 'action'];
 
   constructor(private usersService: UsersService,
               public dialog: MatDialog) { }

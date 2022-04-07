@@ -13,7 +13,7 @@ import { shareReplay } from 'rxjs/operators';
   templateUrl: './liste-pdf.component.html',
   styleUrls: ['./liste-pdf.component.scss']
 })
-export class ListePdfComponent implements OnDestroy {
+export class ListePdfComponent implements OnInit, OnDestroy {
   url: string | undefined = '';
   canWrite = false;
   isConnected = false;
@@ -73,8 +73,12 @@ export class ListePdfComponent implements OnDestroy {
                   }
             }
 
+  ngOnInit() {
+  }
+  
   ngOnDestroy() {
-    if(this.userSubscription) {
+    this.globalService.finDeVue();
+    if(this.userSubscription != null) {
       this.userSubscription.unsubscribe();
     }
   }

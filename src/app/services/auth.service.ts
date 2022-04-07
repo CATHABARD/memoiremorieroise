@@ -3,7 +3,7 @@ import { Router } from '@angular/router';
 import { User } from '../modeles/user';
 import { MatDialog, MatDialogConfig } from '@angular/material/dialog';
 import { Subject } from 'rxjs';
-import { Droits, Status } from './global.service';
+import { Droits, GlobalService, Status } from './global.service';
 import { UsersService } from './users.services';
 import { UserDatasComponent } from '../auth/user-datas/user-datas.component';
 import { AngularFirestore } from '@angular/fire/compat/firestore'
@@ -14,7 +14,8 @@ import * as auth from '@firebase/auth';
 })
 export class AuthService {
   private readonly visiteur = {email: 'memoiremorieroise@gmail.com',
-                      password: 'MyPepita51'}
+                      password: 'MyPepita51',
+                      id: 'A7Yrrs0jeYEtOwazT5L1'}
 
   userId: string = '';
   private currentUser: User | undefined | null;
@@ -37,7 +38,7 @@ export class AuthService {
       })
     } else {
       if(newUser.email == this.visiteur.email) { // Visiteur est connecté
-        this.currentUser = new User('',
+        this.currentUser = new User(this.visiteur.id,
                                     newUser.uid,
                                     'Visiteur',
                                     'Visiteur',
@@ -75,7 +76,7 @@ export class AuthService {
   }
 
   getVisiteur() {
-    return this.visiteur.email;
+    return this.visiteur;
   }
 
   getCurrentUser() {
@@ -91,8 +92,8 @@ export class AuthService {
   }
 
   createNewUser(user: User, password: string) {
-  if(user.email == undefined || password == undefined)
-    return;
+  //if(user.email == undefined || password == undefined)
+    // return;
   return new Promise((resolve, reject) => {
     this.angularFireAuth.createUserWithEmailAndPassword(user!.email!.trim(), password.trim()).then(u => {
         u.user!.updateProfile({displayName: user.nom + '/' + user.prenom});
@@ -112,11 +113,6 @@ export class AuthService {
       })
   }
 
-  updateCurrentUser(u: User) {
-    // firebase.default.auth().onAuthStateChanged(U => U?.updateProfile({displayName: u.nom + '/' + u.prenom}));
-  }
-
-
   SignInUser(email: string, password: string) {
     return this.angularFireAuth.signInWithEmailAndPassword(email, password).then(user => {
           // Vérifier si le mail a bien été validé
@@ -124,19 +120,20 @@ export class AuthService {
             //  Controler si user est dans la base de données
             if(user.user) {
               // console.log('Vérifié.');
-              this.getUserFromDB(user.user).subscribe(u => {
+              this.usersService.getUserByUid(user.user.uid).subscribe(u => {
                 let currentsUser: User[] = u.docs.map((U: any) => {
                   let user = U.data() as User;
                   user.id = U.id;
                   return user;
                 });
-                if(currentsUser.length > 0) {
+                if(currentsUser && currentsUser.length > 0) {
                   // l'utilisateur est enregistré
                   this.currentUser = currentsUser[0];
                   this.emitUserChanged();
                 } else {
                   // Il faut créer l'utilisateur dans la BD
-                  this.currentUser = new User('', 
+                  if(user.user?.email != this.visiteur.email) {
+                    this.currentUser = new User('', 
                                               user.user?.uid,
                                               user.user?.displayName?.substring(0, user.user.displayName?.indexOf('/')),
                                               user.user?.displayName?.substring(user.user.displayName?.indexOf('/') + 1), 
@@ -144,13 +141,16 @@ export class AuthService {
                                               true,
                                               Status.valide);
                     this.usersService.addUser(this.currentUser);
+                    this.router.navigate(['app-accueil']);
                     this.emitUserChanged();
+                  }
                 }
               })
             }
           } else { // mail non validé
             this.router.navigate(['app-unvalidate-user-message']);
           }
+          this.router.navigate(['app-accueil']);
         }).catch(error => {
         console.log(error.message);
         alert('Erreur de connexion, mail ou mot de passe incorrect ?');
@@ -206,7 +206,7 @@ export class AuthService {
           this.currentUser.prenom = user.user.displayName?.substring(user.user.displayName?.indexOf('/') + 1);
           this.currentUser.status = Droits.visiteur;
           // Rechercher si user est dans la BD
-          this.getUserFromDB(user.user).subscribe((u: any) => {
+          this.usersService.getUserByUid(user.user.uid).subscribe((u: any) => {
             data = u.docs.map((U: any) => {
               let user = U.data() as User;
               user.id = U.id;
@@ -227,7 +227,7 @@ export class AuthService {
                 this.usersService.addUser(this.currentUser!);
               });
              } else {
-
+              this.router.navigate(['app-accueil']);
             }
           });
         } else { // mail non vérifié
@@ -239,10 +239,4 @@ export class AuthService {
         alert('Erreur de connexion, adresse mail ou mot de passe incorrect ?');
       });
   }
-
-  getUserFromDB(user: firebase.default.User ) {
-    return this.angularFirestore.collection('Users/', u => u.where('uid', '==', user.uid)).get();
-  }
-
-
 }

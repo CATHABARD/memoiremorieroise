@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { Subscription } from 'rxjs';
 import { Carousel } from 'src/app/modeles/carousel';
@@ -9,14 +9,14 @@ import { PhotosService } from 'src/app/services/photos.service';
   templateUrl: './carousel.component.html',
   styleUrls: ['./carousel.component.css']
 })
-export class CarouselComponent implements OnInit {
+export class CarouselComponent implements OnInit, OnDestroy {
   photos: Carousel[] = [];
-  photoCarouselsubscription: Subscription | undefined;
+  photosCarouselSubscription: Subscription | undefined;
 
   constructor(public photosService: PhotosService,
               private router: Router,
     ) {
-    this.photoCarouselsubscription = this.photosService.photosCarouselSubject.subscribe(pc => {
+    this.photosCarouselSubscription = this.photosService.photosCarouselSubject.subscribe(pc => {
       this.photos = pc.map(PC => {
         let p = PC as Carousel;
         p.id = PC.id;
@@ -27,6 +27,12 @@ export class CarouselComponent implements OnInit {
 
   ngOnInit(): void {
     this.photosService.getPhotosCarousel();
+  }
+
+  ngOnDestroy(): void {
+    if(this.photosCarouselSubscription != null) {
+      this.photosCarouselSubscription?.unsubscribe();
+    }
   }
 
   onMonte(p: Carousel) {

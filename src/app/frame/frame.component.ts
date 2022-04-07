@@ -6,7 +6,6 @@ import { Observable, Subscription } from 'rxjs';
 import { map, take } from 'rxjs/operators';
 import { SignInComponent } from '../auth/sign-in/sign-in.component';
 import { SignUpComponent } from '../auth/sign-up/sign-up.component';
-import { Article } from '../modeles/article';
 import { User } from '../modeles/user';
 import { AuthService } from '../services/auth.service';
 import { Droits, GlobalService, Status } from '../services/global.service';
@@ -23,7 +22,7 @@ import { ArticlesService } from '../services/articles.service';
   styleUrls: ['./frame.component.css']
 })
 export class FrameComponent implements OnInit, OnDestroy {
-  dialogResultSuscription: Subscription | undefined;
+  private dialogResultSuscription: Subscription | undefined;
 
   userMail: string = 'Visiteur';
   userPassword: string = '';
@@ -40,11 +39,11 @@ export class FrameComponent implements OnInit, OnDestroy {
   constructor(private router: Router,
               public dialog: MatDialog,
               private breakpointObserver: BreakpointObserver,
-              public globalService: GlobalService,
               private messagesService: MessagesService,
               public themesService: ThemesService,
               public articlesService: ArticlesService,
-              public authService: AuthService) {
+              public authService: AuthService,
+              private globalService: GlobalService) {
 
                 this.userSubscription = this.authService.authSubject.subscribe(u => {
                   let userDroits = 0;
@@ -74,6 +73,7 @@ export class FrameComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit() {
+
   }
 
   ngOnDestroy() {
@@ -85,31 +85,27 @@ export class FrameComponent implements OnInit, OnDestroy {
 
   onGoAccueil() {
     this.router.navigate(['app-acceuil']);
-  }
-
-  onClickAlbum(deb: number, fin: number) {
-
+    this.globalService.nouvelleVue('Accueil');
   }
 
   onOpenPdf() {
     this.router.navigate(['app-liste-pdf']);
+    this.globalService.nouvelleVue('Documents PDF');
   }
 
   onListeArticles(t: Theme) {
     this.themesService.changeCurrentTheme(t);
     this.articlesService.getArticlesCurrentTheme();
     this.router.navigate(['app-liste-articles']);
+    this.globalService.nouvelleVue('Articles ' + t.nom);
   }
 
   onEditAlbum(deb: number, fin: number) {
     this.router.navigate(['app-album'], {
       queryParams: {debut: deb, fin: fin}
     });
+    this.globalService.nouvelleVue('Photos de classes ' + deb.toString() + ' ' + fin.toString());
 }
-
-  onEditArticle(a: Article) {
-    
-  }
 
   onNewCompteDialog() {
     const dialogConfig = new MatDialogConfig();
@@ -200,6 +196,8 @@ export class FrameComponent implements OnInit, OnDestroy {
   }
 
   onAlbumPhotos() {
+    // console.log('app-album-photos');
     this.router.navigate(['app-album-photos']);
+    this.globalService.nouvelleVue('Photos de Morières');
   }
 }

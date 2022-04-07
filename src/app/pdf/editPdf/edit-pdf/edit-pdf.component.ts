@@ -12,7 +12,7 @@ import { PdfService } from 'src/app/services/pdf.service';
 })
 export class EditPdfComponent implements OnInit, OnDestroy {
   pdf: Pdf | undefined;
-  pdfSubscription: Subscription;
+  private pdfSubscription: Subscription;
 
   constructor(private route: ActivatedRoute,
               private pdfService: PdfService) {
@@ -33,7 +33,9 @@ export class EditPdfComponent implements OnInit, OnDestroy {
   }
 
   ngOnDestroy() {
-    this.pdfSubscription.unsubscribe() ;
+    if(this.pdfSubscription != null) {
+      this.pdfSubscription.unsubscribe();
+    }
 }
 
 

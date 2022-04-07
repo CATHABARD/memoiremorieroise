@@ -7,6 +7,7 @@ import { NgbCarousel } from '@ng-bootstrap/ng-bootstrap';
 import { AuthService } from '../services/auth.service';
 import { ArticlesService } from '../services/articles.service';
 import { ActualiteService } from '../services/actualite.service';
+import { GlobalService } from '../services/global.service';
 
 @Component({
   selector: 'app-accueil',
@@ -37,7 +38,8 @@ export class AccueilComponent implements OnInit, OnDestroy {
   constructor(public photosService: PhotosService,
               public articlesService: ArticlesService,
               public actualitesService: ActualiteService,
-              public authService: AuthService) {
+              public authService: AuthService,
+              private globalService: GlobalService) {
                 this.isConnected = false;
 
                 this.articlesService.getArticles();
@@ -72,15 +74,26 @@ export class AccueilComponent implements OnInit, OnDestroy {
 
   // Initialisation de la page
   ngOnInit() {
-    
+
   }
 
   ngOnDestroy() {
+    this.globalService.finDeVue();
+
     if(this.photosSubscription != null) {
       this.photosSubscription.unsubscribe();
     }
     if(this.articlesSubscription != null) {
       this.articlesSubscription.unsubscribe();
+    }
+    if(this.actualitesSubscription != null) {
+      this.actualitesSubscription.unsubscribe();
+    }
+    if(this.photosCarouselSubscription != null) {
+      this.photosSubscription?.unsubscribe();
+    }
+    if(this.authSubscription != null) {
+      this.authSubscription.unsubscribe();
     }
   }
 

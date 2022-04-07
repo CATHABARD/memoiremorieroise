@@ -1,5 +1,5 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
-import { Droits, Status } from 'src/app/services/global.service';
+import { Droits } from 'src/app/services/global.service';
 import { Subscription } from 'rxjs';
 import { AuthService } from 'src/app/services/auth.service';
 import { ArticlesService } from 'src/app/services/articles.service';
@@ -16,7 +16,6 @@ import { environment } from 'src/environments/environment';
 import { PhotoMorieres } from 'src/app/modeles/photosMorières';
 import { PhotoMorieresService } from 'src/app/services/photo-morieres.service';
 import { MatDialog } from '@angular/material/dialog';
-import { DialogMaximiseArticleImageComponent } from 'src/app/articles/liste-articles/liste-articles.component';
 
 @Component({
   selector: 'app-home-administration',
@@ -31,9 +30,9 @@ export class HomeAdministrationComponent implements OnInit, OnDestroy {
   isModerateur = false;
   
   totalAValider = 0;
-  actualitesSubscription: Subscription;
-  authSubscription: Subscription;
-  photosMorieresSubscription: Subscription;
+  private actualitesSubscription: Subscription;
+  private authSubscription: Subscription;
+  private photosMorieresSubscription: Subscription;
   articlesAValider: Article[] = [];
   pdfsAValider: Pdf[] = [];
   photosAValider: Photo[] = [];
@@ -123,10 +122,15 @@ export class HomeAdministrationComponent implements OnInit, OnDestroy {
   }
 
   ngOnDestroy() {
-    if(this.authSubscription) {
-      
+    if(this.authSubscription != null) {
+      this.authSubscription.unsubscribe();
     }
-    this.authSubscription.unsubscribe();
+    if(this.photosMorieresSubscription != null) {
+      this.photosMorieresSubscription.unsubscribe();
+    }
+    if(this.actualitesSubscription != null) {
+      this.actualitesSubscription.unsubscribe();
+    }
   }
 
   onValideArticle(a: Article) {

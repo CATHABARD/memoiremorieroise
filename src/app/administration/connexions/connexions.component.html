@@ -1,0 +1,35 @@
+<h2>Supprimer toutes les connexions.</h2>
+<button mat-raised-button (click)="onDeleteAllConnexions()">Supprimer</button>
+
+<h2>Liste des connexions.</h2>
+<table mat-table
+        [dataSource]="dataSource" multiTemplateDataRows
+       class="mat-elevation-z8">
+
+  <ng-container matColumnDef="{{column}}" *ngFor="let column of columnsToDisplay">
+    <th mat-header-cell *matHeaderCellDef> {{column}} </th>
+    <td mat-cell *matCellDef="let element"> {{element[column]}} </td>
+  </ng-container>
+
+    <!-- Expanded Content Column - The detail row is made up of this one column that spans across all columns -->
+  <ng-container matColumnDef="expandedDetail">
+    <td mat-cell *matCellDef="let element" [attr.colspan]="columnsToDisplay.length">
+      <div class="example-element-detail"
+          [@detailExpand]="element == expandedElement ? 'expanded' : 'collapsed'">
+        <div class="example-element-diagram" *ngFor="let v of element.vues">
+          <div class="example-element-weight"> Page {{v.page}} </div>
+          <div class="example-element-weight"> Début {{v.debut}} </div>
+          <div class="example-element-weight"> Durée {{v.duree}} secondes</div>
+        </div>
+      </div>
+    </td>
+  </ng-container>
+
+  <tr mat-header-row *matHeaderRowDef="columnsToDisplay"></tr>
+  <tr mat-row *matRowDef="let element; columns: columnsToDisplay;"
+      class="example-element-row"
+      [class.example-expanded-row]="expandedElement === element"
+      (click)="expandedElement = expandedElement === element ? null : element">
+  </tr>
+  <tr mat-row *matRowDef="let row; columns: ['expandedDetail']" class="example-detail-row"></tr>
+</table>

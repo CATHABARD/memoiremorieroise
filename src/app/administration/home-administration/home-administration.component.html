@@ -3,8 +3,6 @@
 
 <mat-tab-group>
   <mat-tab label="Articles">
-
-  <br/>
   <h3>Liste des articles à valider. ({{articlesAValider.length}})</h3>  
   <div *ngFor="let a of articlesAValider">
     <mat-card>
@@ -142,7 +140,7 @@
           </mat-card-actions>
         </mat-card>
         
-        <h3>Messages au visiteur.</h3>
+        <h3>Messages des visiteurs.</h3>
           <mat-card *ngFor="let aa of actualiteService.messagesVisiteurs">
             <mat-card-title>{{aa.titre}}</mat-card-title>
             <mat-card-subtitle>{{aa.sousTitre}}</mat-card-subtitle>
@@ -157,7 +155,6 @@
             </div>
           </mat-card-actions>
         </mat-card>
-
       </div>
     </mat-tab>
     <mat-tab label="Messages reçus">
@@ -168,5 +165,8 @@
     </mat-tab>
     <mat-tab label="Carousel">
       <app-carousel></app-carousel>
+    </mat-tab>
+    <mat-tab label="Visites">
+      <app-connexions></app-connexions>
     </mat-tab>
   </mat-tab-group>

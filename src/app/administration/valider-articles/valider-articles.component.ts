@@ -23,7 +23,7 @@ export class ValiderArticlesComponent implements OnInit, OnDestroy {
   public isConnected = false;
   public canWrite: boolean = false;
 
-  authSubscription: Subscription;
+  private authSubscription: Subscription;
 
   isAdmin = false;
   isEditArticle = false;
