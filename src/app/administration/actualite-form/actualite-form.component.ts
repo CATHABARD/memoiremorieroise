@@ -1,6 +1,6 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { AngularFireStorage } from '@angular/fire/compat/storage';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { UntypedFormBuilder, UntypedFormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { Actualite } from 'src/app/modeles/actualite';
 import { ActualiteService } from 'src/app/services/actualite.service';
@@ -13,7 +13,7 @@ import { ActualiteService } from 'src/app/services/actualite.service';
 export class ActualiteFormComponent implements OnInit {
   @Input() actualite: Actualite | undefined;
 
-  form: FormGroup;
+  form: UntypedFormGroup;
   errorMessage: string = '';
   fileIsUploading = false;
   fileUploaded = true;
@@ -22,7 +22,7 @@ export class ActualiteFormComponent implements OnInit {
   uploadPercent: number | undefined;
   downloadURL = '';
 
-  constructor(private formBuilder: FormBuilder,
+  constructor(private formBuilder: UntypedFormBuilder,
               private router: Router,
               private actualiteService: ActualiteService,
               private angularFireStorage: AngularFireStorage) {

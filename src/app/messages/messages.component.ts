@@ -1,5 +1,5 @@
 import { Component, OnInit, Inject } from '@angular/core';
-import { Validators, FormBuilder, FormGroup } from '@angular/forms';
+import { Validators, UntypedFormBuilder, FormGroup } from '@angular/forms';
 import { MatDialogModule, MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 
 
@@ -18,7 +18,7 @@ export class MessagesComponent {
   errorMessage: string = '';
   email: string;
 
-  constructor(public formBuilder: FormBuilder,
+  constructor(public formBuilder: UntypedFormBuilder,
               public matDialogRef: MatDialogRef<MessagesComponent>,
               @Inject(MAT_DIALOG_DATA) public data: MessageData) {
       this.email = data.email;

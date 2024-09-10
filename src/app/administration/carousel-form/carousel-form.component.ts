@@ -1,6 +1,6 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { AngularFireStorage } from '@angular/fire/compat/storage';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { UntypedFormBuilder, UntypedFormGroup, Validators } from '@angular/forms';
 import { Carousel } from 'src/app/modeles/carousel';
 import { PhotosService } from 'src/app/services/photos.service';
 import { Location } from '@angular/common';
@@ -12,7 +12,7 @@ import { Location } from '@angular/common';
 })
 export class CarouselFormComponent implements OnInit {
   @Input() carousel: Carousel | undefined;
-  form: FormGroup;
+  form: UntypedFormGroup;
   isFileAttached: boolean = false;
   errorMessage: string = '';
   fileIsUploading = false;
@@ -20,7 +20,7 @@ export class CarouselFormComponent implements OnInit {
   uploadPercent: number | undefined;
   downloadURL: string | undefined;
 
-  constructor(private formBuilder: FormBuilder,
+  constructor(private formBuilder: UntypedFormBuilder,
               private angularFireStorage: AngularFireStorage,
               private location: Location,
               private photosService: PhotosService) {

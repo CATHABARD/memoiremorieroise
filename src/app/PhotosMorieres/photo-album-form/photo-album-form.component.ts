@@ -1,7 +1,7 @@
 import { BreakpointObserver, Breakpoints } from '@angular/cdk/layout';
 import { Component, Input, OnDestroy, OnInit } from '@angular/core';
 import { AngularFireStorage } from '@angular/fire/compat/storage';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { UntypedFormBuilder, UntypedFormGroup, Validators } from '@angular/forms';
 import { Observable, Subscription } from 'rxjs';
 import { map, shareReplay } from 'rxjs/operators';
 import { User } from 'src/app/modeles/user';
@@ -22,7 +22,7 @@ export class PhotoAlbumFormComponent implements OnInit, OnDestroy {
 
   uploadPercent = 0;
 
-  addPhotoForm: FormGroup;
+  addPhotoForm: UntypedFormGroup;
   errorMessage: string = '';
   currentUser: User | undefined;
   public isConnected = false;
@@ -41,7 +41,7 @@ export class PhotoAlbumFormComponent implements OnInit, OnDestroy {
   private userSubscription: Subscription;
 
 
-  constructor(private formBuilder: FormBuilder,
+  constructor(private formBuilder: UntypedFormBuilder,
               private authService: AuthService,
               private photosService: PhotoMorieresService,
               private location: Location,

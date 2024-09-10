@@ -1,5 +1,5 @@
 import { Component, OnInit, Input, OnDestroy } from '@angular/core';
-import { FormGroup, FormBuilder, Validators } from '@angular/forms';
+import { UntypedFormGroup, UntypedFormBuilder, Validators } from '@angular/forms';
 import { Photo } from '../../modeles/photo';
 import { Droits, GlobalService } from 'src/app/services/global.service';
 import { Location } from '@angular/common';
@@ -22,7 +22,7 @@ export class PhotosDeClasseFormComponent implements OnInit, OnDestroy {
 
   uploadPercent = 0;
 
-  addPhotoForm: FormGroup;
+  addPhotoForm: UntypedFormGroup;
   errorMessage: string = '';
   currentUser: User | undefined;
   public isConnected = false;
@@ -41,7 +41,7 @@ export class PhotosDeClasseFormComponent implements OnInit, OnDestroy {
   private userSubscription: Subscription;
 
 
-  constructor(private formBuilder: FormBuilder,
+  constructor(private formBuilder: UntypedFormBuilder,
     private globalService: GlobalService,
               private authService: AuthService,
               private photosService: PhotosService,

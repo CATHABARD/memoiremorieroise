@@ -1,5 +1,5 @@
 import { Component, OnInit, Inject } from '@angular/core';
-import { FormGroup, FormBuilder, Validators, ReactiveFormsModule } from '@angular/forms';
+import { UntypedFormGroup, UntypedFormBuilder, Validators, ReactiveFormsModule } from '@angular/forms';
 import { AuthService } from 'src/app/services/auth.service';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 
@@ -16,7 +16,7 @@ export interface SignUpData {
   styleUrls: ['./user-datas.component.scss']
 })
 export class UserDatasComponent implements OnInit {
-  userDatasForm: FormGroup = this.formBuilder.group({
+  userDatasForm: UntypedFormGroup = this.formBuilder.group({
     nom: ['', [Validators.required, Validators.minLength(5), Validators.maxLength(25)]],
     prenom: ['', [Validators.required, Validators.minLength(3), Validators.maxLength(25)]],
     email: [{value: this.authService.getCurrentUser()!.email, disabled: true}],
@@ -25,7 +25,7 @@ export class UserDatasComponent implements OnInit {
   errorMessage: string = '';
   description: string = '';
 
-  constructor(private formBuilder: FormBuilder,
+  constructor(private formBuilder: UntypedFormBuilder,
               private authService: AuthService,
               public dialogRef: MatDialogRef<UserDatasComponent>,
               @Inject(MAT_DIALOG_DATA) private data: SignUpData) {

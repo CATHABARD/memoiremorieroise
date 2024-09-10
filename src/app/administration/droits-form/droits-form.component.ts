@@ -1,5 +1,5 @@
 import { Component, OnInit, Input, Inject } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { UntypedFormBuilder, UntypedFormGroup, Validators } from '@angular/forms';
 import { User } from '../../modeles/user';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { Droits } from 'src/app/services/global.service';
@@ -12,10 +12,10 @@ import { DragDropRegistry } from '@angular/cdk/drag-drop';
   styleUrls: ['./droits-form.component.scss']
 })
 export class DroitsFormComponent implements OnInit {
-  form: FormGroup;
+  form: UntypedFormGroup;
   status = 0;
 
-  constructor(private formBuilder: FormBuilder,
+  constructor(private formBuilder: UntypedFormBuilder,
               public dialogRef: MatDialogRef<DroitsFormComponent>,
               @Inject(MAT_DIALOG_DATA) public data: number) {
                 this.form = this.formBuilder.group({

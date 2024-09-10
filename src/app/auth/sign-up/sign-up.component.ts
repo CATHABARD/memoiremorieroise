@@ -1,5 +1,5 @@
 import { Component, OnInit, Inject } from '@angular/core';
-import { FormGroup, FormBuilder, Validators, ReactiveFormsModule } from '@angular/forms';
+import { FormGroup, UntypedFormBuilder, Validators, ReactiveFormsModule } from '@angular/forms';
 import { AuthService } from 'src/app/services/auth.service';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { Router } from '@angular/router';
@@ -32,7 +32,7 @@ export class SignUpComponent implements OnInit {
   errorMessage: string = '';
   hide = true;
 
-  constructor(private formBuilder: FormBuilder,
+  constructor(private formBuilder: UntypedFormBuilder,
               public dialogRef: MatDialogRef<SignUpComponent>) {
 
               }

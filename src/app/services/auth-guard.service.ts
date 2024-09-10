@@ -1,12 +1,12 @@
 import { Injectable, OnDestroy } from '@angular/core';
-import { CanActivate } from '@angular/router';
+
 import { Observable, Subscriber, Subscription } from 'rxjs';
 import { AuthService } from './auth.service';
 
 @Injectable({
   providedIn: 'root'
 })
-export class AuthGuardService implements CanActivate, OnDestroy {
+export class AuthGuardService  implements OnDestroy {
   currentUser: any;
 
   private userSubscription: Subscription | undefined;

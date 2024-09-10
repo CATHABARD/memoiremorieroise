@@ -1,5 +1,5 @@
 import { Component, OnInit, Inject } from '@angular/core';
-import { Validators, FormBuilder, FormGroup } from '@angular/forms';
+import { Validators, UntypedFormBuilder, FormGroup } from '@angular/forms';
 import {MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { AuthService } from 'src/app/services/auth.service';
 
@@ -23,7 +23,7 @@ export class SignInComponent implements OnInit {
 
 
   constructor(private authService: AuthService, 
-              private formBuilder: FormBuilder,
+              private formBuilder: UntypedFormBuilder,
               public dialogRef: MatDialogRef<SignInComponent>,
               @Inject(MAT_DIALOG_DATA) public data: SignInData) {
                 

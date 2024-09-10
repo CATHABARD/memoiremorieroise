@@ -1,6 +1,6 @@
 import { Component, OnInit, Input } from '@angular/core';
 import { Article } from '../../modeles/article';
-import { FormGroup, FormBuilder, Validators, Form } from '@angular/forms';
+import { UntypedFormGroup, UntypedFormBuilder, Validators, Form } from '@angular/forms';
 import { EditArticleComponent } from '../edit-article/edit-article.component';
 import { Observable } from 'rxjs';
 import { BreakpointObserver, Breakpoints } from '@angular/cdk/layout';
@@ -28,7 +28,7 @@ export class ArticleFormComponent implements OnInit {
   @Input() article: Article | undefined;
 
   color: ThemePalette = 'primary';
-  form: FormGroup;
+  form: UntypedFormGroup;
   errorMessage: string = '';
   fileIsUploading = false;
   fileUploaded = true;
@@ -44,7 +44,7 @@ export class ArticleFormComponent implements OnInit {
     map(result => result.matches)
   );
 
-  constructor(private formBuilder: FormBuilder,
+  constructor(private formBuilder: UntypedFormBuilder,
               private angularFireStorage: AngularFireStorage,
               private themesService: ThemesService,
               private authService: AuthService,
@@ -63,7 +63,6 @@ export class ArticleFormComponent implements OnInit {
               
 
   ngOnInit() {
-    this.initForm();
     (this.article?.photo != undefined)? this.downloadURL = this.article?.photo : '';
     this.form.controls.photo.setValue(this.downloadURL);
     this.form.controls.legende.setValue(this.article?.legende);
@@ -74,10 +73,7 @@ export class ArticleFormComponent implements OnInit {
     } else {
       this.isFileAttached = false;
     } 
-}
-
-  initForm() {
-}
+  }
 
   getErrorMessage(ctrl: string) {
     let msg = '';

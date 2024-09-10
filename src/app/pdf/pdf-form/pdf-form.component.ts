@@ -1,6 +1,6 @@
 import { Component, OnInit, Input } from '@angular/core';
 import { Pdf } from '../../modeles/pdf';
-import { FormGroup, FormBuilder, Validators } from '@angular/forms';
+import { UntypedFormGroup, UntypedFormBuilder, Validators } from '@angular/forms';
 import { GlobalService, Status } from 'src/app/services/global.service';
 import { Location } from '@angular/common';
 import { PdfService } from 'src/app/services/pdf.service';
@@ -13,7 +13,7 @@ import { AngularFireStorage } from '@angular/fire/compat/storage';
 })
 export class PdfFormComponent implements OnInit {
   @Input() pdf: Pdf | undefined;
-  form: FormGroup;
+  form: UntypedFormGroup;
   errorMessage: string = '';
 
   readonly maxSize = 100000;
@@ -22,7 +22,7 @@ export class PdfFormComponent implements OnInit {
   fileUploaded: boolean = false;
   uploadPercent: number | undefined;
 
-  constructor(private formBuilder: FormBuilder,
+  constructor(private formBuilder: UntypedFormBuilder,
               private location: Location,
               public globalService: GlobalService,
               private pdfService: PdfService,
